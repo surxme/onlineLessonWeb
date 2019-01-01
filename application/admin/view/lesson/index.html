@@ -1,0 +1,61 @@
+<style>
+    #adminlesson{
+        min-height: 90%;
+    }
+    #adminlesson .card{
+        min-height: 100%;
+    }
+    #adminlesson #edit,#del{
+        color: #ffffff;
+    }
+</style>
+
+{layout name="layouts/layout" /}
+
+<!--&lt;!&ndash; ROW ENDS &ndash;&gt;-->
+<div class="row"  id="adminlesson">
+    <div class="col-lg-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">课程总览</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>课程名</th>
+                            <th>课程封面</th>
+                            <th>相关教师</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='vo'}
+                        <tr>
+                            <td>{$i}</td>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.pic}</td>
+                            <td>教师</td>
+                            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <!--<button class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button>-->
+                                    <a class="layui-btn layui-btn-primary layui-btn-xs" id="detail" lay-event="detail">查看</a>
+                                    <a class="layui-btn layui-btn-xs" lay-event="edit" id="edit">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs" id="del" lay-event="del">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <p class="mb-0">Showing {$list->listRows()*($list->currentPage()-1)} to {$list->listRows()*($list->currentPage()-1)} of {$list->total()} entries</p>
+                    <nav>
+                        {$list->render()}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
