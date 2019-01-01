@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>BigData Admin</title>
+    <link rel="stylesheet" href="__STATIC__/admin/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <link rel="shortcut icon" href="__STATIC__/admin/images/favicon.png" />
+</head>
+<body>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper">
+            <a class="navbar-brand brand-logo" href="index.html"><img style="height: 43px;width: 43px" src="__STATIC__/admin/images/logo.svg" alt="logo"></a>
+            <a class="navbar-brand brand-logo-mini" href="index.html"><img src="__STATIC__/admin/images/logo_mini.svg" alt="logo"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+            <p class="page-name d-none d-lg-block">Hi, Dave Mattew</p>
+            <ul class="navbar-nav ml-lg-auto">
+
+                <li class="nav-item dropdown mail-dropdown">
+                    <a class="nav-link count-indicator" id="MailDropdown" href="#" data-toggle="dropdown">
+                        <i class="icon-envelope-letter icons"></i>
+                        <span class="count bg-danger"></span>
+                    </a>
+                    <div class="dropdown-menu navbar-dropdown mail-notification dropdownAnimation" aria-labelledby="MailDropdown">
+                        <a class="dropdown-item" href="#">
+                            <div class="sender-img">
+                                <img src="__STATIC__/admin/images/faces/face6.jpg" alt="">
+                                <span class="badge badge-success">&nbsp;</span>
+                            </div>
+                            <div class="sender">
+                                <p class="Sende-name">John Doe</p>
+                                <p class="Sender-message">Hey, We have a meeting planned at the end of the day.</p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="sender-img">
+                                <img src="__STATIC__/admin/images/faces/face2.jpg" alt="">
+                                <span class="badge badge-success">&nbsp;</span>
+                            </div>
+                            <div class="sender">
+                                <p class="Sende-name">Leanne Jones</p>
+                                <p class="Sender-message">Can we schedule a call this afternoon?</p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="sender-img">
+                                <img src="__STATIC__/admin/images/faces/face4.jpg" alt="">
+                                <span class="badge badge-warning">&nbsp;</span>
+                            </div>
+                            <div class="sender">
+                                <p class="Sende-name">James Brown</p>
+                                <p class="Sender-message">Need the updates of the project at the end of the week.</p>
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item view-all">View all</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown notification-dropdown">
+                    <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-toggle="dropdown">
+                        <i class="icon-speech icons"></i>
+                        <span class="count"></span>
+                    </a>
+                    <div class="dropdown-menu navbar-dropdown preview-list notification-drop-down dropdownAnimation" aria-labelledby="notificationDropdown">
+                        <a class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon">
+                                    <i class="icon-info mx-0"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject font-weight-medium">Application Error</p>
+                                <p class="font-weight-light small-text">
+                                    Just now
+                                </p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon">
+                                    <i class="icon-speech mx-0"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject">Settings</p>
+                                <p class="font-weight-light small-text">
+                                    Private message
+                                </p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item preview-item">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon">
+                                    <i class="icon-envelope mx-0"></i>
+                                </div>
+                            </div>
+                            <div class="preview-item-content">
+                                <p class="preview-subject">New user registration</p>
+                                <p class="font-weight-light small-text">
+                                    2 days ago
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item d-none d-sm-block profile-img">
+                    <a class="nav-link profile-image" href="#">
+                        <img src="__STATIC__/admin/images/faces/face4.jpg" alt="profile-img">
+                        <span class="online-status online bg-success"></span>
+                    </a>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="offcanvas">
+                <span class="icon-menu icons"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <div class="row row-offcanvas row-offcanvas-right">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item nav-item-checked">
+                        <a class="nav-link" href="index.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-home "></i>主页</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-checked">
+                        <a class="nav-link" href="index.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-lesson "></i>课程管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-checked">
+                        <a class="nav-link" href="index.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-video "></i>视频管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/widgets.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-teacher "></i>教师管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/widgets.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-student "></i>学生管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/widgets.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-comment"></i>评论管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/widgets.html">
+                            <span class="menu-title"><i class="iconfont icon-admin-question"></i>问答管理</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="content-wrapper">
+                {__CONTENT__}
+            </div>
+            <!-- content-wrapper ends -->
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+                <div class="container-fluid clearfix">
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 Bootstrapdash All rights reserved. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- row-offcanvas ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+</body>
+
+</html>
