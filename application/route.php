@@ -25,6 +25,7 @@ Route::group('admin',function (){
     Route::any('typeupdate','Index/typeupdate');
 //视频信息
     Route::any('lesson','LessonController/index');
+    Route::any('lessonAdd','LessonController/add');
     Route::any('lessonedit','LessonController/edit');
     Route::any('lessondel','LessonController/lessondel');
     Route::any('lessonupdate','LessonController/lessonUpdate');

@@ -13,11 +13,52 @@
 {layout name="layouts/layout" /}
 
 <!--&lt;!&ndash; ROW ENDS &ndash;&gt;-->
+<!--<div class="row">-->
+    <!--<div class="col-lg-12 grid-margin">-->
+        <!--<div class="card overflow-hidden dashboard-curved-chart">-->
+            <!--<div class="card-body mx-3">-->
+                <!--<h2 class="card-title border-bottom-none">Recent Movement</h2>-->
+                <!--<div class="align-items-center mb-5 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">-->
+                    <!--<div id="chartLegend"></div>-->
+                    <!--<div class="nav-wrapper d-inline-block mt-4 mt-lg-0">-->
+                        <!--<ul class="nav nav-pills">-->
+                            <!--<li class="nav-item">-->
+                                <!--<a class="nav-link" href="#">Week</a>-->
+                            <!--</li>-->
+                            <!--<li class="nav-item">-->
+                                <!--<a class="nav-link active" href="#">Month</a>-->
+                            <!--</li>-->
+                            <!--<li class="nav-item">-->
+                                <!--<a class="nav-link" href="#">Year</a>-->
+                            <!--</li>-->
+                            <!--<li class="nav-item">-->
+                                <!--<a class="nav-link" href="#">Today</a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div id="curved-line-chart" class="float-chart float-chart-mini"></div>-->
+        <!--</div>-->
+
 <div class="row"  id="adminlesson">
     <div class="col-lg-12 grid-margin">
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">课程总览</h2>
+                <div class="align-items-center mb-1 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">
+                    <h2 class="">课程总览</h2>
+                    <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1" id="addLesson" href="#" data-title="添加课程"
+                                   onclick="addlesson()"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1" href="#"><i style="font: inherit" class="layui-icon layui-icon-up"></i>导入</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -50,7 +91,7 @@
                     </table>
                 </div>
                 <div class="d-flex align-items-center justify-content-between flex-wrap">
-                    <p class="mb-0">Showing {$list->listRows()*($list->currentPage()-1)} to {$list->listRows()*($list->currentPage()-1)} of {$list->total()} entries</p>
+                    <p class="mb-0">Showing {$list->listRows()*($list->currentPage()-1)} to {$list->total()-($list->listRows()*($list->currentPage()-1))} of {$list->total()} entries</p>
                     <nav>
                         {$list->render()}
                     </nav>
@@ -59,3 +100,61 @@
         </div>
     </div>
 </div>
+
+<script>
+    layui.use('element','form', function(){
+        var element = layui.element;
+        var form = layui.form;
+
+        form.render();
+    });
+
+    function addlesson() {
+        rePositionBtn();
+        layui.use('layer', function () {
+            var layer = layui.layer;
+
+            layer.open({
+                type: 2 //此处以iframe举例
+                , title: '添加新课程'
+                , area: ['800px', '600px']
+                , shade: 0.3//弹出后背景的阴影
+                // , maxmin: true //可最大化最小化
+                , offset: 'auto'
+                // , resize: true
+                , content: '{:url("admin/lessonAdd")}'
+                , btn: ['提交','关闭']
+                , btnAlign:'c'
+                , yes: function (index) {
+                    var body = layer.getChildFrame('#myform', index);
+                    console.log(body.prop('className'));
+                    //ajax添加课程
+                    // layer.closeAll();
+                }
+                , btn2:function (index, layero){
+                    layer.alert('aaa');
+                    layer.close(index);//关闭当前
+                }
+                , zIndex: layer.zIndex //重点1
+                , success: function (layero) {
+                    layer.setTop(layero); //重点2
+                }
+            });
+        });
+    }
+    function rePositionBtn() {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+
+            layer.open({
+                title: '添加新课程'
+                , type:1
+                , content: '处理中'
+                ,time:100
+            });
+        });
+    }
+    //在iframe中关闭自身
+    //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+    //parent.layer.close(index); //再执行关闭
+</script>
