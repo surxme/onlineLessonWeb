@@ -11,36 +11,6 @@
 </style>
 
 {layout name="layouts/layout" /}
-
-<!--&lt;!&ndash; ROW ENDS &ndash;&gt;-->
-<!--<div class="row">-->
-    <!--<div class="col-lg-12 grid-margin">-->
-        <!--<div class="card overflow-hidden dashboard-curved-chart">-->
-            <!--<div class="card-body mx-3">-->
-                <!--<h2 class="card-title border-bottom-none">Recent Movement</h2>-->
-                <!--<div class="align-items-center mb-5 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">-->
-                    <!--<div id="chartLegend"></div>-->
-                    <!--<div class="nav-wrapper d-inline-block mt-4 mt-lg-0">-->
-                        <!--<ul class="nav nav-pills">-->
-                            <!--<li class="nav-item">-->
-                                <!--<a class="nav-link" href="#">Week</a>-->
-                            <!--</li>-->
-                            <!--<li class="nav-item">-->
-                                <!--<a class="nav-link active" href="#">Month</a>-->
-                            <!--</li>-->
-                            <!--<li class="nav-item">-->
-                                <!--<a class="nav-link" href="#">Year</a>-->
-                            <!--</li>-->
-                            <!--<li class="nav-item">-->
-                                <!--<a class="nav-link" href="#">Today</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div id="curved-line-chart" class="float-chart float-chart-mini"></div>-->
-        <!--</div>-->
-
 <div class="row"  id="adminlesson">
     <div class="col-lg-12 grid-margin">
         <div class="card">
@@ -76,14 +46,15 @@
                         <tr>
                             <td>{$i}</td>
                             <td>{$vo.name}</td>
-                            <td>{$vo.pic}</td>
+                            <td><img src="__STATIC__/uploads/poster/{$vo.poster}" width="100px" alt=""></td>
+                            <td><img src="__STATIC__/{$vo.poster|DSFormat}" width="100px" alt=""></td>
                             <td>教师</td>
                             <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
                             <td>
                                 <!--<button class="layui-btn layui-btn-sm"><i class="layui-icon"></i></button>-->
                                     <a class="layui-btn layui-btn-primary layui-btn-xs" id="detail" lay-event="detail">查看</a>
                                     <a class="layui-btn layui-btn-xs" lay-event="edit" id="edit">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs" id="del" lay-event="del">删除</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs" id="del" lay-event="del" onclick="del({$vo.id})">删除</a>
                             </td>
                         </tr>
                         {/volist}
@@ -102,58 +73,71 @@
 </div>
 
 <script>
-    layui.use('element','form', function(){
-        var element = layui.element;
-        var form = layui.form;
-
-        form.render();
-    });
-
     function addlesson() {
-        rePositionBtn();
-        layui.use('layer', function () {
+        rePositionLayuiIframe('添加新课程');
+        layui.use(['layer'], function () {
             var layer = layui.layer;
 
             layer.open({
-                type: 2 //此处以iframe举例
+                type: 2
                 , title: '添加新课程'
                 , area: ['800px', '600px']
                 , shade: 0.3//弹出后背景的阴影
-                // , maxmin: true //可最大化最小化
                 , offset: 'auto'
-                // , resize: true
                 , content: '{:url("admin/lessonAdd")}'
-                , btn: ['提交','关闭']
+                , btn: ['提交','取消']
                 , btnAlign:'c'
-                , yes: function (index) {
-                    var body = layer.getChildFrame('#myform', index);
-                    console.log(body.prop('className'));
+                , yes: function (index,layero) {
+                    //获取弹出层的表单
+                    var form = layer.getChildFrame('#myform', index);
+                    //调用弹出层的富文本同步方法
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    iframeWin.syncTexrarea();
                     //ajax添加课程
-                    // layer.closeAll();
+                    ajax_request.post('{:url("admin/lessonSaveAdd")}',form.serialize(),function (res) {
+                        if(res.is_ok == 'ok'){
+                            layer.msg(res.msg,{icon:6});
+                            layer.close(index);
+                            location.reload();//刷新页面
+                        }else{
+                            layer.msg(res.msg,{icon:5});
+                        }
+                    })
                 }
                 , btn2:function (index, layero){
-                    layer.alert('aaa');
                     layer.close(index);//关闭当前
                 }
                 , zIndex: layer.zIndex //重点1
-                , success: function (layero) {
-                    layer.setTop(layero); //重点2
+                , success: function (index,layero) {
+                    // layer.setTop(layero); //重点2
+                    // var intro = layer.getChildFrame('#intro', index).prop('id');
+                    // layedit.builder(intro,'{:url("admin/layeditUpload")}');
                 }
             });
         });
     }
-    function rePositionBtn() {
-        layui.use('layer', function () {
-            var layer = layui.layer;
+    
+    // function del(id) {
+    //
+    // }
 
-            layer.open({
-                title: '添加新课程'
-                , type:1
-                , content: '处理中'
-                ,time:100
-            });
+    function del(id) {
+        layui.use("layer", function () {
+            var layer = layui.layer;  //layer初始化
+            layer.confirm('确认删除',{btn:['确认','取消']},
+                function () {
+                    $.post("{:url('admin/lessondel')}",{"id":id},function (data) {
+                        if(data.is_ok=='ok'){
+                            location.reload();//刷新页面
+                            layer.msg(data.msg,{icon:6});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    });
+                });
         });
     }
+
     //在iframe中关闭自身
     //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
     //parent.layer.close(index); //再执行关闭

@@ -35,6 +35,11 @@ function msubstr($str, $start=0, $length, $charset="utf-8", $suffix=true){
         }
     }
 }
+
+function DSFormat($str){
+    return str_replace("\\","/",$str);
+}
+
 /**
  * 邮件发送函数
  */

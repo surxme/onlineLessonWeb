@@ -10,12 +10,12 @@
 // +----------------------------------------------------------------------
 use think\Route;
 
-//登录
 Route::group('admin',function (){
+    //登录
     Route::any('login','admin/LoginController/login');
     Route::any('logout','admin/LoginController/logout');
     Route::any('loginverify', 'admin/LoginController/loginverify');
-//视频类型
+    //视频类型
     Route::any('index','Index/index');
     Route::any('tindex','Index/tLesson');
     Route::any('edit','Index/edit');
@@ -23,11 +23,17 @@ Route::group('admin',function (){
     Route::any('typedel','Index/typedel');
     Route::any('typeadd','Index/typeadd');
     Route::any('typeupdate','Index/typeupdate');
+
+    //文件上传
+    Route::any('upload','FileUpload/index');
+    Route::any('layeditUpload','FileUpload/layeditPicUpload');
+
 //视频信息
     Route::any('lesson','LessonController/index');
     Route::any('lessonAdd','LessonController/add');
+    Route::any('lessonSaveAdd','LessonController/saveAdd');
     Route::any('lessonedit','LessonController/edit');
-    Route::any('lessondel','LessonController/lessondel');
+    Route::any('lessondel','LessonController/del');
     Route::any('lessonupdate','LessonController/lessonUpdate');
 
     Route::any('video','VideosController/index');
