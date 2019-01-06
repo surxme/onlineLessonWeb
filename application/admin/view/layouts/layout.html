@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
     <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
     <!--<link rel="stylesheet" href="__STATIC__/js/layer/mobile/need/layer.css">-->
-    <link rel="shortcut icon" href="__STATIC__/admin/images/favicon.png" />
+    <link rel="shortcut icon" href="__STATIC__/img/favicon.png" />
     <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
     <!--<script type="text/javascript" src="__STATIC__/js/layer/layer.js"></script>-->
     <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
 </head>
 <body>
 <div class="container-scroller">
@@ -40,12 +41,17 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <div class="row row-offcanvas row-offcanvas-right">
-            <!-- partial:partials/_sidebar.html -->
+            <!-- sidebar -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item nav-item-checked">
                         <a href="{:url('admin/index')}" class="nav-link <?php if(request()->path()=='admin/index') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-home "></i>主页</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-checked">
+                        <a href="{:url('admin/type')}" class="nav-link <?php if(request()->path()=='admin/type') echo 'nav-link-check'; ?>">
+                            <span class="menu-title"><i class="iconfont icon-admin-type"></i>课程类别</span>
                         </a>
                     </li>
                     <li class="nav-item nav-item-checked">
@@ -59,7 +65,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/widgets.html">
+                        <a href="{:url('admin/teacher')}" class="nav-link <?php if(request()->path()=='admin/teacher') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-teacher "></i>教师管理</span>
                         </a>
                     </li>
@@ -81,23 +87,19 @@
 
                 </ul>
             </nav>
-            <!-- partial -->
+            <!-- content -->
             <div class="content-wrapper">
                 {__CONTENT__}
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
+            <!-- footer -->
             <footer class="footer">
                 <div class="container-fluid clearfix">
-                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 Bootstrapdash All rights reserved. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © xxx</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">created by lee <i class="mdi mdi-heart text-danger"></i></span>
                 </div>
             </footer>
-            <!-- partial -->
         </div>
-        <!-- row-offcanvas ends -->
     </div>
-    <!-- page-body-wrapper ends -->
 </div>
 </body>
 

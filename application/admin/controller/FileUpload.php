@@ -21,10 +21,12 @@ class FileUpload extends  BaseController
     public function index(){
         $file = request()->file('file');
         if($file){
-            $info = $file->rule('uniqid')->move(ROOT_PATH  . 'public' . DS . 'uploads' . DS . 'poster');
+            $info = $file->rule('uniqid')->move(ROOT_PATH  . 'public' . DS  . 'static' .DS . 'uploads' . DS . 'poster');
             if ($info) {//上传成功
                 $file_name = $info->getFilename();
-                $file_url = 'uploads' . DS . 'poster' . DS .$file_name;
+                $file_url = DS . 'uploads' . DS . 'poster' . DS .$file_name;
+
+//                $file_url = DSFormat($file_url);
 
                 return Util::successJsonReturn(['msg' => '上传成功','file_url'=>$file_url,'file_name'=>$file_name]);
             }else{//上传失败
@@ -46,11 +48,12 @@ class FileUpload extends  BaseController
 
         $file = request()->file('file');
         if($file){
-            $info = $file->rule('uniqid')->move(ROOT_PATH  . 'public' . DS . 'uploads' . DS . 'layedit');
+            $info = $file->rule('uniqid')->move(ROOT_PATH  . 'public' . DS  . 'static' .DS . 'uploads' . DS . 'layedit');
             if ($info) {//上传成功
                 $file_name = $info->getFilename();
 //                $file_url = ROOT_PATH  . 'public' . DS . 'uploads' . DS . 'layedit' . DS .$file_name;
                 $file_url = $root . DS . 'uploads' . DS . 'layedit' . DS .$file_name;
+//                $file_url = DSFormat($file_url);
 
                 return Util::layeditJsonReturn(['data'=>['src'=>$file_url,'title'=>$file_name]]);
             }else{//上传失败

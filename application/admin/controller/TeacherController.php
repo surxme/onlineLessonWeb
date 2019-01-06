@@ -15,21 +15,16 @@ use app\admin\model\Type;
 use app\admin\model\Util;
 use think\Db;
 
-class LessonController extends BaseController
+class TeacherController extends BaseController
 {
     /**
      * @return mixed
      * @throws \think\exception\DbException
      */
     public function  index(){
-        $list = Db::name('lesson')->order('id desc')->paginate(10)->each(function ($item,$key){
-            $teachers = Teacher::where('id','in',$item['teacher_ids'])->column('name');
-            $item['teachers_name'] = implode(',',$teachers);
-            return $item;
-        });
-
+        $list = Db::name('teacher')->order('id desc')->paginate(10);
         $this->assign('list',$list);
-        return $this->fetch('lesson/index');
+        return $this->fetch('teacher/index');
     }
 
     /**
@@ -39,17 +34,14 @@ class LessonController extends BaseController
     public function add(){
         $id = input('param.id');
         if($id){
-            $info = Lesson::get($id);
+            $info = Teacher::get($id);
             $this->assign('info',$info);
-            $dept = Dept::getDept(explode(',',$info['teacher_ids']));
-        }else{
-            $dept = Dept::getDept();
         }
-        $lesson_type = Type::all();
 
-        $this->assign('dept',json_encode($dept));
-        $this->assign('lesson_type',$lesson_type);
-        return $this->fetch('lesson/add');
+        $dept = Dept::all();
+        $this->assign('dept',$dept);
+
+        return $this->fetch('teacher/add');
     }
 
     /**
@@ -73,9 +65,9 @@ class LessonController extends BaseController
         ];
 
         if($id){
-            $res = Lesson::update($data,['id'=>$id]);
+            $res = Teacher::update($data,['id'=>$id]);
         }else{
-            $res = Lesson::create($data);
+            $res = Teacher::create($data);
         }
 
         if($res){
@@ -90,7 +82,7 @@ class LessonController extends BaseController
      */
     public function del(){
         $id=input('param.id');
-        $re= (new Lesson)->where('id',$id)->delete();
+        $re= (new Teacher)->where('id',$id)->delete();
         if ($re){
             return Util::successArrayReturn();
         }else{
@@ -104,9 +96,9 @@ class LessonController extends BaseController
      */
     public function detail(){
         $id = input('param.id');
-        $info = Lesson::get($id);
+        $info = Teacher::get($id);
         $this->assign('info',$info);
 
-        return $this->fetch('lesson/detail')   ;
+        return $this->fetch('teacher/detail')   ;
     }
 }
