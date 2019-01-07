@@ -80,4 +80,46 @@ class Dept extends Model
         }
         return $top_dept;
     }
+
+    public static function getDeptTree($default_choosed_arr=[]){
+        $dept = Dept::all();
+        $data_arr = [];
+
+        //所有部门
+        foreach ($dept as $data) {
+            $data_arr[] = array(
+                'value' => $data['id'],
+                'title' => $data['name'],
+                'parent_id' => $data['p_id'],
+                'disabled' => false,
+                'data' => []
+            );
+        }
+        $top_dept = [];
+        //顶级部门
+        foreach ($data_arr as $k => $item) {
+            if($item['parent_id'] == 0){
+                $top_dept[] = $item;
+            }
+        }
+
+        $data_bak = $data_arr;
+        //划分本书从属关系
+        foreach ($data_arr as $k => $item){
+            foreach ($data_bak as $j => $value){
+                if($value['parent_id'] == $item['value']){
+                    $data_arr[$k]['data'][] = $value;
+                }
+            }
+        }
+
+        foreach ($top_dept as $k => $value){
+            foreach ($data_arr as $j => $item){
+                if($value['value'] == $item['parent_id']){
+                    $top_dept[$k]['data'][] = $item;
+                }
+            }
+        }
+        return $top_dept;
+    }
 }

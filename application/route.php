@@ -16,7 +16,7 @@ Route::group('admin',function (){
     Route::any('logout','admin/LoginController/logout');
     Route::any('loginverify', 'admin/LoginController/loginverify');
     //视频类型
-//    Route::any('index','Index/index');
+    Route::any('index','Index/index');
 //    Route::any('tindex','Index/tLesson');
 //    Route::any('edit','Index/edit');
 //    Route::any('url','Index/geturl');

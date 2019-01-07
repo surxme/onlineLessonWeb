@@ -63,22 +63,22 @@
         <div class="layui-inline">
             <label class="layui-form-label">单选框</label>
             <div class="layui-input-inline">
-                <input type="radio" name="sex" value="男" title="男" {$info['sex']?($info['sex']=='1'?'checked':''):'checked'}>
-                <input type="radio" name="sex" value="女" title="女" {$info['sex']?($info['sex']=='2'?'checked':''):''}>
+                <input type="radio" name="sex" value="1" title="男" {$info['sex']?($info['sex']=='1'?'checked':''):'checked'}>
+                <input type="radio" name="sex" value="2" title="女" {$info['sex']?($info['sex']=='2'?'checked':''):''}>
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">生日</label>
             <div class="layui-input-inline">
-                <input type="text" name="bir" value="{$info['bir']?$info['bir']:''}" id="date" lay-verify="date" placeholder="请点击选择日期" autocomplete="off" class="layui-input">
+                <input type="text" name="bir" value="{$info['bir']?date('Y-m-d',$info['bir']):''}" id="date" lay-verify="date" placeholder="请点击选择日期" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">验证邮箱</label>
+        <label class="layui-form-label">邮箱</label>
         <div class="layui-input-block">
-            <input type="text" name="email" lay-verify="email" value="{$info['bir']?$info['bir']:''}" autocomplete="off" class="layui-input">
+            <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" value="{$info['email']?$info['email']:''}" autocomplete="off" class="layui-input">
         </div>
     </div>
 
@@ -108,6 +108,7 @@
         //日期
         laydate.render({
             elem: '#date'
+            ,format:'yyyy-MM-dd'
         });
     });
 </script>

@@ -8,20 +8,41 @@
     #adminteacher #edit,#del{
         color: #ffffff;
     }
-    #adminteacher .table td img{
-        width: 55px;
-        height: 30px;
-         border-radius: 5%;
+    /*#adminteacher .table td img{*/
+        /*width: 55px;*/
+        /*height: 30px;*/
+         /*border-radius: 5%;*/
+    /*}*/
+    #adminteacher .dept_tree{
+        padding-right: 0px;
+        /*padding-left: 0px;*/
     }
 </style>
 
 {layout name="layouts/layout" /}
 <div class="row"  id="adminteacher">
-    <div class="col-lg-12 grid-margin">
+    <div class="col-md-2 grid-margin dept_tree">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-0">Statistics</h4>
+                <!--<div class="d-flex justify-content-between align-items-center">-->
+                    <!--<div class="d-inline-block pt-3">-->
+                        <div class="d-flex">
+                            <form class="layui-form" action="" id="myform"  enctype="multipart/form-data" method="POST" style="overflow-x: auto">
+                                <div id="xtree1"></div>
+                                <input type="hidden" value="{$info['teacher_ids']?$info['teacher_ids']:''}" id="dept_ids" name="dept_ids">
+                            </form>
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 grid-margin data-list">
         <div class="card">
             <div class="card-body">
                 <div class="align-items-center mb-1 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">
-                    <h2 class="">课程总览</h2>
+                    <h2 class="">教师总览</h2>
                     <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
@@ -77,6 +98,11 @@
 <script>
     showphotos.init('.showPhotos');
 
+    // deptTreeBuilder('xtree1',{$dept},function (ids) {
+    //     $('#dept_ids').val(ids);
+    // });
+    noCheckboxTreeBuilder("#xtree1");
+
     $('.teacher_edit').on('click',function () {
         alt('编辑课程',$(this));
     });
@@ -93,9 +119,10 @@
         layui_iframe.editBuilder(title,url,function (index,layero) {
             //获取弹出层的表单
             var form = layer.getChildFrame('#myform', index);
+            verifyinput();
             //调用弹出层的富文本同步方法
-            var iframeWin = window[layero.find('iframe')[0]['name']];
-            iframeWin.syncTexrarea();
+            // var iframeWin = window[layero.find('iframe')[0]['name']];
+            // iframeWin.syncTexrarea();
             if(id){
                 save_url = '{:url("admin/teacherSaveAdd")}'+'?id='+id;
             }

@@ -23,7 +23,9 @@ class TeacherController extends BaseController
      */
     public function  index(){
         $list = Db::name('teacher')->order('id desc')->paginate(10);
+        $dept = Dept::getDeptTree();
         $this->assign('list',$list);
+        $this->assign('dept',json_encode($dept));
         return $this->fetch('teacher/index');
     }
 
@@ -50,39 +52,47 @@ class TeacherController extends BaseController
      */
     public function saveAdd(){
         $name = input('param.name');
-        $tid = input('param.tid');
-        $intro = input('param.intro');
-        $poster = input('param.poster');
-        $teacher_ids = input('param.teacher_ids');
+        $sex = input('param.sex');
+        $bir = input('param.bir');
+        $avatar = input('param.avatar');
+        $email = input('param.email');
+        $dept_id = input('param.dept_id');
         $id = input('param.id');
 
         $data = [
             'name' => $name,
-            'type_id' => $tid,
-            'intro' => $intro,
-            'poster' => $poster,
-            'teacher_ids' => $teacher_ids
+            'sex' => $sex,
+            'bir' => strtotime($bir),
+            'avatar' => $avatar,
+            'email' => $email,
+            'dept_id' => $dept_id
         ];
 
+        $teacher = new Teacher();
+        // 调用当前模型对应的User验证器类进行数据验证
         if($id){
-            $res = Teacher::update($data,['id'=>$id]);
+            $res = $teacher->validate(true)->save($data,['id'=>$id]);
         }else{
-            $res = Teacher::create($data);
+            $data['password'] = md5(md5('123456').'bigdata');
+            $res = $teacher->validate(true)->save($data);
         }
 
         if($res){
             return Util::successArrayReturn();
         }else{
-            return Util::successArrayReturn();
+            return Util::errorArrayReturn(['msg'=>$teacher->getError()]);
         }
     }
 
     /**
      * 删除课程
      */
+    /**
+     * @return array
+     */
     public function del(){
         $id=input('param.id');
-        $re= (new Teacher)->where('id',$id)->delete();
+        $re = Teacher::update(['is_del'=>1],['id'=>$id]);
         if ($re){
             return Util::successArrayReturn();
         }else{
