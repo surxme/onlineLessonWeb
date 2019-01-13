@@ -9,6 +9,7 @@
 namespace app\admin\model;
 
 
+use think\Db;
 use think\Model;
 
 class Type extends Model
@@ -17,4 +18,16 @@ class Type extends Model
     protected $autoWriteTimestamp=true;
     protected $createTime='create_time';
     protected $updateTime='update_time';
+
+    public function search($params){
+        $where = [];
+
+        if(isset($params['search_key'])){
+            $where['name'] = array('like','%'.$params['search_key'].'%');
+        }
+
+        $list = Db::name('type')->where($where)->order('id desc')->paginate(10);
+
+        return $list;
+    }
 }

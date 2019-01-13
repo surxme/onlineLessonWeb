@@ -16,6 +16,24 @@
 </style>
 
 {layout name="layouts/layout" /}
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <form class="forms-sample filters">
+                        <div class="">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control form-control-sm" placeholder="输入类别名" name="search_key">
+                                <span class="input-group-append"><button class="btn btn-info search-btn" type="button">搜索</button></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row"  id="adminlesson">
     <div class="col-lg-12 grid-margin">
         <div class="card">
@@ -63,12 +81,12 @@
                         {/volist}
                         </tbody>
                     </table>
-                </div>
-                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                    <p class="mb-0"> 共 {$list->total()} 条</p>
-                    <nav>
-                        {$list->render()}
-                    </nav>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <p class="mb-0"> 共 {$list->total()} 条</p>
+                        <nav>
+                            {$list->render()}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,104 +94,72 @@
 </div>
 
 <script>
-    showphotos.init('.showPhotos');
-    function addlesson() {
-        rePositionLayuiIframe('添加新课程');
-        layui.use(['layer'], function () {
-            var layer = layui.layer;
+    $(function () {
+        showphotos.init('.showPhotos');
 
-            layer.open({
-                type: 2
-                , title: '添加新课程'
-                , area: ['800px', '600px']
-                , shade: 0.3//弹出后背景的阴影
-                , offset: 'auto'
-                , content: '{:url("admin/lessonAdd")}'
-                , btn: ['提交','取消']
-                , btnAlign:'c'
-                , yes: function (index,layero) {
-                    //获取弹出层的表单
-                    var form = layer.getChildFrame('#myform', index);
-                    //调用弹出层的富文本同步方法
-                    var iframeWin = window[layero.find('iframe')[0]['name']];
-                    iframeWin.syncTexrarea();
-                    //ajax添加课程
-                    ajax_request.post('{:url("admin/lessonSaveAdd")}',form.serialize(),function (res) {
-                        if(res.is_ok == 'ok'){
-                            layer.msg(res.msg,{icon:6});
-                            layer.close(index);
-                            location.reload();//刷新页面
-                        }else{
-                            layer.msg(res.msg,{icon:5});
-                        }
-                    })
+        //搜索
+        $('.search-btn').on('click',function () {
+            var params = $('.filters').serialize();
+            search(params);
+        });
+
+        function search(params){
+            refreshDom('{:url("admin/lesson")}',params,'#adminlesson .table-responsive');
+        }
+
+        $('.lesson_edit').on('click',function () {
+            alt('编辑课程',$(this));
+        });
+
+        $('.lesson_add').on('click',function () {
+            alt('添加课程',$(this));
+        });
+
+        function alt(title,dom){
+            var this_e = dom;
+            var url = this_e.data('href');
+            var id = this_e.data('id');
+            var save_url = '{:url("admin/lessonSaveAdd")}';
+            layui_iframe.editBuilder(title,url,function (index,layero) {
+                //获取弹出层的表单
+                var form = layer.getChildFrame('#myform', index);
+                //调用弹出层的富文本同步方法
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.syncTexrarea();
+                if(id){
+                    save_url = '{:url("admin/lessonSaveAdd")}'+'?id='+id;
                 }
-                , btn2:function (index, layero){
-                    layer.close(index);//关闭当前
-                }
-                , zIndex: layer.zIndex //重点1
-                , success: function (index,layero) {
-                    // layer.setTop(layero); //重点2
-                    // var intro = layer.getChildFrame('#intro', index).prop('id');
-                    // layedit.builder(intro,'{:url("admin/layeditUpload")}');
-                }
+                ajax_request.post(save_url,form.serialize(),function (res) {
+                    if(res.is_ok == 'ok'){
+                        layer.msg(res.msg,{icon:6});
+                        layer.close(index);
+                        location.reload();//刷新页面
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                })
+            })
+        }
+
+        $('.lesson_del').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认删除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:6});
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        });
+                    });
             });
         });
-    }
-
-    $('.lesson_edit').on('click',function () {
-        alt('编辑课程',$(this));
     });
-
-    $('.lesson_add').on('click',function () {
-        alt('添加课程',$(this));
-    });
-
-    function alt(title,dom){
-        var this_e = dom;
-        var url = this_e.data('href');
-        var id = this_e.data('id');
-        var save_url = '{:url("admin/lessonSaveAdd")}';
-        layui_iframe.editBuilder(title,url,function (index,layero) {
-            //获取弹出层的表单
-            var form = layer.getChildFrame('#myform', index);
-            //调用弹出层的富文本同步方法
-            var iframeWin = window[layero.find('iframe')[0]['name']];
-            iframeWin.syncTexrarea();
-            if(id){
-                save_url = '{:url("admin/lessonSaveAdd")}'+'?id='+id;
-            }
-            ajax_request.post(save_url,form.serialize(),function (res) {
-                if(res.is_ok == 'ok'){
-                    layer.msg(res.msg,{icon:6});
-                    layer.close(index);
-                    location.reload();//刷新页面
-                }else{
-                    layer.msg(res.msg,{icon:5});
-                }
-            })
-        })
-    }
-
-    $('.lesson_del').on('click',function () {
-        var url = $(this).data('href');
-
-        layui.use("layer", function () {
-            var layer = layui.layer;  //layer初始化
-            layer.confirm('确认删除',{btn:['确认','取消']},
-                function () {
-                    $.post(url,{},function (data) {
-                        if(data.is_ok=='ok'){
-                            location.reload();//刷新页面
-                            layer.msg(data.msg,{icon:6});
-                        }else{
-                            layer.msg(data.msg,{icon:5});
-                        }
-                    });
-                });
-        });
-    });
-
     //在iframe中关闭自身
     //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
     //parent.layer.close(index); //再执行关闭

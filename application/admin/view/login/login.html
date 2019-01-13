@@ -59,18 +59,29 @@
   </div>
 </body>
 <script>
-  function login(){
-      if(verifyinput()){
-          var name = $('#InputEmail').val();
-          var pass = $('#InputPassword').val();
-          $.post("{:url('admin/loginverify')}",{"name":name,"password":pass},function (data) {
-              if(data.status == 'ok'){
-                  window.open("{:url('admin/index')}",'_self');
-              }else{
-                  layer.msg(data.msg);
-              }
-          });
-      }
-  }
+
+    $(function () {
+        function login(){
+            if(verifyinput()){
+                var name = $('#InputEmail').val();
+                var pass = $('#InputPassword').val();
+                $.post("{:url('admin/loginverify')}",{"name":name,"password":pass},function (data) {
+                    if(data.status == 'ok'){
+                        window.open("{:url('admin/index')}",'_self');
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                });
+            }
+        }
+
+        $(document).keypress(function(e) {
+            if((e.keyCode || e.which)==13) {
+                login();
+            }
+        });
+    });
+
+
 </script>
 </html>

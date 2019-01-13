@@ -22,7 +22,10 @@ class TeacherController extends BaseController
      * @throws \think\exception\DbException
      */
     public function  index(){
-        $list = Db::name('teacher')->order('id desc')->paginate(10);
+        $params = input('param.');
+
+        $list = (new Teacher())->search($params);
+
         $dept = Dept::getDeptTree();
         $this->assign('list',$list);
         $this->assign('dept',json_encode($dept));

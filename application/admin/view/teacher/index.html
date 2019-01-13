@@ -17,14 +17,38 @@
         padding-right: 0px;
         /*padding-left: 0px;*/
     }
+
+    body .layui-tree-skin-img .layui-tree-branch{
+        color: #EDCA50;
+        display: none;
+    }
 </style>
 
 {layout name="layouts/layout" /}
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <form class="forms-sample filters">
+                        <div class="">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control form-control-sm" placeholder="输入教师名搜索" name="search_key">
+                                <span class="input-group-append"><button class="btn btn-info search-btn" type="button">搜索</button></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row"  id="adminteacher">
     <div class="col-md-2 grid-margin dept_tree">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-0">Statistics</h4>
+                <h4 class="card-title mb-0">部门</h4>
                 <!--<div class="d-flex justify-content-between align-items-center">-->
                     <!--<div class="d-inline-block pt-3">-->
                         <div class="d-flex">
@@ -61,6 +85,7 @@
                         <tr>
                             <th>ID</th>
                             <th>姓名</th>
+                            <th>部门</th>
                             <th>性别</th>
                             <th>头像</th>
                             <th>联系方式</th>
@@ -72,6 +97,7 @@
                         <tr>
                             <td>{$i}</td>
                             <td>{$vo.name}</td>
+                            <td>{$vo.dept_name}</td>
                             <td>{$vo['sex']==1?'男':'女'}</td>
                             <td class="showPhotos"><img src="__STATIC__{$vo.avatar}" width="100px" alt=""></td>
                             <td>{$vo.email}</td>
@@ -83,12 +109,12 @@
                         {/volist}
                         </tbody>
                     </table>
-                </div>
-                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                    <p class="mb-0"> 共 {$list->total()} 条</p>
-                    <nav>
-                        {$list->render()}
-                    </nav>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <p class="mb-0"> 共 {$list->total()} 条</p>
+                        <nav>
+                            {$list->render()}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,64 +122,75 @@
 </div>
 
 <script>
-    showphotos.init('.showPhotos');
+    $(function () {
+        showphotos.init('.showPhotos');
 
-    // deptTreeBuilder('xtree1',{$dept},function (ids) {
-    //     $('#dept_ids').val(ids);
-    // });
-    noCheckboxTreeBuilder("#xtree1");
+        tree_without_checkbox.noCheckboxTreeBuilder("#xtree1",{$dept},function (item,childIds){
+            var params = {};
+            params['dept_ids'] = childIds;
+            var filters = serializeObject($('.filters'));
+            params = $.extend({},params,filters);
+            search(params);
+        });
 
-    $('.teacher_edit').on('click',function () {
-        alt('编辑课程',$(this));
-    });
+        $('.search-btn').on('click',function () {
+            var params = $('.filters').serialize();
+            search(params);
+        });
 
-    $('.teacher_add').on('click',function () {
-        alt('添加课程',$(this));
-    });
+        function search(params){
+            refreshDom('{:url("admin/teacher")}',params,'#adminteacher .table-responsive');
+        }
 
-    function alt(title,dom){
-        var this_e = dom;
-        var url = this_e.data('href');
-        var id = this_e.data('id');
-        var save_url = '{:url("admin/teacherSaveAdd")}';
-        layui_iframe.editBuilder(title,url,function (index,layero) {
-            //获取弹出层的表单
-            var form = layer.getChildFrame('#myform', index);
-            verifyinput();
-            //调用弹出层的富文本同步方法
-            // var iframeWin = window[layero.find('iframe')[0]['name']];
-            // iframeWin.syncTexrarea();
-            if(id){
-                save_url = '{:url("admin/teacherSaveAdd")}'+'?id='+id;
-            }
-            ajax_request.post(save_url,form.serialize(),function (res) {
-                if(res.is_ok == 'ok'){
-                    layer.msg(res.msg,{icon:6});
-                    layer.close(index);
-                    location.reload();//刷新页面
-                }else{
-                    layer.msg(res.msg,{icon:5});
+        $('.teacher_edit').on('click',function () {
+            alt('编辑课程',$(this));
+        });
+
+        $('.teacher_add').on('click',function () {
+            alt('添加课程',$(this));
+        });
+
+        function alt(title,dom){
+            var this_e = dom;
+            var url = this_e.data('href');
+            var id = this_e.data('id');
+            var save_url = '{:url("admin/teacherSaveAdd")}';
+            layui_iframe.editBuilder(title,url,function (index,layero) {
+                //获取弹出层的表单
+                var form = layer.getChildFrame('#myform', index);
+                verifyinput();
+                if(id){
+                    save_url = '{:url("admin/teacherSaveAdd")}'+'?id='+id;
                 }
+                ajax_request.post(save_url,form.serialize(),function (res) {
+                    if(res.is_ok == 'ok'){
+                        layer.msg(res.msg,{icon:6});
+                        layer.close(index);
+                        location.reload();//刷新页面
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                })
             })
-        })
-    }
+        }
 
-    $('.teacher_del').on('click',function () {
-        var url = $(this).data('href');
+        $('.teacher_del').on('click',function () {
+            var url = $(this).data('href');
 
-        layui.use("layer", function () {
-            var layer = layui.layer;  //layer初始化
-            layer.confirm('确认删除',{btn:['确认','取消']},
-                function () {
-                    $.post(url,{},function (data) {
-                        if(data.is_ok=='ok'){
-                            location.reload();//刷新页面
-                            layer.msg(data.msg,{icon:6});
-                        }else{
-                            layer.msg(data.msg,{icon:5});
-                        }
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认删除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:6});
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        });
                     });
-                });
+            });
         });
     });
 </script>

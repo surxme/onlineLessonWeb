@@ -22,11 +22,8 @@ class LessonController extends BaseController
      * @throws \think\exception\DbException
      */
     public function  index(){
-        $list = Db::name('lesson')->order('id desc')->paginate(10)->each(function ($item,$key){
-            $teachers = Teacher::where('id','in',$item['teacher_ids'])->column('name');
-            $item['teachers_name'] = implode(',',$teachers);
-            return $item;
-        });
+        $params = input('param.');
+        $list = (new Lesson())->search($params);
 
         $this->assign('list',$list);
         return $this->fetch('lesson/index');
@@ -72,16 +69,18 @@ class LessonController extends BaseController
             'teacher_ids' => $teacher_ids
         ];
 
+        $lesson = new Lesson();
+
         if($id){
-            $res = Lesson::update($data,['id'=>$id]);
+            $res = $lesson->validate(true)->save($data,['id'=>$id]);
         }else{
-            $res = Lesson::create($data);
+            $res = $lesson->validate(true)->save($data);
         }
 
         if($res){
             return Util::successArrayReturn();
         }else{
-            return Util::successArrayReturn();
+            return Util::errorArrayReturn(['msg'=>$lesson->getError()]);
         }
     }
 

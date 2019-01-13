@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Lesson;
 use app\admin\model\Type;
 use app\admin\model\Util;
 use think\Db;
@@ -19,8 +20,8 @@ class TypeController extends BaseController
      * @throws \think\exception\DbException
      */
     public function  index(){
-        $list = Db::name('type')->order('id desc')->paginate(10);
-
+        $params = input('param.');
+        $list = (new Type)->search($params);
         $this->assign('list',$list);
         return $this->fetch('type/index');
     }
@@ -47,15 +48,17 @@ class TypeController extends BaseController
         $name = input('param.name');
         $id = input('param.id');
         $data = ['name' => $name];
+
+        $type = new Type();
         if($id){
-            $res = Type::update($data,['id'=>$id]);
+            $res = $type->validate(true)->save($data,['id'=>$id]);
         }else{
-            $res = Type::create($data);
+            $res = $type->validate(true)->save($data);
         }
         if($res){
             return Util::successArrayReturn();
         }else{
-            return Util::successArrayReturn();
+            return Util::errorArrayReturn(['msg'=>$type->getError()]);
         }
     }
 
@@ -64,6 +67,11 @@ class TypeController extends BaseController
      */
     public function del(){
         $id=input('param.id');
+
+        $lesson_count = Db::name('lesson')->where(['type_id',$id])->count();
+        if($lesson_count>0){
+            return Util::errorArrayReturn(['msg' => '该类别还包含有课程，暂不能删除']);
+        }
         $re= (new Type())->where('id',$id)->delete();
         if ($re){
             return Util::successArrayReturn();

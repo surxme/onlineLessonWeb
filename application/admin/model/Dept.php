@@ -88,11 +88,10 @@ class Dept extends Model
         //所有部门
         foreach ($dept as $data) {
             $data_arr[] = array(
-                'value' => $data['id'],
-                'title' => $data['name'],
+                'id' => $data['id'],
+                'name' => $data['name'],
                 'parent_id' => $data['p_id'],
-                'disabled' => false,
-                'data' => []
+                'children' => []
             );
         }
         $top_dept = [];
@@ -107,16 +106,16 @@ class Dept extends Model
         //划分本书从属关系
         foreach ($data_arr as $k => $item){
             foreach ($data_bak as $j => $value){
-                if($value['parent_id'] == $item['value']){
-                    $data_arr[$k]['data'][] = $value;
+                if($value['parent_id'] == $item['id']){
+                    $data_arr[$k]['children'][] = $value;
                 }
             }
         }
 
         foreach ($top_dept as $k => $value){
             foreach ($data_arr as $j => $item){
-                if($value['value'] == $item['parent_id']){
-                    $top_dept[$k]['data'][] = $item;
+                if($value['id'] == $item['parent_id']){
+                    $top_dept[$k]['children'][] = $item;
                 }
             }
         }
