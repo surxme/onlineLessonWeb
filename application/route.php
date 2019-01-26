@@ -15,18 +15,13 @@ Route::group('admin',function (){
     Route::any('login','admin/LoginController/login');
     Route::any('logout','admin/LoginController/logout');
     Route::any('loginverify', 'admin/LoginController/loginverify');
-    //视频类型
+    //主页
     Route::any('index','Index/index');
-//    Route::any('tindex','Index/tLesson');
-//    Route::any('edit','Index/edit');
-//    Route::any('url','Index/geturl');
-//    Route::any('typedel','Index/typedel');
-//    Route::any('typeadd','Index/typeadd');
-//    Route::any('typeupdate','Index/typeupdate');
 
     //文件上传
     Route::any('upload','FileUpload/index');
     Route::any('layeditUpload','FileUpload/layeditPicUpload');
+    Route::any('excelImport','FileUpload/PhpExcelImport');
 
     //后台类别管理
     Route::any('type','TypeController/index');
@@ -58,6 +53,9 @@ Route::group('admin',function (){
     Route::any('teacherAdd','TeacherController/add');
     Route::any('teacherSaveAdd','TeacherController/saveAdd');
     Route::any('teacherDel','TeacherController/del');
+    Route::any('teacherExport','TeacherController/export');
+    Route::any('teacherImport','TeacherController/import');
+
 ////评论信息
 //    Route::any('comment','CommentController/index');
 //    Route::any('commentdel','CommentController/commentDel');

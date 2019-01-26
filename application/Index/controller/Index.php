@@ -1,10 +1,10 @@
 <?php
 namespace app\index\controller;
 
-use app\admin\controller\BaseController;
+use think\Controller;
 use think\Db;
 
-class Index extends BaseController
+class Index extends Controller
 {
     public function index()
     {

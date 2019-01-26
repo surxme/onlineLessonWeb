@@ -5,7 +5,6 @@ namespace app\admin\controller;
 use app\admin\model\Admin;
 use app\admin\model\Login;
 use app\admin\model\UserBehavior;
-use think\captcha\Captcha;
 use think\Controller;
 use think\Session;
 

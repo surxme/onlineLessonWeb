@@ -9,9 +9,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\Dept;
-use app\admin\model\Lesson;
 use app\admin\model\Teacher;
-use app\admin\model\Type;
 use app\admin\model\Util;
 use think\Db;
 
@@ -113,5 +111,24 @@ class TeacherController extends BaseController
         $this->assign('info',$info);
 
         return $this->fetch('teacher/detail')   ;
+    }
+
+    /**
+     * @throws \think\exception\DbException
+     */
+    public function export(){
+        $list = Db::name('teacher')->alias('t')->order('id desc')->join('t_dept dept','t.dept_id = dept.id','LEFT')
+        ->field('t.id,t.name,t.sex,t.email,dept.name as dept_name,t.bir')->select();
+
+        foreach ($list as $k => $item){
+            $list[$k]['sex'] = $item['sex']==1?'男':'女';
+            $list[$k]['bir'] = date('Y-m-d',$item['bir']);
+        }
+
+        return $list;
+    }
+
+    public function import(){
+        return $this->fetch('teacher/importchoose');
     }
 }

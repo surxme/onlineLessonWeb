@@ -70,11 +70,14 @@
                     <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link btn btn-light mr-1 teacher_add" id="addteacher" href="#" data-title="添加课程" data-id=""
+                                <a class="nav-link btn btn-light mr-1 teacher_add" id="addteacher" data-title="添加课程" data-id=""
                                 data-href="{:url('admin/teacherAdd')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link btn btn-light mr-1" href="#"><i style="font: inherit" class="layui-icon layui-icon-up"></i>导入</a>
+                                <a class="nav-link btn btn-light mr-1 btn_import"><input type="file" hidden class="file_import"><i style="font: inherit" class="layui-icon layui-icon-up"></i>导入</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1 btn_export"><i style="font: inherit" class="layui-icon layui-icon-down"></i>导出</a>
                             </li>
                         </ul>
                     </div>
@@ -192,5 +195,37 @@
                     });
             });
         });
+
+        //导出
+        $('.btn_export').on('click',function () {
+            export_import_manager.ajaxExport('{:url("admin/teacherExport")}',
+                '教师信息',
+                {name: '教师名',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'},
+                ['name','sex','dept_name','bir','email']);
+        });
+
+        //导入
+        $('.btn_import').on('click',function () {
+                // 监听上传文件的事件
+            importwindow('选择文件','{:url("admin/teacherImport")}');
+        });
+
+        function importwindow(title,open_url) {
+            rePositionLayuiIframe(title);
+            layui.use(['layer'], function () {
+                var layer = layui.layer;
+
+                layer.open({
+                    type: 2
+                    , title: title
+                    , area: ['800px','300px']
+                    , shade: 0.3//弹出后背景的阴影
+                    , offset: 'auto'
+                    , content: open_url
+                    , btn: []
+                    , zIndex: layer.zIndex //重点1
+                });
+            });
+        }
     });
 </script>
