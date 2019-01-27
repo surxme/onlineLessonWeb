@@ -10,7 +10,7 @@ namespace app\admin\controller;
 
 use app\admin\model\Dept;
 use app\admin\model\Lesson;
-use app\admin\model\Teacher;
+use app\admin\model\LessonAttr;
 use app\admin\model\Type;
 use app\admin\model\Util;
 use think\Db;
@@ -52,6 +52,7 @@ class LessonController extends BaseController
     /**
      * 保存课程
      * @return array
+     * @throws \think\exception\DbException
      */
     public function saveAdd(){
         $name = input('param.name');
@@ -60,6 +61,8 @@ class LessonController extends BaseController
         $poster = input('param.poster');
         $teacher_ids = input('param.teacher_ids');
         $id = input('param.id');
+
+        $teacher_ids_arr = explode(',',$teacher_ids);
 
         $data = [
             'name' => $name,
@@ -70,11 +73,37 @@ class LessonController extends BaseController
         ];
 
         $lesson = new Lesson();
+        $lesson_attr = new LessonAttr();
+
+        Db::startTrans();
 
         if($id){
             $res = $lesson->validate(true)->save($data,['id'=>$id]);
+            if($res){
+                $lesson_attr->where('lesson_id',$id)->delete();
+            }
+            $lesson_id = $id;
         }else{
             $res = $lesson->validate(true)->save($data);
+            $lesson_id = $lesson->getLastInsID();
+        }
+
+        $attr_insert_data = [];
+        foreach ($teacher_ids_arr as $value){
+            $attr_insert_data[] = [
+                'lesson_id' => $lesson_id,
+                'teacher_id' => $value,
+                'create_time' => time()
+            ];
+        }
+
+        if($res){
+            $ins_res = $lesson_attr->insertAll($attr_insert_data);
+            if($ins_res){
+                Db::commit();
+            }else{
+                Db::rollback();
+            }
         }
 
         if($res){

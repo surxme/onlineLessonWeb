@@ -6,6 +6,8 @@ use think\Session;
 
 class Admin extends Model
 {
+    const USER_TYPE_STUDENT = 1;
+    const USER_TYPE_TEACHER = 2;
     public static function getCurAdminID(){
         return Session::get('bigdata_admin_id');
     }

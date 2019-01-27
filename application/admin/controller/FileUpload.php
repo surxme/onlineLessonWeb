@@ -55,7 +55,7 @@ class FileUpload extends  BaseController
             if ($info) {//上传成功
                 $file_name = $info->getFilename();
 //                $file_url = ROOT_PATH  . 'public' . DS . 'uploads' . DS . 'layedit' . DS .$file_name;
-                $file_url = $root . DS . 'uploads' . DS . 'layedit' . DS .$file_name;
+                $file_url = $root . DS . 'static' .DS  . 'uploads' . DS . 'layedit' . DS .$file_name;
 //                $file_url = DSFormat($file_url);
 
                 return Util::layeditJsonReturn(['data'=>['src'=>$file_url,'title'=>$file_name]]);

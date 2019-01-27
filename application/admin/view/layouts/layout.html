@@ -63,7 +63,7 @@
                         </a>
                     </li>
                     <li class="nav-item nav-item-checked">
-                        <a class="nav-link" href="index.html">
+                        <a href="{:url('admin/video')}" class="nav-link <?php if(request()->path()=='admin/video') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-video "></i>视频管理</span>
                         </a>
                     </li>
@@ -73,17 +73,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/widgets.html">
+                        <a href="{:url('admin/student')}" class="nav-link <?php if(request()->path()=='admin/student') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-student "></i>学生管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/widgets.html">
+                        <a href="{:url('admin/comment')}" class="nav-link <?php if(request()->path()=='admin/comment') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-comment"></i>评论管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/widgets.html">
+                        <a href="{:url('admin/question')}" class="nav-link <?php if(request()->path()=='admin/question') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-question"></i>问答管理</span>
                         </a>
                     </li>

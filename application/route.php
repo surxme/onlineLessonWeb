@@ -11,58 +11,55 @@
 use think\Route;
 
 Route::group('admin',function (){
-    //登录
+//登录
     Route::any('login','admin/LoginController/login');
     Route::any('logout','admin/LoginController/logout');
     Route::any('loginverify', 'admin/LoginController/loginverify');
-    //主页
+//主页
     Route::any('index','Index/index');
-
-    //文件上传
+//文件上传
     Route::any('upload','FileUpload/index');
     Route::any('layeditUpload','FileUpload/layeditPicUpload');
     Route::any('excelImport','FileUpload/PhpExcelImport');
-
-    //后台类别管理
+//后台类别管理
     Route::any('type','TypeController/index');
     Route::any('typeAdd','TypeController/add');
     Route::any('typeSaveAdd','TypeController/saveAdd');
     Route::any('typeDel','TypeController/del');
-
-    //后台课程管理
+//后台课程管理
     Route::any('lesson','LessonController/index');
     Route::any('lessonAdd','LessonController/add');
     Route::any('lessonSaveAdd','LessonController/saveAdd');
     Route::any('lessonDel','LessonController/del');
     Route::any('lessonDetail','LessonController/detail');
     Route::any('test','LessonController/test');
-
-//    Route::any('video','VideosController/index');
-//    Route::any('videoedit','VideosController/vEdit');
-//    Route::any('videoupdate','VideosController/vUpdate');
-//    Route::any('videodel','VideosController/vDel');
-//
-////学生注册信息
-//    Route::any('student','StudentController/index');
-//    Route::any('stupdate','StudentController/stUpdate');
-//    Route::any('stuedit','StudentController/edit');
-//    Route::any('studel','StudentController/stuDel');
-//    Route::any('genderchange','StudentController/genderChange');
-    //教师注册信息
+//后台视频管理
+    Route::any('video','VideoController/index');
+    Route::any('videoAdd','VideoController/add');
+    Route::any('videoSaveAdd','VideoController/saveAdd');
+    Route::any('videoDel','VideoController/del');
+//学生信息
+    Route::any('student','StudentController/index');
+    Route::any('studentAdd','StudentController/add');
+    Route::any('studentSaveAdd','StudentController/saveAdd');
+    Route::any('studentDel','StudentController/del');
+    Route::any('studentExport','StudentController/export');
+    Route::any('studentImport','StudentController/import');
+//教师注册信息
     Route::any('teacher','TeacherController/index');
     Route::any('teacherAdd','TeacherController/add');
     Route::any('teacherSaveAdd','TeacherController/saveAdd');
     Route::any('teacherDel','TeacherController/del');
     Route::any('teacherExport','TeacherController/export');
     Route::any('teacherImport','TeacherController/import');
-
-////评论信息
-//    Route::any('comment','CommentController/index');
-//    Route::any('commentdel','CommentController/commentDel');
-////问答信息
-//    Route::any('question','QuestionController/index');
-//    Route::any('questiondel','QuestionController/questionDel');
-//    Route::any('qrcode','IndexController/qrcode');
+//评论信息
+    Route::any('comment','CommentController/index');
+    Route::any('commentDel','CommentController/del');
+    Route::any('commentBan','CommentController/ban');
+//问答信息
+    Route::any('question','QuestionController/index');
+    Route::any('questionDel','QuestionController/del');
+    Route::any('questionBan','IndexController/ban');
 
 });
 Route::group('index',function (){

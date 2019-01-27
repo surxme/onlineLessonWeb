@@ -2,32 +2,26 @@
 /**
  * Created by PhpStorm.
  * User: www44
- * Date: 2019/1/26
+ * Date: 2019/1/1
  * Time: 20:54
  */
 
 namespace app\admin\controller;
 
-use app\admin\model\Dept;
-use app\admin\model\Teacher;
+use app\admin\model\Student;
 use app\admin\model\Util;
 use think\Db;
 
-class TeacherController extends BaseController
+class StudentController extends BaseController
 {
     /**
      * @return mixed
-     * @throws \think\exception\DbException
      */
     public function  index(){
         $params = input('param.');
-
-        $list = (new Teacher())->search($params);
-
-        $dept = Dept::getDeptTree();
+        $list = (new Student())->search($params);
         $this->assign('list',$list);
-        $this->assign('dept',json_encode($dept));
-        return $this->fetch('teacher/index');
+        return $this->fetch('student/index');
     }
 
     /**
@@ -37,12 +31,9 @@ class TeacherController extends BaseController
     public function add(){
         $id = input('param.id');
         if($id){
-            $info = Teacher::get($id);
+            $info = Student::get($id);
             $this->assign('info',$info);
         }
-
-        $dept = Dept::all();
-        $this->assign('dept',$dept);
 
         return $this->fetch('teacher/add');
     }
@@ -69,12 +60,12 @@ class TeacherController extends BaseController
             'dept_id' => $dept_id
         ];
 
-        $teacher = new Teacher();
+        $teacher = new Student();
         // 调用当前模型对应的User验证器类进行数据验证
         if($id){
             $res = $teacher->validate(true)->save($data,['id'=>$id]);
         }else{
-            $data['password'] = md5(md5('t123456').'bigdata');
+            $data['password'] = md5(md5('s123456').'bigdata');
             $res = $teacher->validate(true)->save($data);
         }
 
@@ -93,7 +84,7 @@ class TeacherController extends BaseController
      */
     public function del(){
         $id=input('param.id');
-        $re = Teacher::update(['is_del'=>1],['id'=>$id]);
+        $re = Student::update(['is_del'=>1],['id'=>$id]);
         if ($re){
             return Util::successArrayReturn();
         }else{
@@ -107,7 +98,7 @@ class TeacherController extends BaseController
      */
     public function detail(){
         $id = input('param.id');
-        $info = Teacher::get($id);
+        $info = Student::get($id);
         $this->assign('info',$info);
 
         return $this->fetch('teacher/detail')   ;
@@ -117,8 +108,8 @@ class TeacherController extends BaseController
      * @throws \think\exception\DbException
      */
     public function export(){
-        $list = Db::name('teacher')->alias('t')->order('id desc')->join('t_dept dept','t.dept_id = dept.id','LEFT')
-        ->field('t.id,t.name,t.sex,t.email,dept.name as dept_name,t.bir')->select();
+        $list = Db::name('student')->alias('t')->order('id desc')
+        ->field('t.id,t.name,t.sex,t.email,t.bir')->select();
 
         foreach ($list as $k => $item){
             $list[$k]['sex'] = $item['sex']==1?'男':'女';
@@ -129,6 +120,6 @@ class TeacherController extends BaseController
     }
 
     public function import(){
-        return $this->fetch('teacher/importchoose');
+        return $this->fetch('student/importchoose');
     }
 }
