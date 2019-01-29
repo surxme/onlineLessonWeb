@@ -28,7 +28,7 @@ class Teacher extends Model
         }
 
         if(isset($params['search_key'])){
-            $where['t.name'] = array('like','%'.$params['search_key'].'%');
+            $where['t.name|teacher_no'] = array('like','%'.$params['search_key'].'%');
         }
         $list = $list->where($where);
         $list = $list->field('t.*,dept.name as dept_name')->paginate($pageSize);

@@ -17,7 +17,6 @@ class TeacherController extends BaseController
 {
     /**
      * @return mixed
-     * @throws \think\exception\DbException
      */
     public function  index(){
         $params = input('param.');
@@ -53,6 +52,7 @@ class TeacherController extends BaseController
      */
     public function saveAdd(){
         $name = input('param.name');
+        $teacher_no = input('param.teacher_no');
         $sex = input('param.sex');
         $bir = input('param.bir');
         $avatar = input('param.avatar');
@@ -62,6 +62,7 @@ class TeacherController extends BaseController
 
         $data = [
             'name' => $name,
+            'teacher_no' => $teacher_no,
             'sex' => $sex,
             'bir' => strtotime($bir),
             'avatar' => $avatar,
@@ -118,7 +119,7 @@ class TeacherController extends BaseController
      */
     public function export(){
         $list = Db::name('teacher')->alias('t')->order('id desc')->join('t_dept dept','t.dept_id = dept.id','LEFT')
-        ->field('t.id,t.name,t.sex,t.email,dept.name as dept_name,t.bir')->select();
+        ->field('t.id,t.name,t.teacher_no,t.sex,t.email,dept.name as dept_name,t.bir')->select();
 
         foreach ($list as $k => $item){
             $list[$k]['sex'] = $item['sex']==1?'男':'女';

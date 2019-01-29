@@ -33,7 +33,7 @@
         <div class="layui-upload-drag" id="excel_file">
             <i class="layui-icon"></i>
             <p>点击上传，或将文件拖拽到此处</p>
-            <p style="color: #dc3545">请提前调整好字段顺序，默认除去第一行才开始导入(为了出去表头信息行)</p>
+            <p style="color: #dc3545">请提前调整好字段顺序，默认除去第一行才开始导入(为了除去表头信息行)</p>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
@@ -51,17 +51,33 @@
             , upload = layui.upload;
         upload.render({
             elem: '#excel_file'
-            , url: '{:url("admin/excelImport")}'
+            , url: '{:url("admin/excelImport",["type"=>2])}'
             , auto: false
             , accept : 'file'
+            , field : 'excel'
             , exts : 'xlsx|csv'
             , bindAction: '#upfile_btn'
+            ,before: function(obj){
+                console.log('11111');
+                console.log($.isEmptyObject(obj));
+                if($.isEmptyObject(obj)){
+                    layer.alert('请先选择需要导入的文件');
+                    return false;
+                }
+            }
             , done: function (res) {
                 if(res.code > 0){
                     layer.alert('上传失败');
                 }else{
                     layer.alert('上传完成,导入成功:'+res.success_counts+',失败:'+res.fail_counts);
-                    export_import_manager.normalExport(res.fail_array,'失败部分反馈',{key:'原文件行号',msg:'失败原因'})
+                    $('#excel_file').reset();
+                    if(res.fail_counts>0) {
+                        export_import_manager.normalExport(res.fail_array, '失败部分反馈', {
+                            key: '原文件行号',
+                            student_no: '学号',
+                            msg: '失败原因'
+                        })
+                    }
                 }
             }
         });

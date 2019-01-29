@@ -48,6 +48,13 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">职工号</label>
+        <div class="layui-input-block">
+            <input type="text" name="teacher_no" value="{$info['teacher_no']?$info['teacher_no']:''}" autocomplete="off" placeholder="请输入教师名" class="layui-input require">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
         <label class="layui-form-label">部门</label>
         <div class="layui-input-block">
             <select name="dept_id" lay-filter="type">

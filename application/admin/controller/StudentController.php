@@ -35,7 +35,7 @@ class StudentController extends BaseController
             $this->assign('info',$info);
         }
 
-        return $this->fetch('teacher/add');
+        return $this->fetch('student/add');
     }
 
     /**
@@ -44,20 +44,20 @@ class StudentController extends BaseController
      */
     public function saveAdd(){
         $name = input('param.name');
+        $student_no = input('param.student_no');
         $sex = input('param.sex');
         $bir = input('param.bir');
         $avatar = input('param.avatar');
         $email = input('param.email');
-        $dept_id = input('param.dept_id');
         $id = input('param.id');
 
         $data = [
             'name' => $name,
+            'student_no' => $student_no,
             'sex' => $sex,
             'bir' => strtotime($bir),
             'avatar' => $avatar,
             'email' => $email,
-            'dept_id' => $dept_id
         ];
 
         $teacher = new Student();
@@ -101,7 +101,7 @@ class StudentController extends BaseController
         $info = Student::get($id);
         $this->assign('info',$info);
 
-        return $this->fetch('teacher/detail')   ;
+        return $this->fetch('student/detail')   ;
     }
 
     /**
@@ -109,7 +109,7 @@ class StudentController extends BaseController
      */
     public function export(){
         $list = Db::name('student')->alias('t')->order('id desc')
-        ->field('t.id,t.name,t.sex,t.email,t.bir')->select();
+        ->field('t.id,t.student_no,t.name,t.sex,t.email,t.bir')->select();
 
         foreach ($list as $k => $item){
             $list[$k]['sex'] = $item['sex']==1?'男':'女';

@@ -33,7 +33,7 @@
                     <form class="forms-sample filters">
                         <div class="">
                             <div class="input-group col-xs-12">
-                                <input type="text" class="form-control form-control-sm" placeholder="输入教师名搜索" name="search_key">
+                                <input type="text" class="form-control form-control-sm" placeholder="输入教师名、职工号搜索" name="search_key">
                                 <span class="input-group-append"><button class="btn btn-info search-btn" type="button">搜索</button></span>
                             </div>
                         </div>
@@ -88,6 +88,7 @@
                         <tr>
                             <th>ID</th>
                             <th>姓名</th>
+                            <th>职工号</th>
                             <th>部门</th>
                             <th>性别</th>
                             <th>头像</th>
@@ -100,10 +101,11 @@
                         <tr>
                             <td>{$i}</td>
                             <td>{$vo.name}</td>
+                            <td>{$vo.teacher_no}</td>
                             <td>{$vo.dept_name}</td>
                             <td>{$vo['sex']==1?'男':'女'}</td>
                             <td class="showPhotos"><img src="__STATIC__{$vo.avatar}" width="100px" alt=""></td>
-                            <td>{$vo.email}</td>
+                            <td title="{$vo.email}">{$vo.email|msubstr=0,15,'utf-8',true}</td>
                             <td>
                                 <a class="layui-btn layui-btn-xs teacher_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/teacherAdd',['id'=>$vo.id])}">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs teacher_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/teacherDel',['id'=>$vo.id])}">删除</a>
@@ -146,11 +148,11 @@
         }
 
         $('.teacher_edit').on('click',function () {
-            alt('编辑课程',$(this));
+            alt('编辑教师',$(this));
         });
 
         $('.teacher_add').on('click',function () {
-            alt('添加课程',$(this));
+            alt('添加教师',$(this));
         });
 
         function alt(title,dom){
@@ -200,8 +202,8 @@
         $('.btn_export').on('click',function () {
             export_import_manager.ajaxExport('{:url("admin/teacherExport")}',
                 '教师信息',
-                {name: '教师名',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'},
-                ['name','sex','dept_name','bir','email']);
+                {name: '教师名',teacher_no:'职工号',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'},
+                ['name','teacher_no','sex','dept_name','bir','email']);
         });
 
         //导入

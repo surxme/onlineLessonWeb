@@ -24,7 +24,7 @@ class Student extends Model
         $list = Db::name('student')->alias('t')->order('id desc');
 
         if(isset($params['search_key'])){
-            $where['t.name'] = array('like','%'.$params['search_key'].'%');
+            $where['t.name|t.student_no'] = array('like','%'.$params['search_key'].'%');
         }
         $list = $list->where($where);
         $list = $list->paginate($pageSize);
