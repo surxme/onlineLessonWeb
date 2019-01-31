@@ -50,6 +50,7 @@ class VideoController extends BaseController
 
         $type = new Type();
         if($id){
+            $data['id'] = $id;
             $res = $type->validate(true)->save($data,['id'=>$id]);
         }else{
             $res = $type->validate(true)->save($data);

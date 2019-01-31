@@ -1,0 +1,142 @@
+<style>
+    #admindept .card{
+        min-height: 100%;
+    }
+    #admindept .table td img{
+        width: 55px;
+        height: 30px;
+         border-radius: 5%;
+    }
+    .layui-btn-xs{
+        font-size: 11px;
+    }
+</style>
+
+{layout name="layouts/layout" /}
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <form class="forms-sample filters">
+                        <div class="">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control form-control-sm" placeholder="输入部门名" name="search_key">
+                                <span class="input-group-append"><button class="btn btn-info search-btn" type="button">搜索</button></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row"  id="admindept">
+    <div class="col-lg-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="align-items-center mb-1 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">
+                    <h2 class="">部门总览</h2>
+                    <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1 dept_add" id="addDept" href="#" data-title="部门添加" data-id=""
+                                data-href="{:url('admin/deptAdd')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='vo'}
+                        <tr>
+                            <td>{$i}</td>
+                            <td>{$vo.name}</td>
+                            <td>
+                                <a class="layui-btn layui-btn-xs dept_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/deptAdd',['id'=>$vo.id])}">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs dept_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/deptDel',['id'=>$vo.id])}">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <p class="mb-0"> 共 {$list->total()} 条</p>
+                        <nav>
+                            {$list->render()}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.search-btn').on('click',function () {
+            var params = $('.filters').serialize();
+            refreshDom('{:url("admin/dept")}',params,'#admindept .table-responsive');
+        });
+
+        $('.dept_edit').on('click',function () {
+            alt('编辑部门',$(this));
+        });
+
+        $('.dept_add').on('click',function () {
+            alt('添加部门',$(this));
+        });
+
+        function alt(title,dom){
+            var this_e = dom;
+            var url = this_e.data('href');
+            var id = this_e.data('id');
+            var save_url = '{:url("admin/deptSaveAdd")}';
+            layui_iframe.editBuilder(title,url,function (index,layero) {
+                //获取弹出层的表单
+                var form = layer.getChildFrame('#myform', index);
+                if(id){
+                    save_url = '{:url("admin/deptSaveAdd")}';
+                }
+                ajax_request.post(save_url,form.serialize(),function (res) {
+                    if(res.is_ok == 'ok'){
+                        layer.msg(res.msg,{icon:6});
+                        layer.close(index);
+                        location.reload();//刷新页面
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                })
+            },['800px','400px'])
+        }
+
+        $('.dept_del').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认删除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:6});
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        });
+                    });
+            });
+        });
+    });
+
+</script>

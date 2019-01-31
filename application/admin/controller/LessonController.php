@@ -78,6 +78,7 @@ class LessonController extends BaseController
         Db::startTrans();
 
         if($id){
+            $data['id'] = $id;
             $res = $lesson->validate(true)->save($data,['id'=>$id]);
             if($res){
                 $lesson_attr->where('lesson_id',$id)->delete();

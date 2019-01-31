@@ -45,12 +45,6 @@
                 <div class="align-items-center mb-1 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">
                     <h2 class="">评论总览</h2>
                     <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-light mr-1 comment_add" id="addComment" href="#" data-title="评论添加" data-id=""
-                                data-href="{:url('admin/commentAdd')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -72,13 +66,18 @@
                             <td>{$i}</td>
                             <td>{$vo.name}</td>
                             <td><label class="badge {$vo['user_type']==1?'badge-info':'badge-success'}">{$vo.type_name}</label></td>
-                            <td>{$vo.content|msubstr=0,20,'utf-8',true}</td>
+                            <td title="{$vo.content}">{$vo.content|msubstr=0,20,'utf-8',true}</td>
                             <td>{$vo.video_name}</td>
                             <td>{$vo.lesson_name}</td>
                             <td>
-                                <a class="layui-btn layui-btn-primary layui-btn-xs comment_detail" lay-event="detail" data-href="{:url('admin/commentDetail',['id'=>$vo.id])}">详情</a>
                                 {if condition="$vo['user_type'] eq 1"}
-                                    <a class="layui-btn layui-btn-xs comment_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/commentAdd',['id'=>$vo.id])}">禁言</a>
+                                    {if condition="$vo['is_banned'] eq 0"}
+                                    <a class="layui-btn layui-btn-xs comment_ban" lay-event="edit"
+                                       data-id="{$vo.id}" data-title="确认禁言" data-href="{:url('admin/commentBan',['id'=>$vo.id])}">禁言</a>
+                                    {else /}
+                                    <a class="layui-btn layui-btn-xs comment_ban" lay-event="edit"
+                                       data-id="{$vo.id}" data-title="确认解除禁言" data-href="{:url('admin/commentRelieveBan',['id'=>$vo.id])}">解除禁言</a>
+                                    {/if}
                                 {/if}
                                 <a class="layui-btn layui-btn-danger layui-btn-xs comment_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/commentDel',['id'=>$vo.id])}">删除</a>
                             </td>
@@ -105,36 +104,21 @@
             refreshDom('{:url("admin/comment")}',params,'#admincomment .table-responsive');
         });
 
-        $('.comment_edit').on('click',function () {
-            alt('编辑类别',$(this));
-        });
+        $('.comment_ban').on('click',function () {
+            var url = $(this).data('href');
+            var title = $(this).data('title');
 
-        $('.comment_add').on('click',function () {
-            alt('添加类别',$(this));
+            layui_iframe.alertConfirm(title,function (index) {
+                    $.post(url,{},function (data) {
+                        if(data.is_ok=='ok'){
+                            location.reload();//刷新页面
+                            layer.msg(data.msg,{icon:6});
+                        }else{
+                            layer.msg(data.msg,{icon:5});
+                        }
+                    });
+            })
         });
-
-        function alt(title,dom){
-            var this_e = dom;
-            var url = this_e.data('href');
-            var id = this_e.data('id');
-            var save_url = '{:url("admin/commentSaveAdd")}';
-            layui_iframe.editBuilder(title,url,function (index,layero) {
-                //获取弹出层的表单
-                var form = layer.getChildFrame('#myform', index);
-                if(id){
-                    save_url = '{:url("admin/commentSaveAdd")}'+'?id='+id;
-                }
-                ajax_request.post(save_url,form.serialize(),function (res) {
-                    if(res.is_ok == 'ok'){
-                        layer.msg(res.msg,{icon:6});
-                        layer.close(index);
-                        location.reload();//刷新页面
-                    }else{
-                        layer.msg(res.msg,{icon:5});
-                    }
-                })
-            },['800px','250px'])
-        }
 
         $('.comment_del').on('click',function () {
             var url = $(this).data('href');

@@ -27,7 +27,7 @@ class TypeController extends BaseController
     }
 
     /**
-     *  添加课程
+     *  添加
      * @throws \think\exception\DbException
      */
     public function add(){
@@ -41,7 +41,7 @@ class TypeController extends BaseController
     }
 
     /**
-     * 保存课程
+     * 保存
      * @return array
      */
     public function saveAdd(){
@@ -51,6 +51,7 @@ class TypeController extends BaseController
 
         $type = new Type();
         if($id){
+            $data['id'] = $id;
             $res = $type->validate(true)->save($data,['id'=>$id]);
         }else{
             $res = $type->validate(true)->save($data);
@@ -63,7 +64,7 @@ class TypeController extends BaseController
     }
 
     /**
-     * 删除课程
+     * 删除
      */
     public function del(){
         $id=input('param.id');

@@ -21,7 +21,6 @@
 </head>
 <body>
 <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper">
             <a class="navbar-brand brand-logo" href="index.html"><img style="height: 43px;width: 43px" src="__STATIC__/admin/images/logo.svg" alt="logo"></a>
@@ -32,7 +31,11 @@
                 <li class="nav-item d-none d-sm-block profile-img">
                     <a class="nav-link profile-image" href="#">
                         <img src="__STATIC__/admin/images/faces/face4.jpg" alt="profile-img">
-                        <span class="online-status online bg-success"></span>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-block profile-img">
+                    <a class="nav-link profile-image" title="退出" href="{:url('admin/logout')}">
+                        <i class="iconfont icon-bigdata-exit exit" style="color: #bdbdbd"></i>
                     </a>
                 </li>
             </ul>
@@ -50,6 +53,11 @@
                     <li class="nav-item nav-item-checked">
                         <a href="{:url('admin/index')}" class="nav-link <?php if(request()->path()=='admin/index') echo 'nav-link-check'; ?>">
                             <span class="menu-title"><i class="iconfont icon-admin-home "></i>主页</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-item-checked">
+                        <a href="{:url('admin/dept')}" class="nav-link <?php if(request()->path()=='admin/dept') echo 'nav-link-check'; ?>">
+                            <span class="menu-title"><i class="iconfont icon-admin-dept"></i>部门管理</span>
                         </a>
                     </li>
                     <li class="nav-item nav-item-checked">

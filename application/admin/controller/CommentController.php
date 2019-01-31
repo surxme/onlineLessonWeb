@@ -22,7 +22,7 @@ class CommentController extends BaseController
      */
     public function  index(){
         $params = input('param.');
-        $list = (new Comment())->search($params);
+        $list = (new Comment())->search(Comment::TYPE_COMMENT,$params);
         $this->assign('list',$list);
         return $this->fetch('comment/index');
     }
@@ -33,7 +33,7 @@ class CommentController extends BaseController
      */
     public function del(){
         $id=input('param.id');
-        $re= (new Comment())->where('id',$id)->save(['is_del'=>1]);
+        $re= (new Comment())->where('id',$id)->delete();
         if ($re){
             return Util::successArrayReturn();
         }else{
@@ -42,6 +42,7 @@ class CommentController extends BaseController
     }
 
     /**
+     * 禁言
      * @return mixed
      * @throws \think\exception\DbException
      */
@@ -50,6 +51,24 @@ class CommentController extends BaseController
         $info = Comment::get($id);
 
         $res = Student::update(['is_banned'=>1],['id'=>$info['uid']]);
+
+        if ($res){
+            return Util::successArrayReturn();
+        }else{
+            return Util::errorArrayReturn();
+        }
+    }
+
+    /**
+     * 解除禁言
+     * @return array
+     * @throws \think\exception\DbException
+     */
+    public function relieveBan(){
+        $id = input('param.id');
+        $info = Comment::get($id);
+
+        $res = Student::update(['is_banned'=>0],['id'=>$info['uid']]);
 
         if ($res){
             return Util::successArrayReturn();

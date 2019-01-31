@@ -63,6 +63,7 @@ class StudentController extends BaseController
         $teacher = new Student();
         // 调用当前模型对应的User验证器类进行数据验证
         if($id){
+            $data['id'] = $id;
             $res = $teacher->validate(true)->save($data,['id'=>$id]);
         }else{
             $data['password'] = md5(md5('s123456').'bigdata');

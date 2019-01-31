@@ -188,6 +188,16 @@ var layui_iframe = {
                 );
         });
     },
+    alertConfirm : function (tips,callback) {
+        layui.use("layer", function () {
+        var layer = layui.layer;  //layer初始化
+            layer.confirm(tips,{btn:['确认','取消']},
+                function (index) {
+                    callback(index)
+                }
+            );
+        });
+    },
     viewBuilder : function (title,url) {
         layui.use("layer", function () {
             var layer = layui.layer;  //layer初始化

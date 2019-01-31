@@ -9,6 +9,7 @@
 namespace app\admin\model;
 
 
+use think\Db;
 use think\Model;
 
 class Dept extends Model
@@ -17,6 +18,20 @@ class Dept extends Model
     protected $autoWriteTimestamp=true;
     protected $createTime='create_time';
     protected $updateTime='update_time';
+
+    public function search($params){
+        $where = [];
+        $list = Db::name('dept')->alias('t');
+
+        if(isset($params['search_key'])){
+            $where['name'] = array('like','%'.$params['search_key'].'%');
+        }
+        $field = 't.*';
+
+        $list =$list->where($where)->order('id desc')->field($field)->paginate(10);
+
+        return $list;
+    }
 
     /**
      * @param array $default_choosed_arr

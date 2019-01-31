@@ -26,6 +26,11 @@ Route::group('admin',function (){
     Route::any('typeAdd','TypeController/add');
     Route::any('typeSaveAdd','TypeController/saveAdd');
     Route::any('typeDel','TypeController/del');
+//后台部门管理
+    Route::any('dept','DeptController/index');
+    Route::any('deptAdd','DeptController/add');
+    Route::any('deptSaveAdd','DeptController/saveAdd');
+    Route::any('deptDel','DeptController/del');
 //后台课程管理
     Route::any('lesson','LessonController/index');
     Route::any('lessonAdd','LessonController/add');
@@ -56,14 +61,13 @@ Route::group('admin',function (){
     Route::any('comment','CommentController/index');
     Route::any('commentDel','CommentController/del');
     Route::any('commentBan','CommentController/ban');
+    Route::any('commentRelieveBan','CommentController/relieveBan');
 //问答信息
     Route::any('question','QuestionController/index');
-    Route::any('questionDel','QuestionController/del');
-    Route::any('questionBan','IndexController/ban');
-
 });
 Route::group('index',function (){
     Route::any('index','Index/index');
+    Route::any('test','Index/test');
     Route::any('details','Details/index');
     Route::any('login','index/Index/login');
     Route::any('logout','index/Index/logout');

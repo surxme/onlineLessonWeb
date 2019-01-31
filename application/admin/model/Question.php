@@ -14,6 +14,7 @@ use think\Model;
 
 class Question extends Model
 {
+    protected $table='comment';
     const TYPE_COMMENT = 1;
     const TYPE_QUESTION = 2;
     protected $pk = 'id';
@@ -21,8 +22,8 @@ class Question extends Model
     protected $createTime='create_time';
     protected $updateTime='update_time';
 
-    public function search($params){
-        $where = ['type' => Comment::TYPE_QUESTION];
+    public function search($type,$params){
+        $where = ['type' => $type];
         $list = Db::name('comment')->alias('t')
             ->join('video','t.data_id = video.id','LEFT')
             ->join('lesson','video.lesson_id = lesson.id','LEFT');
@@ -35,7 +36,9 @@ class Question extends Model
         $list =$list->where($where)->order('id desc')->field($field)->paginate(10)->each(function($item, $key){
             $item['type_name'] = $item['user_type']==1?'学生':'教师';
             if($item['user_type']==1){
-                $item['name'] = Student::get($item['uid'])['name'];
+                $user = Student::get($item['uid']);
+                $item['name'] = $user['name'];
+                $item['is_banned'] = $user['is_banned'];
             }else{
                 $item['name'] = Teacher::get($item['uid'])['name'];
             }
