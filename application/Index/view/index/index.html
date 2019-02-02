@@ -1,10 +1,10 @@
-{layout name="layouts/layout" /}
-<div class="row" id="adminhome" style="min-height: 100%;">
-    <section>
-        <section class="hbox stretch">
-            <section id="content">
-                <section class="vbox" id="bjax-el">
-                    <section class="scrollable padder-lg padder-v">
+{layout name="layouts/layout1" /}
+<!--<div class="row" id="adminhome" style="min-height: 100%;">-->
+    <!--<section>-->
+        <!--<section class="hbox stretch">-->
+            <!--<section id="content">-->
+                <!--<section class="vbox" id="bjax-el">-->
+                    <!--<section class="scrollable padder-lg padder-v">-->
 
                         <div class="row row-sm">
                             {volist name='list' id='vo'}
@@ -16,7 +16,7 @@
                                                 <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
                                             </div>
                                         </div>
-                                        <a href="#"><img src="__STATIC__{$vo.poster}" alt="" style="height: 120px;" class="r r-2x img-full"></a>
+                                        <a href="#"><img src="__STATIC__{$vo.poster}" alt="" style="height: 10em;" class="r r-2x img-full"></a>
                                     </div>
                                     <div class="padder-v">
                                         <a href="#" class="text-ellipsis">{$vo.name}</a>
@@ -27,16 +27,15 @@
                             {/volist}
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-between flex-wrap">
-                            <p class="mb-0"> 共 {$list->total()} 条</p>
+                        <div class="d-flex align-items-centerx justify-content-between flex-wrap">
                             <nav>
                                 {$list->render()}
                             </nav>
                         </div>
-                    </section>
-                </section>
-                <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
-            </section>
-        </section>
-    </section>
-</div>
+                    <!--</section>-->
+                <!--</section>-->
+                <!--<a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>-->
+            <!--</section>-->
+        <!--</section>-->
+    <!--</section>-->
+<!--</div>-->

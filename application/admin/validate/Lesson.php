@@ -18,6 +18,6 @@ class Lesson extends Validate
         'name.max'=>'课程名长度超过20',
         'type_id'=>'请选择课程类别',
 //        'teacher_ids.require'=>'请选择关联教师',
-        'poster.require'=>'请上传头像',
+        'poster.require'=>'请上传封面',
     ];
 }

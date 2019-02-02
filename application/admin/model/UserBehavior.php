@@ -34,7 +34,7 @@ class UserBehavior extends Model
         $data  = $this->where('user_type',$user_type)
                      ->where('action_type',UserBehavior::ACTION_TYPE_LOGIN)
                      ->where( 'uid' ,$uid)
-                     ->limit(1,1)->order('id', 'desc')->value('create_time');
+                     ->order('id desc')->limit(3)->column('create_time');
         return $data;
     }
 }

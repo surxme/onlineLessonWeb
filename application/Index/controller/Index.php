@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\model\Lesson;
 use think\Controller;
 use think\Db;
 
@@ -8,8 +9,9 @@ class Index extends Controller
 {
     public function index()
     {
-       $data =  Db::name('lesson')->paginate(10);
-        $this->assign('list',$data);
+        $params = input('param.');
+        $list = (new Lesson())->search($params);
+        $this->assign('list',$list);
         return $this->fetch('index');
     }
 
