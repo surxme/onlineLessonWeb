@@ -16,9 +16,21 @@ class Index extends Controller
     }
 
     public function test()
+//    public function details()
     {
-        $data =  Db::name('admin')->where('id','2')->find();
-        $this->assign('list',$data);
-        return $this->fetch('video');
+//        $id = input('param.id',19);
+        $id = 19;
+        if(empty($id)){
+            //错误操作
+        }
+        $data = Lesson::getOneLessonById($id);
+        $suggestion = Db::name('lesson')->where('type_id',$data['type_id'])
+            ->field('id,name,poster')->limit(5)
+//            ->order('hits','desc')
+            ->select();
+
+        $this->assign('lesson',$data);
+        $this->assign('suggestion',$suggestion);
+        return $this->fetch('video-detail');
     }
 }

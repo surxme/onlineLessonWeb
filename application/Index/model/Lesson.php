@@ -36,4 +36,16 @@ class Lesson extends Model
 
         return $list;
     }
+
+    public static function getOneLessonById($id,$video_id=0){
+        if($video_id==0){
+            $data = Db::name('lesson')->alias('t')->where('id',$id)->find();
+        }
+        return $data;
+    }
+
+    public static function getVideosListByLessonID($lesson_id){
+        $list = Db::table('video')->where('lesson_id',$lesson_id)->select();
+        return $list;
+    }
 }
