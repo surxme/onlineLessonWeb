@@ -9,19 +9,34 @@
   .suggestion {
     background-color: white;
   }
-
+  #home .nav > li > a:hover {
+    text-decoration: none;
+    color: #000000;
+  }
+  #home .nav > li:hover {
+    background-color: #edf2f3;
+  }
+  #home .list-group-item {
+     margin-bottom: 0px;
+     border: none;
+     border-bottom: 1px solid #ddd;
+  }
+  .files-list div{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 </style>
   <div class="row">
       <div class="col-sm-12">
         <div class="panel clearfix">
           <div class="panel-body">
             <a href="#" class="thumb pull-left m-r">
-              <img src="__STATIC__/{$lesson.poster}" class="img-circle">
+              <img src="/bigdata/public/static\uploads\poster\5c55a7846dcb3.jpg" class="img-circle">
             </a>
             <div class="clear">
               <a href="#" class="text-info">@Mike Mcalidek <i class="fa fa-twitter"></i></a>
               <small class="block text-muted">2,415 followers / 225 tweets</small>
-              <a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a>
+              <!--<a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a>-->
             </div>
           </div>
         </div>
@@ -39,20 +54,69 @@
             </div>
           </div>
           <!-- / video player -->
-          <div class="wrapper-lg">
-            <h2 class="m-t-none text-black">Big Buck Bunny Trailer</h2>
+          <div class="padder-v">
+            <h3 class="m-t-none text-black">视频一</h3>
             <div class="post-sum">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat.
-              <br><br>
-              Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis, lectus arcu malesuada sem, dapibus porta quam lacus eu neque.</p>
+            </div>
+            <p style="margin: 0px">附件：</p>
+            <div class="post-sum col-sm-12 no-padder files-list">
+
+              <div class="col-md-4 col-sm-6">
+                <i class="fa fa-save"></i>
+                附件一
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <i class="fa fa-save"></i>
+                附件一
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <i class="fa fa-save"></i>
+                附件一
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <i class="fa fa-save"></i>
+                附件一
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <i class="fa fa-save"></i>
+                附件一
+              </div>
+
             </div>
             <div class="line b-b"></div>
             <div class="text-muted">
               <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">Admin</a>
               <i class="fa fa-clock-o icon-muted"></i> Feb 20, 2013
-              <a href="#" class="m-l-sm"><i class="fa fa-comment-o icon-muted"></i> 3 comments</a>
             </div>
           </div>
+          <h4 class="m-t-lg m-b">课程相关</h4>
+          <section class="panel-default">
+            <header class="panel-heading bg-light">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="#home" data-toggle="tab">课程目录</a></li>
+                <li><a href="#profile" data-toggle="tab">课程介绍</a></li>
+                <li><a href="#comment" data-toggle="tab">评论</a></li>
+                <li><a href="#question" data-toggle="tab">问答</a></li>
+              </ul>
+            </header>
+            <div class="panel-body" style="background-color: white">
+              <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                  <div class="list-group">
+
+                    <a href="#" class="list-group-item">
+                      <i class="fa fa-play-circle icon-muted fa-fw" style="color: #000000;font-size: 16px;"></i> 视频一
+                    </a>
+
+                  </div>
+                </div>
+                <div class="tab-pane" id="profile">profile</div>
+                <div class="tab-pane" id="comment">message</div>
+                <div class="tab-pane" id="question">settings</div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
       <div class="col-sm-4 video_params">
