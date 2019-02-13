@@ -1,423 +1,180 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
-
-<!-- Behavioral Meta Data -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="icon" type="image/png" href="__STATIC__/index/img/small-logo-01.png">
-<link href='http://fonts.googleapis.com/css?family=Roboto:400,900,900italic,700italic,700,500italic,400italic,500,300italic,300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='__STATIC__/index/csscont.css' rel='stylesheet' type="text/css">
-<link href="__STATIC__/index/css/layui.css" rel="stylesheet" />
-<link href="__STATIC__/admin/assets/css/font-awesome.css" rel="stylesheet" />
-<!-- Animation library for notifications   -->
-<link href="__STATIC__/index/assets/css/animate.min.css" rel="stylesheet"/>
-<!--  Paper Dashboard core CSS    -->
-<link href="__STATIC__/index/assets/css/paper-dashboard.css" rel="stylesheet"/>
-<!--  CSS for Demo Purpose, don't include it in your project     -->
-<link href="__STATIC__/index/assets/css/demo.css" rel="stylesheet" />
-<!--  Fonts and icons     -->
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
-	<style>
-		.post-reply{
-			margin-left: 3%;
-			width: 65%;
-			margin-top: 10px;
-		}
-		.layui-nav-tree{
-			width: auto;
-		}
-		.layui-nav-tree .layui-nav-item a:hover{
-			background-color: white;
-			color: black;
-		}
-		.layui-nav{
-			color: white;
-			background-color: white;
-		}
-		.layui-nav .layui-nav-item a{
-			color: black;
-		}
-		.layui-tab-content{
-			padding: 0;
-			min-height: 350px;
-			background-color: white;
-		}
-		.wrapper-text-description{
-			margin-top: 0px;
-		}
-		.teacher-icon{
-			float:left;
-			width:60px;
-			height:60px;
-			margin-right:20px;
-		}
-		i{
-			color: #1ebfae;
-			padding-right: 2%;
-		}
-		.comment-icon{
-			float:left;
-			width:45px;
-			height:45px;
-			overflow: hidden;
-			border-radius: 50%;
-			margin-top: 10px;
-			margin-left: 10px;
-			top:0;
-		}
-		.text-reply-post{
-			padding-top: 0;
-		}
-		.image-morefrom-1{
-			width: 100%;
-		}
-	</style>
-</head>
-
-<body>
-
-<!-- HEADER -->
-
-<div id="wrapper-header">
-	<div id="main-header" class="object">
-		<a href="{:url('index/index')}"><div id="logo"><img src="__STATIC__/index/img/logo-burst1.png" alt="logo burstfly" height="38" width="90"></div></a>
-
-
-		<div id="main_tip_search" style="float: right;width: auto">
-			<div style="float: right;margin-top:0;" >
-				{if  condition="$Think.session.studentid"}
-				<!--<a href="{:url('index/schedule', ['userid' => $Think.session.studentid])}"><button type="button" class="btn btn-default">个人中心</button></a>-->
-				<ul class="layui-nav" style="background-color: #202020">
-					<li class="layui-btn"><a href="{:url('index/schedule', ['userid' => $Think.session.studentid])}"  style="color: white">个人中心</a></li>
-					<li class="layui-btn"><a href="{:url('index/logout')}" title="退出"><i class="fa fa-sign-out"  style="color: white"></i></a></li>
-				</ul>
-				{elseif condition="$Think.session.teacherid"/}
-				<ul class="layui-nav" style="background-color: #202020">
-					<li class="layui-btn"><a href="{:url('index/tschedule', ['userid' => $Think.session.studentid])}"  style="color: white">个人中心</a></li>
-					<li class="layui-btn"><a href="{:url('index/logout')}" title="退出"><i class="fa fa-sign-out"  style="color: white"></i></a></li>
-				</ul>
-				{else /}
-				<ul class="layui-nav" style="background-color: #202020">
-					<li class="layui-btn"><a href="#" data-toggle="modal" data-target="#slogin"  style="color: white">学生登录</a></li>
-					<li class="layui-btn "><a href="#" data-toggle="modal" data-target="#tlogin"  style="color: white">教师登录</a></li>
-					<li class="layui-btn "><a href="#" data-toggle="modal" data-target="#reg"  style="color: white">注册</a></li>
-				</ul>
-				{/if}
-			</div>
-		</div>
-		<div id="main_tip_search" style="float: right;width: auto">
-			<form action="{:url('index/search')}">
-				<input type="text" name="key" id="tip_search_input"  autocomplete=off>
-				<button type="submit" class="layui-btn">搜索</button>
-			</form>
-		</div>
-    </div>
-</div>
-<!-- NAVBAR -->
-
-<div id="wrapper-navbar">
-		<div class="navbar object">
-    		<div id="wrapper-sorting">
-            <div id="wrapper-title-1">
-            <div class="top-rated object">Top-rated</div>
-            	<div id="fleche-nav-1"></div>
-    		</div>
-
-            <div id="wrapper-title-2">
-            <a href="#"><div class="recent object">Recent</div></a>
-                <div id="fleche-nav-2"></div>
-    		</div>
-
-            <div id="wrapper-title-3">
-            <a href="#"><div class="oldies object">Oldies</div></a>
-                <div id="fleche-nav-3"></div>
-    		</div>
+{layout name="layouts/layout1" /}
+<style>
+  .video_params .list-group-item,.panel{
+    background-color:#f2f4f8;
+  }
+  .video_params .panel{
+    border: none;
+  }
+  .suggestion {
+    background-color: white;
+  }
+   .nav > li > a:hover {
+    text-decoration: none;
+    color: #000000;
+  }
+   .nav > li:hover {
+    background-color: #edf2f3;
+  }
+   .list-group-item {
+     margin-bottom: 0px;
+     border: none;
+     border-bottom: 1px solid #ddd;
+  }
+  .files-list div{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+</style>
+  <div class="row">
+      <div class="col-sm-12">
+        <div class="panel clearfix">
+          <div class="panel-body">
+            <a href="#" class="thumb pull-left m-r">
+              <img src="__STATIC__/{$video.avatar}" class="img-circle">
+            </a>
+            <div class="clear">
+              <a href="#" class="text-info">@{$video.teacher_name}</a>
+              <!--<small class="block text-muted">2,415 followers / 225 tweets</small>-->
+              <!--<a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a>-->
             </div>
+          </div>
+        </div>
+      </div>
+  </div>
+   <div class="row">
+      <div class="col-sm-8">
+        <div class="panel">
+          <!-- video player -->
+          <div id="jp_container_1" class="teacher_info">
+            <div class="jp-type-single pos-rlt">
+              <div id="jplayer_1" class="jp-jplayer jp-video" style="width: 100%; height: auto;">
+                <video id="vplay" src="__STATIC__/{$video.path}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>
+              </div>
+            </div>
+          </div>
+          <!-- / video player -->
+          <div class="padder-v">
+            <h3 class="m-t-none text-black">{$video.name}</h3>
+            <div class="post-sum">
+                <p>{$video.intro}</p>
+            </div>
+            <p style="margin: 0px">附件：</p>
+            <div class="post-sum col-sm-12 no-padder files-list">
 
-			<div id="wrapper-bouton-icon">
+              <div class="col-md-4 col-sm-6">
+                <i class="fa fa-save"></i>
+                附件一
+              </div>
 
-			</div>
-    	</div>
-</div>
+            </div>
+            <div class="line b-b"></div>
+            <div class="text-muted">
+              <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">{$video.teacher_name}</a>
+              <i class="fa fa-clock-o icon-muted"></i> {$video.create_time|date='Y-m-d H:i',###}
+            </div>
+          </div>
+          <h4 class="m-t-lg m-b">课程相关</h4>
+          <section class="panel-default">
+            <header class="panel-heading bg-light">
+              <ul class="nav nav-tabs nav-justified">
+                <li class="active"><a href="#home" data-toggle="tab">课程目录</a></li>
+                <li><a href="#profile" data-toggle="tab">课程介绍</a></li>
+                <li><a href="#comment" data-toggle="tab">评论</a></li>
+                <li><a href="#question" data-toggle="tab">问答</a></li>
+              </ul>
+            </header>
+            <div class="panel-body" style="background-color: white">
+              <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                  <div class="list-group">
+                    {volist name='video_list' id='vd'}
+                    <a href="{:url('index/details',['id'=>$vd.lesson_id,'video_id'=>$vd.id])}" class="list-group-item">
+                      <i class="fa fa-play-circle icon-muted fa-fw" style="color: #000000;font-size: 16px;"></i> {$vd.name}
+                    </a>
+                    {/volist}
 
-<!-- FILTER -->	
-
-	<div id="main-container-menu" class="object">
-    	<div class="container-menu">
-        	
-            <div id="main-cross">
-            	<div id="cross-menu"></div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="profile">profile</div>
+                <div class="tab-pane" id="comment">message</div>
+                <div class="tab-pane" id="question">settings</div>
+              </div>
             </div>
-            
-            <!--<div id="main-small-logo">
-            	<div class="small-logo"></div>
+          </section>
+        </div>
+      </div>
+      <div class="col-sm-4 video_params">
+          <div class="panel panel-default">
+            <!--<div class="panel-heading">Suggestions</div>-->
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="">
+                  <i class="icon-drawer"></i>
+                  <span class="badge pull-right">{$lesson.typename}</span>
+                  所属区
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="">
+                  <i class="icon-eye"></i>
+                  <span class="badge pull-right">200</span>
+                  观看量
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="">
+                  <i class="icon-like"></i>
+                  <span class="badge pull-right">30</span>
+                  点赞量
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="">
+                  <i class="icon-heart"></i>
+                  <span class="badge pull-right">30</span>
+                  收藏量
+                </div>
+              </li>
+            </ul>
+            {if condition="count($suggestion) neq 0 "}
+            <div class="panel-body m-t-sm suggestion">
+              <!--<article class="media">-->
+                <!--<a href="#" class="thumb-lg m-t-xs" style="width: auto">-->
+                  <!--<img src="/bigdata/public/static/\uploads\poster\5c31a1d68b39c.jpg">-->
+                <!--</a>-->
+                <!--<div class="media-body">-->
+                  <!--<a href="#" class="font-semibold" title="课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3">课程3课程3课程3课程3课程3...</a>-->
+                <!--</div>-->
+              <!--</article>-->
+              {volist name='suggestion' id='sugs'}
+              <article class="media">
+                <a href="{:url('index/details',['id'=>$sugs.id])}" class="pull-left thumb-lg m-t-xs">
+                  <img src="__STATIC__/{$sugs.poster}">
+                </a>
+                <div class="media-body">
+                  <a href="{:url('index/details',['id'=>$sugs.id])}" class="font-semibold" title="{$sugs.name}">{$sugs.name|msubstr=0,15,'utf-8',true}</a>
+                  <div class="text-xs block m-t-xs"><i class="icon-fire"></i> {$sugs.hits}
+                  </div>
+                </div>
+              </article>
+              {/volist}
             </div>
-            -->
-            <div id="main-premium-ressource">
-                <div class="premium-ressource"><a href="#">Premium Resources</a></div>
-            </div>
-            
-            <div id="main-themes">
-                <div class="themes"><a href="#">Latest themes</a></div>
-            </div>
-            
-            <div id="main-psd">
-                <div class="psd"><a href="#">PSD Goodies</a></div>
-            </div>
-                
-            <div id="main-ai">
-                <div class="ai"><a href="#">Illustrator freebies</a></div>
-            </div>
-            
-            <div id="main-font">
-                <div class="font"><a href="#">Free fonts</a></div>
-            </div>
-            
-            <div id="main-photo">
-                <div class="photo"><a href="#">Free stock photos</a></div>
-            </div>
-            
+            {/if}
+          </div>
         </div>
     </div>
-
-
-<!-- PORTFOLIO -->
-
-	<div id="wrapper-container">
-    
-		<div class="container object">
-
-			<div id="main-container-image">
-            	
-                <div class="title-item">
-                	<!--<div class="title-icon"></div>-->
-					<img src="__STATIC__/img/xxx" class="teacher-icon" alt="">
-                    <div class="title-text">xxx</div>
-                    <div class="title-text-2">xxx</div>
-                    
-                </div>
-     			   <hr>
-				<div class="work">
-					<figure class="white">
-						<div class="videos">
-							<!--判断该课程下是否已有视频-->
-
-						</div>
-                    </figure>
-				
-                <div class="wrapper-text-description">
-                
-                	<div class="wrapper-view">
-                    	<div class="icon-view"><img src="__STATIC__/index/img/icon-eye.svg" alt="" width="24" height="16"/></div>
-                        <div class="text-view">0 views</div>
-                    </div>
-                
-                	<div class="wrapper-file">
-                    	<div class="icon-file"><img src="__STATIC__/index/img/icon-psdfile.svg" alt="" width="21" height="21"/></div>
-                        <div class="text-file">0</div>
-                    </div>
-                    
-                    <div class="wrapper-weight">
-                    	<div class="icon-weight"><img src="__STATIC__/index/img/icon-weight.svg" alt="" width="20" height="23"/></div>
-                        <div class="text-weight"><a href="#" onclick="scheduleAdd(1,{$Think.session.studentid})">加入我的课程</a></div>
-                    </div>
-
-                    
-                    <div class="wrapper-morefrom">
-                    	<div class="text-morefrom">相关推荐</div>
-
-                        <div class="image-morefrom">
-
-						</div>
-                    </div>
-                </div>
-
-				<div class="post-reply">
-					<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-						<legend>课程相关</legend>
-					</fieldset>
-					<div class="layui-tab layui-tab-card">
-						<ul class="layui-tab-title">
-							<li class="layui-this">课程目录</li>
-							<li>课程概述</li>
-							<li>学员评论</li>
-							<!--<li>学员问答</li>-->
-							{if  condition="$Think.session.studentid"}
-							<li>填写评论</li>
-							{/if}
-						</ul>
-					</div>
-				</div>
-			</div>	
-		</div>
-         
-            
-	<div id="wrapper-thank">
-    	<div class="thank">
-        	<div class="thank-text">T<span style="letter-spacing:-5px;">es</span>ting</div>
-    	</div>
-	</div>
-	    
-	<div id="main-container-footer">
-		<div class="container-footer">
-            
-		</div>
-	</div>
-
-    <div id="wrapper-copyright">
-		<div class="copyright">
-    		<div class="copy-text object">Copyright &copy; 2018.Company name(SRC) All rights reserved.</div>
-    	</div>
-    </div>
-
-</div>
-	</div>
-
-<!-- SCRIPT -->
-
-	<script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="__STATIC__/index/js/jquery.scrollTo.min.js"></script>
-    <script type="text/javascript" src="__STATIC__/index/js/jquery.localScroll.min.js"></script>
-    <script type="text/javascript" src="__STATIC__/index/js/jquery-animate-css-rotate-scale.js"></script>
-	<script type="text/javascript" src="__STATIC__/index/js/fastclick.min.js"></script>
-	<script type="text/javascript" src="__STATIC__/index/js/jquery.flip.min.js"></script>
-	<script type="text/javascript" src="__STATIC__/index/js/jquery.animate-colors-min.js"></script>
-	<script type="text/javascript" src="__STATIC__/index/js/jquery.animate-shadow-min.js"></script>
-	<script src="__STATIC__/index/js/layui.js"></script>
-	<script src="__STATIC__/index/js/element.js"></script>
-
-<!--<script src="__STATIC__/index/assets/js/jquery-1.10.2.js" type="text/javascript"></script>-->
-<script src="__STATIC__/index/assets/js/bootstrap.min.js" type="text/javascript"></script>
-
-<!--  Checkbox, Radio & Switch Plugins -->
-<script src="__STATIC__/index/assets/js/bootstrap-checkbox-radio.js"></script>
-
-<!--  Charts Plugin -->
-<script src="__STATIC__/index/assets/js/chartist.min.js"></script>
-
-<!--  Notifications Plugin    -->
-<script src="__STATIC__/index/assets/js/bootstrap-notify.js"></script>
-
-<!--  Google Maps Plugin    -->
-<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>-->
-
- <!--Paper Dashboard Core javascript and methods for Demo purpose -->
-<!--<script src="__STATIC__/index/assets/js/paper-dashboard.js"></script>-->
-
-<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-<script src="__STATIC__/index/assets/js/demo.js"></script>
-
-<script type="text/javascript">
-
-	$(document).ready(function(){
-		var myvideo=document.getElementById("myvideo");
-
-		$("#myvideo").click(function(){
-			if(myvideo.paused){
-				myvideo.play();
-			}
-			else{
-				myvideo.pause();
-			}
-		});
-	});
-
-</script>
 <script>
-    layui.use('element', function(){
-        var $ = layui.jquery
-            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-    });
-    function scheduleAdd(id,sid) {
-        if(sid) {
-            layui.use(['laydate', 'layer', 'element'], function () {
-                var layer = layui.layer //弹层
-                    , element = layui.element; //元素操作
+    $(document).ready(function(){
+        var myvideo=document.getElementById("vplay");
 
-                $.post("{:url('index/collect')}", {"lessonid": id, "studentid": sid}, function (data) {
-                    if (data.status == 0) {
-                        location.href = location.href;//刷新页面
-                        layer.msg(data.msg, {icon: 6});
-                    } else {
-                        layer.msg(data.msg, {icon: 5});
-                    }
-                });
-            });
-        }else{
-            layer.msg("暂未登录", {icon: 5});
-		}
-    };
-
-    function submitform() {
-        var formdata = new FormData($("#myform")[0]);
-        $.ajax({
-            url:"{:url('index/commentadd')}",
-            method:'post',
-            data:formdata,
-            dataType:'JSON',
-            processData: false,
-            contentType: false,
-            success:function(data){
-                if(data.status='0'){
-                    layer.msg(data.msg,{icon:6});
-                    alert('success');
-                    // location.href=location.href;//刷新页面
-                }
-                else
-                    layer.msg(data.msg,{icon:5});
-            },
-            error:function (data) {
-                alert('success');
-                layer.msg(data.msg,{icon:5});
+        $("#vplay").click(function(){
+            if(myvideo.paused){
+                myvideo.play();
             }
-        })
-    };
-    layui.use(['form', 'layer','layedit', 'laydate','upload'], function(){
-        var form = layui.form;
-
-        form.on('submit(demo1)', function(data){
-            $.ajax({
-                url:"{:url('index/commentadd')}",
-                method:'post',
-                data:data.field,
-                dataType:'JSON',
-                success:function(data){
-                    if(data.status='0'){
-                        layer.msg(data.msg,{icon:6});
-                        location.href=location.href;//刷新页面
-                    }
-                    else
-                        layer.msg(data.msg,{icon:5});
-                },
-                error:function (data) {
-                    layer.msg(data.msg,{icon:5});
-                }
-            })
-            return false;
+            else{
+                myvideo.pause();
+            }
         });
     });
 </script>
-<script>
-	$(document).ready(function() {
-			$.localScroll();
-			$(".cache").delay(100).fadeOut(10);
-
-			$("#wrapper-header").delay(100).animate({opacity:'1',width:'100%'},10);
-			$("#wrapper-navbar").delay(100).animate({opacity:'1',height:'60px'},10);
-
-			$("#main-container-image").delay(100).animate({opacity:'1'},10);
-
-		});
-</script>
-
-</body>
-
-
-</html>

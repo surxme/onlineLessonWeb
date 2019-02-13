@@ -66,9 +66,8 @@ Route::group('admin',function (){
     Route::any('question','QuestionController/index');
 });
 Route::group('index',function (){
-    Route::any('index','Index/index');
-    Route::any('test','Index/test');
-    Route::any('details','Details/index');
+    Route::any('index','index/Index/index');
+    Route::any('details','index/Index/details');
     Route::any('login','index/Index/login');
     Route::any('logout','index/Index/logout');
     Route::any('tlogin','index/Index/tlogin');

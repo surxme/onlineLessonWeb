@@ -7,6 +7,10 @@ use think\Db;
 
 class Index extends Controller
 {
+    /**
+     * 首页
+     * @return mixed
+     */
     public function index()
     {
         $params = input('param.');
@@ -15,22 +19,20 @@ class Index extends Controller
         return $this->fetch('index');
     }
 
-    public function test()
-//    public function details()
+    /**
+     * 课程详情
+     * @return mixed
+     */
+    public function details()
     {
-//        $id = input('param.id',19);
-        $id = 19;
-        if(empty($id)){
-            //错误操作
-        }
-        $data = Lesson::getOneLessonById($id);
-        $suggestion = Db::name('lesson')->where('type_id',$data['type_id'])
-            ->field('id,name,poster')->limit(5)
-//            ->order('hits','desc')
-            ->select();
+        $video_id = input('param.video_id',0);
+        $id = input('param.id');
+        $data = Lesson::getOneLessonById($id,$video_id);
 
-        $this->assign('lesson',$data);
-        $this->assign('suggestion',$suggestion);
-        return $this->fetch('video-detail');
+        $this->assign('lesson',$data['lesson']);
+        $this->assign('video_list',$data['video_list']);
+        $this->assign('video',$data['video']);
+        $this->assign('suggestion',$data['suggestion']);
+        return $this->fetch('details');
     }
 }
