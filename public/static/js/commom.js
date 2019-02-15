@@ -40,7 +40,7 @@ var file_upload_manager = {
                 }
                 ,done: function(res){
                     //如果上传失败
-                    if(res.code > 0){
+                    if(res.is_ok != 'ok'){
                         return layer.msg('上传失败');
                     }else{
                         $(hidden_input_id).val(res.file_url);
@@ -54,6 +54,28 @@ var file_upload_manager = {
                     demoText.find('.demo-reload').on('click', function(){
                         uploadInst.upload();
                     });
+                }
+            });
+        });
+    },
+    croppersUpload: function(up_url,attach_data,dom_id,callback){
+        layui.config({
+            base: 'cropper/' //layui自定义layui组件目录
+        }).use(['form','croppers'], function () {
+            var $ = layui.jquery
+                ,croppers = layui.croppers
+                ,layer= layui.layer;
+
+            //创建一个头像上传组件
+            croppers.render({
+                elem: dom_id
+                ,saveW:150     //保存宽度
+                ,saveH:150
+                ,mark:1/1    //选取比例
+                ,area:'600px'  //弹窗宽度
+                ,url: up_url  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+                ,done: function(res,index){
+                    callback(res,index);
                 }
             });
         });
@@ -332,7 +354,26 @@ function serializeObject(dom) {
 //列表数据导出
 var export_import_manager = {
     /**
-     * 需要请求返回json参数
+     * 功能同下 由layui自带的导出，不支持字段自动排序
+     * @param get_data_url
+     * @param file_name
+     * @param colums_title
+     * @param sequence
+     */
+    ajaxDefaultExport:function (get_data_url,file_name) {
+        layui.use([ 'table'], function() {
+            var table=layui.table;
+            $.ajax({
+                url: get_data_url,
+                dataType: 'json',
+                success: function(data) {
+                    table.exportFile(data.title, data.list, file_name+'.csv'); //默认导出 csv，也可以为：xls
+                }
+            });
+        });
+    },
+    /**
+     * 需要请求返回json参数 课自动排序
      * @param get_data_url 获取导出数据的url
      * @param file_name 导出文件名
      * @param colums_title 导出表格的表头信息 {name: '教师名',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'}
@@ -346,7 +387,7 @@ var export_import_manager = {
                 url: get_data_url,
                 dataType: 'json',
                 success: function(data) {
-                    var data = data;
+                    var data = data.list;
                     // 1. 数组头部新增表头
                     data.unshift(colums_title);
                     // 2. 如果需要调整顺序，请执行梳理函数

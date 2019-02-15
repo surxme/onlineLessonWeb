@@ -119,13 +119,18 @@ class TeacherController extends BaseController
      * @throws \think\exception\DbException
      */
     public function export(){
-        $list = Db::name('teacher')->alias('t')->order('id desc')->join('t_dept dept','t.dept_id = dept.id','LEFT')
-        ->field('t.id,t.name,t.teacher_no,t.sex,t.email,dept.name as dept_name,t.bir')->select();
+        $list = Db::name('teacher')->alias('t')->order('t.id desc')->join('t_dept dept','t.dept_id = dept.id','LEFT')
+        ->field('t.name,t.teacher_no,t.sex,t.email,dept.name as dept_name,t.bir')->select();
 
         foreach ($list as $k => $item){
             $list[$k]['sex'] = $item['sex']==1?'男':'女';
             $list[$k]['bir'] = date('Y-m-d',$item['bir']);
         }
+
+        $list=[
+            'list'=>$list,
+            'title'=>['姓名','职工号','性别','邮箱','部门','生日']
+        ];
 
         return $list;
     }

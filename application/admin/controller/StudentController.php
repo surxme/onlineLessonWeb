@@ -109,13 +109,18 @@ class StudentController extends BaseController
      * @throws \think\exception\DbException
      */
     public function export(){
-        $list = Db::name('student')->alias('t')->order('id desc')
-        ->field('t.id,t.student_no,t.name,t.sex,t.email,t.bir')->select();
+        $list = Db::name('student')->alias('t')->order('t.id desc')
+        ->field('t.student_no,t.name,t.sex,t.email,t.bir')->select();
 
         foreach ($list as $k => $item){
             $list[$k]['sex'] = $item['sex']==1?'男':'女';
             $list[$k]['bir'] = date('Y-m-d',$item['bir']);
         }
+
+        $list=[
+            'list'=>$list,
+            'title'=>['姓名','学号','性别','邮箱','生日']
+        ];
 
         return $list;
     }

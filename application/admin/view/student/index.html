@@ -170,7 +170,7 @@
         $('.btn_export').on('click',function () {
             export_import_manager.ajaxExport('{:url("admin/studentExport")}',
                 '学生信息',
-                {name: '教师名', student_no: '学号',sex: '性别' ,bir: '生日', email: '邮箱'},
+                {name: '姓名', student_no: '学号',sex: '性别' ,bir: '生日', email: '邮箱'},
                 ['name','student_no','sex','bir','email']);
         });
 

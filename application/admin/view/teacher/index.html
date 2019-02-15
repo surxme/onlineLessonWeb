@@ -199,11 +199,16 @@
         });
 
         //导出
+        // $('.btn_export').on('click',function () {
+        //     export_import_manager.ajaxExport('{:url("admin/teacherExport")}',
+        //         '教师信息',
+        //         {name: '教师名',teacher_no:'职工号',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'},
+        //         ['name','teacher_no','sex','dept_name','bir','email']);
+        // });
         $('.btn_export').on('click',function () {
-            export_import_manager.ajaxExport('{:url("admin/teacherExport")}',
+            export_import_manager.ajaxDefaultExport('{:url("admin/teacherExport")}',
                 '教师信息',
-                {name: '教师名',teacher_no:'职工号',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'},
-                ['name','teacher_no','sex','dept_name','bir','email']);
+            );
         });
 
         //导入

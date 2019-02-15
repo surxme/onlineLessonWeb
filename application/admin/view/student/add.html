@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="__STATIC__/admin/css/style.css">
     <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
     <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <link rel="stylesheet" href="__STATIC__/js/cropper/cropper.css">
     <link rel="shortcut icon" href="__STATIC__/admin/images/favicon.png" />
     <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
     <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
     <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/cropper/cropper.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/cropper/croppers.js"></script>
 
 </head>
 <style>
@@ -91,7 +94,18 @@
 
 <script>
     //上传文件
-    file_upload_manager.normalUpload('{:url("admin/upload")}',{},'#test1','#demo1','#poster');
+    file_upload_manager.croppersUpload('{:url("admin/upload")}',{},'#test1',function (res,index) {
+        if(res.is_ok != 'ok'){
+            layer.msg('上传失败');
+        }else{
+            var file_url = '__STATIC__/'+res.file_url;
+            $('#demo1').attr('src', file_url);
+            $('#poster').val(res.file_url);
+            layui.layer.close(index);
+            layer.msg('上传成功');
+        }
+    });
+    // file_upload_manager.normalUpload('{:url("admin/upload")}',{},'#test1','#demo1','#poster');
     layui.use(['form', 'layedit', 'laydate'], function() {
         var form = layui.form
             , layer = layui.layer
