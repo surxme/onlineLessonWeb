@@ -1,6 +1,6 @@
 {layout name="layouts/layout1" /}
 <style>
-  .page-inner .video_params .list-group-item,.panel{
+  .page-inner .video_params .list-group-item,.page-inner .panel{
     background-color:#f2f4f8;
   }
   .page-inner .video_params .panel{
@@ -9,7 +9,7 @@
   .page-inner .suggestion {
     background-color: white;
   }
-   .nav > li > a:hover {
+  .page-inner .nav > li > a:hover {
     text-decoration: none;
     color: #000000;
   }
@@ -25,18 +25,54 @@
     padding-left: 0px;
     padding-right: 0px;
   }
+  .page-inner .tab-content > .tab-pane {
+    min-height: 15rem;
+  }
+  .page-inner .lesson-intro img{
+    width: 100%;
+  }
+  .page-inner .page_items .pagination{
+    display: inline-flex;
+  }
 </style>
   <div class="row">
       <div class="col-sm-12">
         <div class="panel clearfix">
-          <div class="panel-body">
-            <a href="#" class="thumb pull-left m-r">
-              <img src="__STATIC__/{$video.avatar}" class="img-circle">
-            </a>
-            <div class="clear">
-              <a href="#" class="text-info">@{$video.teacher_name}</a>
-              <!--<small class="block text-muted">2,415 followers / 225 tweets</small>-->
-              <!--<a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a>-->
+          <!--<div class="panel-body">-->
+            <!--<a href="#" class="thumb pull-left m-r">-->
+              <!--<img src="__STATIC__/{$video.avatar}" class="img-circle">-->
+            <!--</a>-->
+            <!--<div class="clear">-->
+              <!--<a href="#" class="text-info">@{$video.teacher_name}</a>-->
+              <!--&lt;!&ndash;<small class="block text-muted">2,415 followers / 225 tweets</small>&ndash;&gt;-->
+              <!--&lt;!&ndash;<a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a>&ndash;&gt;-->
+            <!--</div>-->
+          <!--</div>-->
+          <div class="bg hidden-xs ">
+            <!--<div class="dropup wrapper-sm clearfix">-->
+              <!--<div>-->
+                <!--<span class="thumb-md avatar pull-left m-l-xs">-->
+                  <!--<img src="__STATIC__/{$video.avatar}" class="img-circle" alt="...">-->
+                <!--</span>-->
+                <!--<span class="hidden-nav-xs clear">-->
+                    <!--<span class="block m-l">-->
+                      <!--<strong class="font-bold text-lt">{$lesson.name}</strong>-->
+                    <!--</span>-->
+                    <!--<a href="#" class="text-xs block m-l text-info">{$video.teacher_name}</a>-->
+                <!--</span>-->
+              <!--</div>-->
+              <div class="clearfix">
+                <a href="#" class="pull-left thumb-md avatar b-3x m-r">
+                  <img src="__STATIC__/{$video.avatar}" alt="...">
+                </a>
+                <div class="clear">
+                  <div class="h3 m-t-xs m-b-xs text-dark" style="color: #333333">
+                    <a href="#" class="text-info">{$video.teacher_name}</a>
+                    <i class="fa fa-circle text-success pull-right text-xs m-t-sm"></i>
+                  </div>
+                  <small class="text-muted">{$lesson.name}</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -46,7 +82,7 @@
       <div class="col-sm-8">
         <div class="panel">
           <!-- video player -->
-          <div id="jp_container_1" class="teacher_info">
+          <div id="jp_container_1" class="teacher_info item">
             <div class="jp-type-single pos-rlt">
               <div id="jplayer_1" class="jp-jplayer jp-video" style="width: 100%; height: auto;">
                 <video id="vplay" src="__STATIC__/{$video.path}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>
@@ -64,7 +100,7 @@
 
               <div class="col-md-4 col-sm-6">
                 <i class="fa fa-save"></i>
-                附件一
+                附件还没做呢！！！！！！！！！！！！！！！！！！
               </div>
 
             </div>
@@ -75,33 +111,6 @@
             </div>
           </div>
           <h4 class="m-t-lg m-b">课程相关</h4>
-          <section class="panel-default">
-            <header class="panel-heading bg-light">
-              <ul class="nav nav-tabs nav-justified">
-                <li class="active"><a href="#home" data-toggle="tab">课程目录</a></li>
-                <li><a href="#profile" data-toggle="tab">课程介绍</a></li>
-                <li><a href="#comment" data-toggle="tab">评论</a></li>
-                <li><a href="#question" data-toggle="tab">问答</a></li>
-              </ul>
-            </header>
-            <div class="panel-body" style="background-color: white">
-              <div class="tab-content">
-                <div class="tab-pane active" id="home">
-                  <div class="list-group">
-                    {volist name='video_list' id='vd'}
-                    <a href="{:url('index/details',['id'=>$vd.lesson_id,'video_id'=>$vd.id])}" class="list-group-item">
-                      <i class="fa fa-play-circle icon-muted fa-fw" style="color: #000000;font-size: 16px;"></i> {$vd.name}
-                    </a>
-                    {/volist}
-
-                  </div>
-                </div>
-                <div class="tab-pane" id="profile">profile</div>
-                <div class="tab-pane" id="comment">message</div>
-                <div class="tab-pane" id="question">settings</div>
-              </div>
-            </div>
-          </section>
         </div>
       </div>
       <div class="col-sm-4 video_params">
@@ -149,7 +158,7 @@
               <!--</article>-->
               {volist name='suggestion' id='sugs'}
               <article class="media">
-                <a href="{:url('index/details',['id'=>$sugs.id])}" class="pull-left thumb-lg m-t-xs">
+                <a href="{:url('index/details',['id'=>$sugs.id])}" class="pull-left thumb-md m-t-xs">
                   <img src="__STATIC__/{$sugs.poster}">
                 </a>
                 <div class="media-body">
@@ -164,6 +173,83 @@
           </div>
         </div>
     </div>
+  <section class="panel-default">
+  <header class="panel-heading bg-light">
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active"><a href="#home" data-toggle="tab">课程目录</a></li>
+      <li><a href="#profile" data-toggle="tab">课程介绍</a></li>
+      <li><a class="getCommentBtn" href="#comment" data-href="{:url('index/getComment',['type'=>1,'id'=>$video.id])}" data-toggle="tab">评论</a></li>
+      <li><a class="getQuestionBtn" href="#question" data-href="{:url('index/getComment',['type'=>2,'id'=>$video.id])}" data-toggle="tab">问答</a></li>
+    </ul>
+  </header>
+  <div class="panel-body" style="background-color: white">
+    <div class="tab-content">
+      <div class="tab-pane active" id="home">
+        <div class="list-group">
+          {volist name='video_list' id='vd'}
+          <a href="{:url('index/details',['id'=>$vd.lesson_id,'video_id'=>$vd.id])}" class="list-group-item">
+            <i class="fa fa-play-circle icon-muted fa-fw" style="color: #000000;font-size: 16px;"></i> {$vd.name}
+          </a>
+          {/volist}
+        </div>
+      </div>
+      <div class="tab-pane" id="profile">
+        <div class="post-sum col-sm-12 no-padder">
+          <div class="panel">
+            <div class="panel-heading">
+              <a class="accordion-toggle" data-toggle="collapse">
+                相关教师
+              </a>
+            </div>
+            <div class="panel-collapse in">
+              <div class="panel-body text-sm">
+                {volist name='with_teachers' id='t_info'}
+                <div class="col-sm-3 col-xs-6 col-lg-3 text-center">
+                  <section class="panel panel-info">
+                    <div class="panel-body">
+                                  <span href="#" class="thumb avatar">
+                                    <img src="__STATIC__/{$t_info.avatar}" alt="...">
+                                  </span>
+                      <div class="clear">
+                        <a href="#" class="text-info">{$t_info.name}</a>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                {/volist}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="post-sum col-sm-12 no-padder">
+          <div class="panel">
+            <div class="panel-heading">
+              <a class="accordion-toggle" data-toggle="collapse">
+                课程简介
+              </a>
+            </div>
+            <div class="panel-collapse in">
+              <div class="panel-body text-sm lesson-intro">
+                {$lesson.intro}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="comment">
+        <div class="text-center wrapper hidden is_loadding_dom">
+          <i class="fa fa-spinner fa fa-spin fa fa-large"></i>
+        </div>
+      </div>
+      <div class="tab-pane" id="question">
+        <div class="text-center wrapper hidden is_loadding_dom">
+          <i class="fa fa-spinner fa fa-spin fa fa-large"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
     $(document).ready(function(){
         var myvideo=document.getElementById("vplay");
@@ -176,5 +262,38 @@
                 myvideo.pause();
             }
         });
+
+        $('.getCommentBtn').on('click',function () {
+            var _this = $(this);
+            var is_loadding = _this.find('.is_loadding_dom');
+            var url = _this.data('href');
+            refreshDom(url,{},'.page-inner #comment',function () {
+                is_loadding.show();
+            },function () {
+                is_loadding.hide();
+            })
+        });
+
+        $('.getQuestionBtn').on('click',function () {
+            var _this = $(this);
+            var is_loadding = _this.find('.is_loadding_dom');
+            var url = _this.data('href');
+            refreshDom(url,{},'.page-inner #question',function () {
+                is_loadding.show();
+            },function () {
+                is_loadding.hide();
+            })
+        });
+
+
+        $('#comment').on('click',' .page_items .pagination .page-item',function () {
+            var _this = $(this);
+            var page_link = _this.find('.page-link').prop('href');
+
+            if(page_link){
+                refreshDom(page_link,{},'.page-inner #comment');
+            }
+            return false;
+        })
     });
 </script>

@@ -127,20 +127,24 @@ var ajax_request = {
 };
 
 function refreshDom(url,data,refresh_dom_id,beforeRefresh,afterRefresh){
-    ajax_request.post(url,data,function(res_data){
-        if(beforeRefresh){
-            beforeRefresh();
-        }
-        var new_dom = $(res_data).find(refresh_dom_id);
-        if(new_dom.length <= 0){
-            layer.msg('刷新错误');
-            return;
-        }
+    layui.use(['element'], function(){
+        var layer = layui.layer;
 
-        $(refresh_dom_id).html(new_dom.html());
-        if(afterRefresh){
-            afterRefresh();
-        }
+        ajax_request.post(url,data,function(res_data){
+            if(beforeRefresh){
+                beforeRefresh();
+            }
+            var new_dom = $(res_data).find(refresh_dom_id);
+            if(new_dom.length <= 0){
+                layer.msg('刷新错误');
+                return;
+            }
+
+            $(refresh_dom_id).html(new_dom.html());
+            if(afterRefresh){
+                afterRefresh();
+            }
+        });
     });
 };
 

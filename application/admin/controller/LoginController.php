@@ -11,6 +11,9 @@ use think\Session;
 class LoginController extends Controller
 {
     public function login(){
+        if(Session::has('bigdata_admin_id')){
+            $this->redirect('admin/index');
+        }
         return $this->fetch('login/login');
     }
 

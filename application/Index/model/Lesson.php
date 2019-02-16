@@ -72,7 +72,7 @@ class Lesson extends Model
             ->whereNotIn('t.id',$id)
             ->join(['('.$subsql.')'=>'v'],'v.lesson_id = t.id')
             ->field('id,name,poster,hits')
-            ->limit(5)
+            ->limit(3)
             ->order('hits','desc')
             ->select();
 

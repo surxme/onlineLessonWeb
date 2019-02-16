@@ -68,10 +68,9 @@ Route::group('admin',function (){
 Route::group('index',function (){
     Route::any('index','index/Index/index');
     Route::any('details','index/Index/details');
+    Route::any('getComment','index/Index/getCommentsById');
     Route::any('login','index/Index/login');
     Route::any('logout','index/Index/logout');
-    Route::any('tlogin','index/Index/tlogin');
-    Route::any('tlogout','index/Index/tlogout');
     //注册
     Route::any('sreg','index/Index/sReg');
     Route::any('treg','index/Index/tReg');

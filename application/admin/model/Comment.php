@@ -28,7 +28,7 @@ class Comment extends Model
             ->join('lesson','video.lesson_id = lesson.id','LEFT');
 
         if(isset($params['search_key'])){
-            $where['name'] = array('like','%'.$params['search_key'].'%');
+            $where['t.title|t.content'] = array('like','%'.$params['search_key'].'%');
         }
         $field = 't.*,video.name as video_name,lesson.name as lesson_name,lesson.id as lesson_id';
 
