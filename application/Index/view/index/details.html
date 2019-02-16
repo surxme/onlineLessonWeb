@@ -13,6 +13,9 @@
     text-decoration: none;
     color: #000000;
   }
+  .page-inner .nav > li > a {
+    color: #545a5f;
+  }
    .page-inner .nav > li:hover {
     background-color: #edf2f3;
   }
@@ -38,29 +41,7 @@
   <div class="row">
       <div class="col-sm-12">
         <div class="panel clearfix">
-          <!--<div class="panel-body">-->
-            <!--<a href="#" class="thumb pull-left m-r">-->
-              <!--<img src="__STATIC__/{$video.avatar}" class="img-circle">-->
-            <!--</a>-->
-            <!--<div class="clear">-->
-              <!--<a href="#" class="text-info">@{$video.teacher_name}</a>-->
-              <!--&lt;!&ndash;<small class="block text-muted">2,415 followers / 225 tweets</small>&ndash;&gt;-->
-              <!--&lt;!&ndash;<a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a>&ndash;&gt;-->
-            <!--</div>-->
-          <!--</div>-->
           <div class="bg hidden-xs ">
-            <!--<div class="dropup wrapper-sm clearfix">-->
-              <!--<div>-->
-                <!--<span class="thumb-md avatar pull-left m-l-xs">-->
-                  <!--<img src="__STATIC__/{$video.avatar}" class="img-circle" alt="...">-->
-                <!--</span>-->
-                <!--<span class="hidden-nav-xs clear">-->
-                    <!--<span class="block m-l">-->
-                      <!--<strong class="font-bold text-lt">{$lesson.name}</strong>-->
-                    <!--</span>-->
-                    <!--<a href="#" class="text-xs block m-l text-info">{$video.teacher_name}</a>-->
-                <!--</span>-->
-              <!--</div>-->
               <div class="clearfix">
                 <a href="#" class="pull-left thumb-md avatar b-3x m-r">
                   <img src="__STATIC__/{$video.avatar}" alt="...">
@@ -68,7 +49,6 @@
                 <div class="clear">
                   <div class="h3 m-t-xs m-b-xs text-dark" style="color: #333333">
                     <a href="#" class="text-info">{$video.teacher_name}</a>
-                    <i class="fa fa-circle text-success pull-right text-xs m-t-sm"></i>
                   </div>
                   <small class="text-muted">{$lesson.name}</small>
                 </div>
@@ -97,12 +77,12 @@
             </div>
             <p style="margin: 0px">附件：</p>
             <div class="post-sum col-sm-12 no-padder files-list">
-
+              {volist name='attachment' id='attach'}
               <div class="col-md-4 col-sm-6">
-                <i class="fa fa-save"></i>
-                附件还没做呢！！！！！！！！！！！！！！！！！！
+                {$attach.file_name}
+                <a href="__STATIC__/{$attach.file_url}" download="{$attach.file_name}"><i class="text-success icon-arrow-down"></i></a>
               </div>
-
+              {/volist}
             </div>
             <div class="line b-b"></div>
             <div class="text-muted">
@@ -115,7 +95,6 @@
       </div>
       <div class="col-sm-4 video_params">
           <div class="panel panel-default">
-            <!--<div class="panel-heading">Suggestions</div>-->
             <ul class="list-group">
               <li class="list-group-item">
                 <div class="">
@@ -127,35 +106,27 @@
               <li class="list-group-item">
                 <div class="">
                   <i class="icon-eye"></i>
-                  <span class="badge pull-right">200</span>
+                  <span class="badge pull-right">{$hits}</span>
                   观看量
                 </div>
               </li>
               <li class="list-group-item">
                 <div class="">
-                  <i class="icon-like"></i>
-                  <span class="badge pull-right">30</span>
+                  <a class="thumbsSavebtn" href="#" data-href="{:url('index/thumbsUpSave',['id'=>$video.id,'type'=>1])}" title="点击收藏/取消点赞本视频"><i class="icon-like {$is_thumbs_uped?'text-success':''}"></i></a>
+                  <span class="badge pull-right">{$thumbs}</span>
                   点赞量
                 </div>
               </li>
+              {eq name="$user_type" value='1'}
               <li class="list-group-item">
                 <div class="">
-                  <i class="icon-heart"></i>
-                  <span class="badge pull-right">30</span>
-                  收藏量
+                  <a class="curriculumSavebtn" data-href="{:url('index/curriculumSave',['id'=>$lesson.id])}" title="加入到我的课程表/从我的课程表中删除"><i class="icon-calendar"></i> 加入我的课程表</a>
                 </div>
               </li>
+              {/eq}
             </ul>
             {if condition="count($suggestion) neq 0 "}
             <div class="panel-body m-t-sm suggestion">
-              <!--<article class="media">-->
-                <!--<a href="#" class="thumb-lg m-t-xs" style="width: auto">-->
-                  <!--<img src="/bigdata/public/static/\uploads\poster\5c31a1d68b39c.jpg">-->
-                <!--</a>-->
-                <!--<div class="media-body">-->
-                  <!--<a href="#" class="font-semibold" title="课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3课程3">课程3课程3课程3课程3课程3...</a>-->
-                <!--</div>-->
-              <!--</article>-->
               {volist name='suggestion' id='sugs'}
               <article class="media">
                 <a href="{:url('index/details',['id'=>$sugs.id])}" class="pull-left thumb-md m-t-xs">
@@ -263,6 +234,66 @@
             }
         });
 
+        //点赞/收藏
+        $('.thumbsSavebtn').on('click',function () {
+            var _this = $(this);
+            thumbsSave(_this);
+        });
+
+        $('#vplay').on('playing',function () {
+            $.ajax({
+                type: "post",
+                url: "{:url('index/watchVideoAnchor',['id'=>$video.id])}",
+                data: {},
+                success : function(){
+                    // console.log('记录播放视频锚点');
+                },
+                error: function(){
+                    // console.log('记录播放视频锚点');
+                }
+            });
+        });
+
+        //点赞/收藏
+        $('.curriculumSavebtn').on('click',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            thumbsSave(_this);
+
+            ajax_request(url,{},function (data) {
+                if(data.is_ok == 'ok'){
+                    layer.msg(data.msg,{icon:1});
+                }else{
+                    layer.msg('请求失败，请重试',{icon:2});
+                }
+            })
+        });
+
+        function thumbsSave(_this){
+            var url = _this.data('href');
+            var is_check = _this.children('i').hasClass('text-success');
+            var num = _this.siblings('.badge').text();
+
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+                ajax_request.post(url, {}, function (data) {
+                    if (data.is_ok == 'ok') {
+                        if (is_check) {
+                            _this.children('i').removeClass('text-success');
+                            _this.siblings('.badge').text(parseInt(num) - 1);
+                        } else {
+                            _this.children('i').addClass('text-success');
+                            _this.siblings('.badge').text(parseInt(num) + 1)
+                        }
+                        layer.msg(data.msg, {icon: 1});
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                })
+            });
+        }
+
+        //评论信息异步获取
         $('.getCommentBtn').on('click',function () {
             var _this = $(this);
             var is_loadding = _this.find('.is_loadding_dom');
@@ -274,6 +305,7 @@
             })
         });
 
+        //问答信息异步获取
         $('.getQuestionBtn').on('click',function () {
             var _this = $(this);
             var is_loadding = _this.find('.is_loadding_dom');
@@ -285,7 +317,7 @@
             })
         });
 
-
+        //分页数据ajax获取
         $('#comment').on('click',' .page_items .pagination .page-item',function () {
             var _this = $(this);
             var page_link = _this.find('.page-link').prop('href');

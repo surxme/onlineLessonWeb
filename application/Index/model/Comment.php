@@ -31,7 +31,7 @@ class Comment extends Model
 
         $field = 't.*,student.name as student_name,student.avatar,student.id as student_id';
 
-        $list =$list->where($where)->order('id desc')->field($field)->paginate(1);
+        $list =$list->where($where)->order('id desc')->field($field)->paginate(10);
 
         return $list;
     }

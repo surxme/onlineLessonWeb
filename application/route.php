@@ -69,6 +69,9 @@ Route::group('index',function (){
     Route::any('index','index/Index/index');
     Route::any('details','index/Index/details');
     Route::any('getComment','index/Index/getCommentsById');
+    Route::any('thumbsUpSave','index/Index/thumbsUpSave');
+    Route::any('curriculumSave','index/Index/curriculumSave');
+    Route::any('watchVideoAnchor','index/Index/watchVideoAnchor');
     Route::any('login','index/Index/login');
     Route::any('logout','index/Index/logout');
     //注册

@@ -127,7 +127,7 @@ var ajax_request = {
 };
 
 function refreshDom(url,data,refresh_dom_id,beforeRefresh,afterRefresh){
-    layui.use(['element'], function(){
+    layui.use(['layer'], function() {
         var layer = layui.layer;
 
         ajax_request.post(url,data,function(res_data){

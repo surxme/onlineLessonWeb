@@ -9,6 +9,7 @@
 namespace app\index\model;
 
 
+use think\Db;
 use think\Model;
 
 class UserBehavior extends Model
@@ -22,17 +23,39 @@ class UserBehavior extends Model
     Const USER_TYPE_TEACHER = 2;
     Const USER_TYPE_ADMIN = 3;
 
+    protected $pk = 'id';
+    protected $autoWriteTimestamp=true;
+    protected $createTime='create_time';
+
     /**
-     * @param $data array(user_type=>'',uid=>'',action_type=>'')
+     * $data array(user_type=>'',uid=>'',action_type=>'')
+     * @param $data
+     * @param $data_id
+     * @return int|string
      */
-    public function insertBehavior($data){
-        $data['create_time'] = time();
-        $this->save($data);
+    public static function insertBehavior($data,$data_id=0){
+        if($data_id){
+            $data['data_id'] = $data_id;
+        }
+        return Db::name('user_behavior')->insert($data);
     }
 
-    public function getLastLoginRecord($uid,$user_type){
+    /**
+     * 获取上传某个操作的时间
+     * @param $where array(user_type=>'',uid=>'',action_type=>'')
+     * @return int
+     */
+    public static function getLastActionTime($where,$data_id=0){
+        if($data_id){
+            $where['data_id'] = $data_id;
+        }
+        $time = Db::name('user_behavior')->where($where)->order('id desc')->value('create_time');
+        return $time;
+    }
+
+    public function getLastLoginRecord($uid,$user_type,$action_type){
         $data  = $this->where('user_type',$user_type)
-                     ->where('action_type',UserBehavior::ACTION_TYPE_LOGIN)
+                     ->where('action_type',$action_type)
                      ->where( 'uid' ,$uid)
                      ->order('id desc')->limit(3)->column('create_time');
         return $data;
