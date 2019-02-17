@@ -7,14 +7,11 @@ use app\index\model\Comment;
 use app\index\model\Curriculum;
 use app\index\model\Lesson;
 use app\index\model\Student;
-use app\index\model\Teacher;
 use app\index\model\UserBehavior;
-use app\index\model\Video;
 use app\index\model\VideoAttr;
-use think\Controller;
 use think\Db;
 
-class Index extends Controller
+class Index extends BaseController
 {
     /**
      * 首页
@@ -98,9 +95,72 @@ class Index extends Controller
 
     /**
      * 保存评论
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function saveComment(){
+        $uid = Admin::getCurStudentID();
+        $type = input('param.type');
+        $title = input('param.title');
+        $content = input('param.content');
+        $user_type = input('param.user_type');
+        $video_id = input('param.data_id');
+        $comment = new Comment();
 
+        $msg = '操作失败，请重试';
+        $data = [
+            'uid'=>$uid,
+            'type'=>$type,
+            'content'=>$content,
+            'user_type'=>$user_type,
+            'data_id'=>$video_id
+        ];
+        $is_exist = 0;
+        if($uid){
+            if($type==Comment::TYPE_QUESTION){
+                $data['title']=$title;
+            }else{
+                $is_exist = $comment->where(['data_id'=>$video_id,'type'=>Comment::TYPE_COMMENT,'uid'=>$uid])->find();
+            }
+            if($is_exist){
+                $msg = '您已经评论过该视频了';
+            }else{
+                $res = $comment->validate(true)->save($data);
+                if($res){
+                    return Util::successArrayReturn();
+                }else{
+                    return Util::errorArrayReturn(['msg'=>$comment->getError()]);
+                }
+            }
+        }else{
+            $msg = '暂无已登录账号';
+        }
+        return Util::errorArrayReturn(['msg'=>$msg]);
+    }
+
+    /**
+     * 删除
+     * @return array
+     */
+    public function commentDel(){
+        $id=input('param.id');
+
+        $comment = Comment::get($id);
+
+        list($uid,$user_type) = Admin::getCurUserID();
+
+        if($comment['uid']!=$uid){
+            return Util::errorArrayReturn(['msg'=>'参数错误']);
+        }
+
+        $re= (new Comment())->where('id',$id)->delete();
+        if ($re){
+            return Util::successArrayReturn();
+        }else{
+            return Util::errorArrayReturn();
+        }
     }
 
     /**
@@ -121,6 +181,8 @@ class Index extends Controller
         $is_exist = $va_db_obj->find();
         $save_res = 0;
 
+        $msg = '取消赞';
+
         Db::startTrans();
 
         $data = [
@@ -132,7 +194,7 @@ class Index extends Controller
 
         //已经点赞
         if($is_exist){
-            $res = $va_db_obj->delete();
+            $res = $va_db_obj->delete($is_exist['id']);
             if($res) {
                 $save_res = $v_db_obj->setDec('thumbs');
             }
@@ -140,14 +202,15 @@ class Index extends Controller
             $res = $video_attr->save($data);
             if($res){
                 $save_res = $v_db_obj->setInc('thumbs');
+                $msg='点赞';
             }
         }
         if($save_res){
             Db::commit();
-            return Util::successArrayReturn();
+            return Util::successArrayReturn(['msg'=>$msg]);
         }else{
             Db::rollback();
-            return Util::errorArrayReturn();
+            return Util::errorArrayReturn(['msg'=>$msg]);
         }
     }
 
@@ -167,7 +230,7 @@ class Index extends Controller
         }
 
         $curriculum = new Curriculum();
-        $curriculum_db_obj = $curriculum->where('lesson_id',$id)->where('uid',$uid);
+        $curriculum_db_obj = $curriculum->where('lesson_id',$id)->where('student_id',$uid);
         $is_exist = $curriculum_db_obj->find();
 
         $data = [

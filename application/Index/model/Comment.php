@@ -35,4 +35,25 @@ class Comment extends Model
 
         return $list;
     }
+
+    /**
+     * @param $id
+     * @return object
+     * @throws \think\exception\DbException
+     */
+    public function questionSearch($id){
+        $question = Db::name('comment')->where(['floor_id'=>$id])->paginate(10)->each(function($item, $key){
+            $item['type_name'] = $item['user_type']==UserBehavior::USER_TYPE_STUDENT?'学生':'教师';
+            $user = Student::get($item['uid']);
+            if($item['user_type']==1){
+                $item['name'] = $user['name'];
+                $item['is_banned'] = $user['is_banned'];
+            }else{
+                $item['name'] = Teacher::get($item['uid'])['name'];
+            }
+            return $item;
+        });
+
+        return $question;
+    }
 }

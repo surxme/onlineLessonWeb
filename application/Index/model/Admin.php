@@ -15,9 +15,9 @@ class Admin extends Model
         $id = 0;
         if(Session::has('bigdata_user_type')){
             if($type == UserBehavior::USER_TYPE_STUDENT){
-                $id = Session::get('bigdata_user_student');
+                $id = Session::get('bigdata_student_id');
             }else{
-                $id = Session::get('bigdata_user_teacher');
+                $id = Session::get('bigdata_teacher_id');
             }
         }
         return [$id,$type];
@@ -27,7 +27,7 @@ class Admin extends Model
      * @return string
      */
     public static function getCurStudentID(){
-        $id = Session::get('bigdata_user_student');
+        $id = Session::get('bigdata_student_id');
         return $id;
     }
 
@@ -35,7 +35,7 @@ class Admin extends Model
      * @return string
      */
     public static function getCurTeacherID(){
-        $id = Session::get('bigdata_user_teacher');
+        $id = Session::get('bigdata_teacher_id');
         return $id;
     }
 }

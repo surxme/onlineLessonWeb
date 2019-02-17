@@ -17,6 +17,7 @@ class VideoAttr extends Model
     protected $pk = 'id';
     protected $autoWriteTimestamp=true;
     protected $createTime='create_time';
+    protected $updateTime=false;
 
     public function search($params){
         $where = [];

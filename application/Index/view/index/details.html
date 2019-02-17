@@ -224,7 +224,7 @@
 </section>
 
 <script>
-    $(document).ready(function(){
+    $(function(){
         // var myvideo=document.getElementById("vplay");
 
         // $("#vplay").click(function(){
@@ -314,10 +314,92 @@
             var url = _this.data('href');
             refreshDom(url,{},'.page-inner #question',function () {
                 is_loadding.show();
+                layeditinit();
             },function () {
                 is_loadding.hide();
             })
         });
+
+        var  index,layedit;
+        function layeditinit() {
+            layui.use('layedit', function(){
+                layedit = layui.layedit;
+                layedit.set({
+                    uploadImage: {
+                        url: '{:url("admin/layeditUpload")}' //接口url
+                    }
+                });
+                index = layedit.build('commentContent',{height:200}); //建立编辑器
+            });
+        }
+
+        //保存问答
+        $('#question').on('click','.saveCommentbtn',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            layedit.sync(index);
+            var content = $('#question input[name="commentTitle"]').val();
+            var title = $('#question textarea[name="commentContent"]').val();
+            var data_id = '{$video.id}';
+
+            var params = {content: content,title:title,data_id:data_id};
+
+            saveComent(url,params,'.getQuestionBtn');
+        });
+
+        //保存评论
+        $('#comment').on('click','.saveCommentbtn',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            var content = $('#comment input[name="commentTitle"]').val();
+            var data_id = '{$video.id}';
+
+            var params = {content: content,title:'',data_id:data_id};
+
+            saveComent(url,params,'.getCommentBtn');
+        });
+
+        function saveComent(url,params,refresh_dom_id){
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+                ajax_request.post(url, params, function (data) {
+                    if (data.is_ok == 'ok') {
+                        layer.msg(data.msg,{icon:1});
+                        $(refresh_dom_id).trigger('click');
+                    } else {
+                        layer.msg(data.msg,{icon:2});
+                    }
+                }, function () {
+                    layer.msg('请求失败',{icon:2});
+                })
+            });
+        }
+
+        //删除问答
+        $('#question').on('click','.btn-comment-del',function () {
+            var _this = $(this);
+            commentDel(_this);
+        });
+
+        //删除评论
+        $('#comment').on('click','.btn-comment-del',function () {
+            var _this = $(this);
+            commentDel(_this);
+        });
+        function commentDel(_this){
+            var url = _this.data('href');
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+                ajax_request.post(url, {}, function (data) {
+                    if (data.is_ok == 'ok') {
+                        layer.msg(data.msg,{icon:1});
+                        _this.parent().parent().parent().parent().remove();
+                    }else{
+                        layer.msg(data.msg,{icon:2});
+                    }
+                })
+            })
+        }
 
         //分页数据ajax获取
         $('#comment').on('click',' .page_items .pagination .page-item',function () {
@@ -328,6 +410,6 @@
                 refreshDom(page_link,{},'.page-inner #comment');
             }
             return false;
-        })
+        });
     });
 </script>

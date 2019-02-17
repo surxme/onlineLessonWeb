@@ -8,7 +8,7 @@
       <p class="text-center">暂无信息</p>
       {/eq}
       {volist name='comques' id='item'}
-      <article id="comment-id-3" class="comment-item">
+      <article id="comment-id-{$item.id}" class="comment-item">
         <a class="pull-left thumb-sm avatar"><img src="__STATIC__/{$item.avatar}" alt="..."></a>
         <span class="arrow left"></span>
         <section class="comment-body panel panel-default">
@@ -24,10 +24,10 @@
             <div>{$item.content}</div>
             <div class="comment-action m-t-sm">
               {if condition="(!empty($user)) and ($user.id eq $item.uid)"}
-              <a href="#" data-href="{:url('index/commentDel',['id'=>$item.id])}" data-dismiss="alert" class="btn btn-default btn-xs btn-comment-del">
+              <button data-href="{:url('index/commentDel',['id'=>$item.id])}" class="btn btn-default btn-xs btn-comment-del">
                 <i class="fa fa-trash-o text-muted"></i>
                 删除
-              </a>
+              </button>
               {/if}
             </div>
           </div>
@@ -41,9 +41,11 @@
         <section class="media-body">
           <form action="index.html" class="m-b-none">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="说点什么吧...">
+              <input type="text" name="commentTitle" class="form-control" placeholder="{$type==1?'请输入评论':'请输入提问主题'}">
+              <textarea id="commentContent" name="commentContent" style="display: none;"></textarea>
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">提交</button>
+                <button class="btn btn-primary saveCommentbtn" type="button"
+                        data-href="{:url('index/saveComment',['type'=>$type==1?'1':'2','user_type'=>$user_type])}">提交</button>
               </span>
             </div>
           </form>

@@ -17,7 +17,7 @@
   .admin-login-title{
     text-align: center;
   }
-  #InputEmail::-webkit-input-placeholder,#InputPassword::-webkit-input-placeholder {
+  #InputEmail::-webkit-input-placeholder,#InputPassword::-webkit-input-placeholder,#userType::-webkit-input-placeholder {
     color: #8d98a7;
   }
 </style>
@@ -29,7 +29,7 @@
           <div class="row w-100">
             <div class="col-lg-5 mx-auto">
               <div class="auth-form-dark text-left p-5">
-                <h2 class="admin-login-title">用户登陆</h2>
+                <h2 class="admin-login-title">管理员登陆</h2>
                 <form class="pt-5">
                   <form id="admin-login-form">
                     <div class="form-group">
@@ -41,6 +41,13 @@
                       <label for="InputPassword">密码</label>
                       <input type="password" class="form-control require" id="InputPassword" data-name="密码" placeholder="请输入密码">
                       <i class="mdi mdi-eye"></i>
+                    </div>
+                    <div class="form-group">
+                      <label for="userType">身份</label>
+                      <select class="form-control" id="userType">
+                        <option value="1" style="color: #333333">学生</option>
+                        <option value="2" style="color: #333333">教师</option>
+                      </select>
                     </div>
                     <div class="mt-5">
                       <a class="btn btn-block btn-warning btn-lg font-weight-medium">登录</a>
@@ -65,11 +72,16 @@
             if(verifyinput()){
                 var name = $('#InputEmail').val();
                 var pass = $('#InputPassword').val();
-                $.post("{:url('admin/loginverify')}",{"name":name,"password":pass},function (data) {
-                    if(data.status == 'ok'){
-                        window.open("{:url('admin/index')}",'_self');
+                // var type = $('#userType').val();
+                var type = $('#userType option:selected').val();
+                console.log(name);
+                console.log(pass);
+                console.log(type);
+                $.post("{:url('index/loginverify')}",{"name":name,"password":pass,"type":type},function (data) {
+                    if(data.is_ok == 'ok'){
+                        window.open("{:url('index/index')}",'_self');
                     }else{
-                        layer.msg(data.msg);
+                        layer.msg(data.msg,{icon:2});
                     }
                 });
             }

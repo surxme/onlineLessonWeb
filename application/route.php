@@ -72,8 +72,17 @@ Route::group('index',function (){
     Route::any('thumbsUpSave','index/Index/thumbsUpSave');
     Route::any('curriculumSave','index/Index/curriculumSave');
     Route::any('watchVideoAnchor','index/Index/watchVideoAnchor');
-    Route::any('login','index/Index/login');
-    Route::any('logout','index/Index/logout');
+    Route::any('saveComment','index/Index/saveComment');
+    Route::any('commentDel','index/Index/commentDel');
+    Route::any('login','index/LoginController/login');
+    Route::any('logout','index/LoginController/logout');
+    Route::any('loginverify', 'index/LoginController/loginverify');
+
+    //文件上传
+    Route::any('upload','index/FileUpload/index');
+    Route::any('layeditUpload','index/FileUpload/layeditPicUpload');
+    Route::any('excelImport','index/FileUpload/PhpExcelImport');
+
     //注册
     Route::any('sreg','index/Index/sReg');
     Route::any('treg','index/Index/tReg');
