@@ -75,15 +75,17 @@
             <div class="post-sum">
                 <p>{$video.intro}</p>
             </div>
-            <p style="margin: 0px">附件：</p>
-            <div class="post-sum col-sm-12 no-padder files-list">
-              {volist name='attachment' id='attach'}
-              <div class="col-md-4 col-sm-6">
-                {$attach.file_name}
-                <a href="__STATIC__/{$attach.file_url}" download="{$attach.file_name}"><i class="text-success icon-arrow-down"></i></a>
-              </div>
-              {/volist}
-            </div>
+            {neq name="$attachment|count" value="0"}
+              <p style="margin: 0px">附件：</p>
+              <div class="post-sum col-sm-12 no-padder files-list">
+                {volist name='attachment' id='attach'}
+                <div class="col-md-4 col-sm-6">
+                 {$attach.file_name}
+                 <a href="__STATIC__/{$attach.file_url}" download="{$attach.file_name}"><i class="text-success icon-arrow-down"></i></a>
+                </div>
+                 {/volist}
+               </div>
+            {/neq}
             <div class="line b-b"></div>
             <div class="text-muted">
               <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">{$video.teacher_name}</a>
@@ -223,16 +225,16 @@
 
 <script>
     $(document).ready(function(){
-        var myvideo=document.getElementById("vplay");
+        // var myvideo=document.getElementById("vplay");
 
-        $("#vplay").click(function(){
-            if(myvideo.paused){
-                myvideo.play();
-            }
-            else{
-                myvideo.pause();
-            }
-        });
+        // $("#vplay").click(function(){
+        //     if(myvideo.paused){
+        //         myvideo.play();
+        //     }
+        //     else{
+        //         myvideo.pause();
+        //     }
+        // });
 
         //点赞/收藏
         $('.thumbsSavebtn').on('click',function () {
@@ -254,7 +256,7 @@
             });
         });
 
-        //点赞/收藏
+        //加入课程表
         $('.curriculumSavebtn').on('click',function () {
             var _this = $(this);
             var url = _this.data('href');

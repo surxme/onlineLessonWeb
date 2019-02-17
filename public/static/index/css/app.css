@@ -780,6 +780,26 @@ body.container {
 .navbar-header {
   position: relative;
 }
+@media{
+  .navbar-header {
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  .navbar-header {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  .navbar-header {
+    display: none;
+  }
+}
+@media (min-width: 1200px) {
+  .navbar-header {
+    display: none;
+  }
+}
 .navbar-header > .btn {
   position: absolute;
   font-size: 1.3em;
@@ -2975,6 +2995,31 @@ a.bg-light:focus {
   padding-left: 10em;
   padding-right: 10em;
 }
+
+@media{
+  .padder-lg {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+@media (min-width: 768px) {
+  .padder-lg {
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+}
+@media (min-width: 992px) {
+  .padder-lg {
+    padding-left: 5em;
+    padding-right: 5em;
+  }
+}
+@media (min-width: 1200px) {
+  .padder-lg {
+    padding-left: 10em;
+    padding-right: 10em;
+  }
+}
 .padder-md {
   padding-left: 20px;
   padding-right: 20px;
@@ -3591,10 +3636,10 @@ fieldset[disabled] .i-checks input + i:before {
   .wrapper-lg {
     padding: 15px;
   }
-  .padder-lg {
-    padding-left: 10em;
-    padding-right: 10em;
-  }
+  /*.padder-lg {*/
+    /*padding-left: 10em;*/
+    /*padding-right: 10em;*/
+  /*}*/
 }
 .musicbar {
   position: relative;
