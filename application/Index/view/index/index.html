@@ -8,8 +8,18 @@
 </style>
 
 {layout name="layouts/layout1" /}
-
+<header class="header bg-light dk">
+    <p>Components</p>
+</header>
+<section class="scrollable padder-lg padder-v page-inner">
     <div class="row row-sm">
+        {eq name="$list|count" value='0'}
+        <div class="post-item">
+            <div class="caption wrapper-lg text-center">
+                <h2 class="post-title"><a href="#">暂时还没有可查看的课程</a></h2>
+            </div>
+        </div>
+        {/eq}
         {volist name='list' id='vo'}
         <div class="col-xs-6 col-sm-3 col-md-2">
             <div class="item">
@@ -33,3 +43,4 @@
     <div class="row text-center page_items">
         {$list->render()}
     </div>
+</section>

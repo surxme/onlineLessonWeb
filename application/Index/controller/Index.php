@@ -49,7 +49,7 @@ class Index extends BaseController
         $is_thumbs_uped = 0;
         if($uid) {
             $video_attr = new VideoAttr();
-            $va_db_obj = $video_attr->where('video_id', $video_id)->where('uid', $uid)->where('type', 1);
+            $va_db_obj = $video_attr->where('video_id', $data['video']['id'])->where('uid', $uid)->where('type', 1);
             $is_thumbs_uped = $va_db_obj->find();
         }
         //附件
@@ -63,7 +63,7 @@ class Index extends BaseController
         $this->assign('with_teachers',$with_teachers);
         $this->assign('hits',$views['hits']);
         $this->assign('thumbs',$views['thumbs']);
-        $this->assign('is_thumbs_uped',$is_thumbs_uped);
+        $this->assign('is_thumbs_uped',$is_thumbs_uped?1:0);
         $this->assign('attachment',$attachment);
         return $this->fetch('details');
     }
@@ -182,6 +182,7 @@ class Index extends BaseController
         $save_res = 0;
 
         $msg = '取消赞';
+        $code = 1;//取消
 
         Db::startTrans();
 
@@ -203,14 +204,15 @@ class Index extends BaseController
             if($res){
                 $save_res = $v_db_obj->setInc('thumbs');
                 $msg='点赞';
+                $code = 2;
             }
         }
         if($save_res){
             Db::commit();
-            return Util::successArrayReturn(['msg'=>$msg]);
+            return Util::successArrayReturn(['msg'=>$msg,'code'=>$code]);
         }else{
             Db::rollback();
-            return Util::errorArrayReturn(['msg'=>$msg]);
+            return Util::errorArrayReturn(['msg'=>$msg,'code'=>$code]);
         }
     }
 

@@ -32,12 +32,33 @@
     min-height: 15rem;
   }
   .page-inner .lesson-intro img{
-    width: 100%;
+     max-width: 100%;
   }
   .page-inner .page_items .pagination{
     display: inline-flex;
   }
+  @media{
+    .dplayer-logo {
+      width: 20px;
+    }
+  }
+  @media (min-width: 768px) {
+    .dplayer-logo {
+      width: 25px;
+    }
+  }
+  @media (min-width: 992px) {
+    .dplayer-logo {
+      width: 30px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .dplayer-logo {
+      width: 40px;
+    }
+  }
 </style>
+<section class="scrollable padder-lg padder-v page-inner">
   <div class="row">
       <div class="col-sm-12">
         <div class="panel clearfix">
@@ -65,7 +86,8 @@
           <div id="jp_container_1" class="teacher_info item">
             <div class="jp-type-single pos-rlt">
               <div id="jplayer_1" class="jp-jplayer jp-video" style="width: 100%; height: auto;">
-                <video id="vplay" src="__STATIC__/{$video.path}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>
+                <!--<video id="vplay" src="__STATIC__/{$video.path}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>-->
+                <div id="dplayer"></div>
               </div>
             </div>
           </div>
@@ -114,7 +136,7 @@
               </li>
               <li class="list-group-item">
                 <div class="">
-                  <a class="thumbsSavebtn" href="#" data-href="{:url('index/thumbsUpSave',['id'=>$video.id,'type'=>1])}" title="点击收藏/取消点赞本视频"><i class="icon-like {$is_thumbs_uped?'text-success':''}"></i></a>
+                  <a class="thumbsSavebtn" href="#" data-href="{:url('index/thumbsUpSave',['id'=>$video.id,'type'=>1])}" title="点击收藏/取消点赞本视频"><i class="icon-like {$is_thumbs_uped==1?'text-success':''}"></i></a>
                   <span class="badge pull-right">{$thumbs}</span>
                   点赞量
                 </div>
@@ -222,19 +244,19 @@
     </div>
   </div>
 </section>
-
+</section>
+<script type="text/javascript" src="__STATIC__/js/DPlayer.min.js"></script>
 <script>
     $(function(){
-        // var myvideo=document.getElementById("vplay");
-
-        // $("#vplay").click(function(){
-        //     if(myvideo.paused){
-        //         myvideo.play();
-        //     }
-        //     else{
-        //         myvideo.pause();
-        //     }
-        // });
+        const dp = new DPlayer({
+            container: document.getElementById('dplayer'),
+            screenshot: true,
+            logo:'__STATIC__/admin/images/logo.svg',
+            video: {
+                url: '__STATIC__/<?php  echo str_replace("\\","/",$video["path"]) ?>',
+                pic: '__STATIC__/<?php  echo str_replace("\\","/",$lesson["poster"]) ?>'
+            }
+        });
 
         //点赞/收藏
         $('.thumbsSavebtn').on('click',function () {
@@ -280,7 +302,7 @@
                 var layer = layui.layer;
                 ajax_request.post(url, {}, function (data) {
                     if (data.is_ok == 'ok') {
-                        if (is_check) {
+                        if (data.code==1) {
                             _this.children('i').removeClass('text-success');
                             _this.siblings('.badge').text(parseInt(num) - 1);
                         } else {
@@ -314,9 +336,9 @@
             var url = _this.data('href');
             refreshDom(url,{},'.page-inner #question',function () {
                 is_loadding.show();
-                layeditinit();
             },function () {
                 is_loadding.hide();
+                layeditinit();
             })
         });
 
@@ -329,7 +351,7 @@
                         url: '{:url("admin/layeditUpload")}' //接口url
                     }
                 });
-                index = layedit.build('commentContent',{height:200}); //建立编辑器
+                index = layedit.build('question commentContent',{height:200}); //建立编辑器
             });
         }
 
