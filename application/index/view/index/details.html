@@ -330,28 +330,60 @@
         });
 
         //问答信息异步获取
+        var  index,layedit;
         $('.getQuestionBtn').on('click',function () {
             var _this = $(this);
             var is_loadding = _this.find('.is_loadding_dom');
             var url = _this.data('href');
-            refreshDom(url,{},'.page-inner #question',function () {
-                is_loadding.show();
-            },function () {
-                is_loadding.hide();
-                layeditinit();
-            })
+            var refresh_dom_id = '.page-inner #question';
+            var textarea_id = 'question #commentContent';
+            layeditinit(url,is_loadding,refresh_dom_id,textarea_id)
+            // layui.use(['layer', 'layedit'], function () {
+            //     var layer = layui.layer;
+            //         layedit = layui.layedit;
+            //
+            //     ajax_request.post(url, {}, function (res_data) {
+            //         is_loadding.show();
+            //         var new_dom = $(res_data).find(refresh_dom_id);
+            //         if (new_dom.length <= 0) {
+            //             layer.msg('刷新错误');
+            //             return;
+            //         }
+            //         $(refresh_dom_id).html(new_dom.html());
+            //         is_loadding.hide();
+            //         layedit.set({
+            //             uploadImage: {
+            //                 url: '{:url("admin/layeditUpload")}' //接口url
+            //             },
+            //             placeholder:'请输入问题详细说明...'
+            //         });
+            //         index = layedit.build('question #commentContent', {height: 200}); //建立编辑器
+            //     });
+            // });
         });
 
-        var  index,layedit;
-        function layeditinit() {
-            layui.use('layedit', function(){
+        function layeditinit(url,is_loadding,refresh_dom_id,textarea_id){
+            layui.use(['layer', 'layedit'], function () {
+                var layer = layui.layer;
                 layedit = layui.layedit;
-                layedit.set({
-                    uploadImage: {
-                        url: '{:url("admin/layeditUpload")}' //接口url
+
+                ajax_request.post(url, {}, function (res_data) {
+                    is_loadding.show();
+                    var new_dom = $(res_data).find(refresh_dom_id);
+                    if (new_dom.length <= 0) {
+                        layer.msg('刷新错误');
+                        return;
                     }
+                    $(refresh_dom_id).html(new_dom.html());
+                    is_loadding.hide();
+                    layedit.set({
+                        uploadImage: {
+                            url: '{:url("admin/layeditUpload")}' //接口url
+                        },
+                        placeholder:'请输入问题详细说明...'
+                    });
+                    index = layedit.build(textarea_id, {height: 200}); //建立编辑器
                 });
-                index = layedit.build('question commentContent',{height:200}); //建立编辑器
             });
         }
 
@@ -431,6 +463,22 @@
             if(page_link){
                 refreshDom(page_link,{},'.page-inner #comment');
             }
+            return false;
+        });
+
+        //分页数据ajax获取
+        $('#question').on('click',' .page_items .pagination .page-item',function () {
+            var _this = $(this);
+            var page_link = _this.find('.page-link').prop('href');
+
+            if(page_link){
+                refreshDom(page_link,{},'.page-inner #question');
+            }
+            var _this = $(this);
+            var is_loadding = $('.is_loadding_dom');
+            var refresh_dom_id = '.page-inner #question';
+            var textarea_id = 'question #commentContent';
+            layeditinit(page_link,is_loadding,refresh_dom_id,textarea_id);
             return false;
         });
     });
