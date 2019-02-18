@@ -23,7 +23,7 @@ class Login extends Model
             if($this->getMd5Password($pass)!=$user['password']){
                 return 1;
             }else{
-                Session::set('bigdata_'.$table.'_name',$name);
+                Session::set('bigdata_user_name',$user['name']);
                 Session::set('bigdata_'.$table.'_id',$user['id']);
                 Session::set('bigdata_user_type',$type);
                 return 3;

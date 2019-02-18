@@ -74,12 +74,9 @@
                 var pass = $('#InputPassword').val();
                 // var type = $('#userType').val();
                 var type = $('#userType option:selected').val();
-                console.log(name);
-                console.log(pass);
-                console.log(type);
-                $.post("{:url('index/loginverify')}",{"name":name,"password":pass,"type":type},function (data) {
+                $.post("{:url('index/loginverify')}",{name:name,password:pass,type:type},function (data) {
                     if(data.is_ok == 'ok'){
-                        window.open("{:url('index/index')}",'_self');
+                        location.assign("{:url('index/index')}");
                     }else{
                         layer.msg(data.msg,{icon:2});
                     }

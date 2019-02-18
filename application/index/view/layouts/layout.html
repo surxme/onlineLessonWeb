@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>BIGDATA</title>
+    <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!--<link rel="stylesheet" href="__STATIC__/index/js/jPlayer/jplayer.flat.css" type="text/css" />-->
+    <link rel="stylesheet" href="__STATIC__/index/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="__STATIC__/index/css/app.css" type="text/css" />
+    <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="__STATIC__/admin/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <link rel="shortcut icon" href="__STATIC__/img/favicon.png" />
+    <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui_exts/excel.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui_exts/FileSaver.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui_exts/xlsx.js"></script>
+</head>
+<style>
+    .content-wrapper{
+        width: calc(100%);
+        margin-left: 0px;
+    }
+    .user-reg,.user-login{
+        color: #FFFFFF;
+    }
+    .user-reg,.user-login:hover{
+        cursor: pointer;
+    }
+</style>
+<body>
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper">
+            <a class="navbar-brand brand-logo" href="index.html"><img style="height: 43px;width: 43px" src="__STATIC__/admin/images/logo.svg" alt="logo"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+            <p class="page-name d-none d-lg-block">Hi, BIGDATA</p>
+            <!--<form>-->
+                <!--<div class="form-group">-->
+                    <!--<div class="input-group">-->
+                        <!--<input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs, albums...">-->
+                        <!--<span class="input-group-btn">-->
+                          <!--<button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
+            <ul class="navbar-nav ml-lg-auto">
+                <li class="nav-item d-none d-sm-block">
+                    <span class="nav-link hidden-nav-xs m-l-sm user-reg">注册</span>
+                </li>
+                <li class="nav-item d-none d-sm-block">
+                    <span class="nav-link hidden-nav-xs m-l-sm user-login">登录</span>
+                </li>
+                <li class="nav-item d-none d-sm-block profile-img">
+                    <a class="nav-link profile-image" href="#">
+                        <img src="__STATIC__/admin/images/faces/face4.jpg" style="width: 43px;height: 43px" alt="profile-img">
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-block profile-img">
+                    <a class="nav-link profile-image" title="退出" href="{:url('admin/logout')}">
+                        <i class="iconfont icon-bigdata-exit exit" style="color: #bdbdbd"></i>
+                    </a>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="offcanvas">
+                <span class="icon-menu icons"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+        <div class="row row-offcanvas row-offcanvas-right">
+            <div class="content-wrapper">
+                {__CONTENT__}
+            </div>
+            <!-- footer -->
+            <footer class="footer">
+                <div class="container-fluid clearfix">
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © xxx</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">created by lee <i class="mdi mdi-heart text-danger"></i></span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+<script type="text/javascript">
+    layui.config({
+        base: 'layui_exts/',
+    }).extend({
+        excel: 'excel',
+        FileSaver: 'FileSaver',// 如果所有扩展放一起可忽略此行配置
+        xlsx: 'xlsx',// 如果所有扩展放一起可忽略此行配置
+    });
+</script>

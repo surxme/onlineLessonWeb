@@ -43,6 +43,7 @@ class LoginController extends Controller
         Session::delete('bigdata_teacher_id');
         Session::delete('bigdata_student_id');
         Session::delete('bigdata_user_type');
+        Session::delete('bigdata_user_name');
         $this->redirect('index/index');
     }
 }

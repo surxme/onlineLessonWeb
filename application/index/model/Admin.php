@@ -38,4 +38,19 @@ class Admin extends Model
         $id = Session::get('bigdata_teacher_id');
         return $id;
     }
+
+    /**
+     * 获取当前用户信息
+     * @return Student|Teacher
+     * @throws \think\exception\DbException
+     */
+    public static function getCurUserInfo(){
+        list($id,$type) = self::getCurUserID();
+        if($type==UserBehavior::USER_TYPE_STUDENT){
+            $user = Student::get($id);
+        }else{
+            $user = Teacher::get($id);
+        }
+        return $user;
+    }
 }

@@ -8,8 +8,6 @@
 
 namespace app\index\model;
 
-
-use app\admin\model\UserBehavior;
 use think\Db;
 use think\Model;
 

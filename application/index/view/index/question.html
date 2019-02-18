@@ -8,19 +8,8 @@
 </style>
 
 {layout name="layouts/layout1" /}
-<header class="header bg-light dk padder-lg">
-    <p class="font-thin padder "><a class="text-success" href="index.html">最新</a></p>
-    <p class="font-thin padder"><a href="index.html">最热</a></p>
-</header>
-<section class="scrollable padder-lg padder-v page-inner">
+
     <div class="row row-sm">
-        {eq name="$list|count" value='0'}
-        <div class="post-item">
-            <div class="caption wrapper-lg text-center">
-                <h2 class="post-title"><a href="#">暂无任何可访问课程资源</a></h2>
-            </div>
-        </div>
-        {/eq}
         {volist name='list' id='vo'}
         <div class="col-xs-6 col-sm-3 col-md-2">
             <div class="item">
@@ -44,4 +33,3 @@
     <div class="row text-center page_items">
         {$list->render()}
     </div>
-</section>
