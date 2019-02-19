@@ -91,6 +91,9 @@ Route::group('index',function (){
     Route::any('search','index/Index/search');
 
     //学生个人中心
+    Route::any('student','StudentController/index');
+
+
     Route::any('schedule','StudentCenter/index');
     Route::any('scheduledel','StudentCenter/scheduleDel');
     Route::any('favorite','StudentCenter/favorite');
