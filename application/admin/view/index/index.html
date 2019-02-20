@@ -16,7 +16,7 @@
         <div class="card overflow-hidden dashboard-curved-chart">
             <div class="card-body mx-3">
                 <h2 class="card-title border-bottom-none">欢迎，{$Think.session.bigdata_admin_name}</h2>
-                <h3>最近三次登录时间</h3>
+                <h3>最近登录</h3>
                 {volist name='last_login_time' id='val'}
                 <p class="login_log">{$val|date='Y-m-d H:i:s',###}</p>
                 {/volist}

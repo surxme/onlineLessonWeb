@@ -34,7 +34,7 @@ class LoginController extends Controller
             return Util::errorArrayReturn(['msg'=>'账号不存在']);
         }else{
             list($uid,$aa) = Admin::getCurUserID();
-            (new UserBehavior())->insertBehavior(['user_type' => $user_type,'uid' => $uid,'action_type' => UserBehavior::ACTION_TYPE_LOGIN]);
+            (new UserBehavior())->save(['user_type' => $user_type,'uid' => $uid,'action_type' => UserBehavior::ACTION_TYPE_LOGIN]);
             return Util::successArrayReturn(['msg'=>'登录成功']);
         }
     }

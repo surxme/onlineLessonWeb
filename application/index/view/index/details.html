@@ -264,6 +264,19 @@
             thumbsSave(_this);
         });
 
+        dp.on('playing',function(){
+            $.ajax({
+                type: "post",
+                url: "{:url('index/watchVideoAnchor',['id'=>$video.id])}",
+                data: {},
+                success : function(){
+                    // console.log('记录播放视频锚点');
+                },
+                error: function(){
+                    // console.log('记录播放视频锚点');
+                }
+            });
+        });
         $('#vplay').on('playing',function () {
             $.ajax({
                 type: "post",

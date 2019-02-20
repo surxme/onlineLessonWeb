@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8"/>
+    <title>BIGDATA</title>
+    <meta name="description"
+          content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="__STATIC__/index/css/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="__STATIC__/index/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="__STATIC__/index/css/simple-line-icons.css" type="text/css"/>
+    <link rel="stylesheet" href="__STATIC__/index/css/animate.css" type="text/css"/>
+    <link rel="stylesheet" href="__STATIC__/index/css/app.css" type="text/css"/>
+    <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <link rel="shortcut icon" href="__STATIC__/img/favicon.png"/>
+    <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
+</head>
+<body class="">
+<section class="vbox">
+    <header class="bg-black-only header header-md navbar navbar-fixed-top-xs">
+        <div class="navbar-header aside .bg-black-only">
+
+            <a href="{:url('index/index')}" class="navbar-brand" style="color: #bdbdbd">
+                <i class="iconfont icon-bigdata-logo" style="color: #0084ff;font-size: 20px"></i>
+                <span class="hidden-nav-xs m-l-sm">BIGDATA</span>
+            </a>
+            <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+                <i class="icon-settings"></i>
+            </a>
+        </div>
+        <div class="navbar-left ">
+            <ul class="nav navbar-nav m-n hidden-xs nav-user user">
+                <li class="">
+                    <a href="{:url('index/index')}" class="" style="padding-top: 10px;padding-bottom: 10px">
+                        <img src="__STATIC__/admin/images/logo.svg" width="40px">
+                        <span class="hidden-nav-xs m-l-sm">BIGDATA</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control input-sm no-border rounded"
+                           placeholder="Search songs, albums...">
+                    <span class="input-group-btn">
+              <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button>
+            </span>
+                </div>
+            </div>
+        </form>
+        <div class="navbar-right ">
+
+            <ul class="nav navbar-nav m-n hidden-xs nav-user user">
+                {empty name="$Think.session.bigdata_user_type"}
+                <li class="">
+                    <a href="#">
+                        <span class="hidden-nav-xs m-l-sm register">注册</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{:url('index/login')}">
+                        <span class="hidden-nav-xs m-l-sm login">登录</span>
+                    </a>
+                </li>
+                {else /}
+                <li class="hidden-xs">
+                    <a href="#" class="dropdown-toggle lt" data-toggle="dropdown">
+                        <i class="icon-bell"></i>
+                        <span class="badge badge-sm up bg-danger count">2</span>
+                    </a>
+                    <section class="dropdown-menu aside-xl animated fadeInUp">
+                        <section class="panel bg-white">
+                            <div class="panel-heading b-light bg-light">
+                                <strong>You have <span class="count">2</span> notifications</strong>
+                            </div>
+                            <div class="list-group list-group-alt">
+                                <a href="#" class="media list-group-item">
+                                    <span class="media-body block m-b-none">
+                                      1.0 initial released<br>
+                                      <small class="text-muted">1 hour ago</small>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="panel-footer text-sm">
+                                <a href="#" class="pull-right"><i class="fa fa-cog"></i></a>
+                                <a href="#notes" data-toggle="class:show animated fadeInRight">See all the
+                                    notifications</a>
+                            </div>
+                        </section>
+                    </section>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
+                      <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                        <img src="__STATIC__/{$curUserInfo.avatar}" alt="...">
+                      </span>
+                        {$curUserInfo.name} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <li>
+                            <a href="{:url('index/student')}">个人中心</a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="badge bg-danger pull-right">3</span>
+                                消息
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="{:url('index/logout')}">退出登录</a>
+                        </li>
+                    </ul>
+                </li>
+                {/empty}
+            </ul>
+        </div>
+    </header>
+    <section>
+        <section class="hbox stretch">
+            <section id="content">
+                <section class="vbox" id="bjax-el">
+                    <section class="scrollable padder-lg padder-v page-inner">
+                        <section class="hbox stretch">
+                            <aside class="aside-md">
+                                <section class="hbox stretch">
+                                    <section class="m-l-md m-r-md padder-v bg-white r-3x">
+                                        <div class="m-sm">
+                                            <div class="text-center m-b m-t">
+                                                <a href="#" class="thumb-lg">
+                                                    <img src="__STATIC__/{$curUserInfo.avatar}" class="img-circle">
+                                                </a>
+                                                <div>
+                                                    <div class="h3 m-t-xs m-b-xs">{$curUserInfo.name}</div>
+                                                </div>
+                                            </div>
+                                            <nav class="nav-justified">
+                                                <ul class="nav clearfix">
+                                                    <li>
+                                                        <a href="{:url('index/student')}">
+                                                            <i class="icon-badge icon <?php if(request()->path()=='index/student') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/student') echo 'text-success'; ?>">主页</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{:url('index/curriculum')}">
+                                                            <i class="icon-calendar icon <?php if(request()->path()=='index/curriculum') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/curriculum') echo 'text-success'; ?>">课程表</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="genres.html">
+                                                            <i class=" icon-speech icon "></i>
+                                                            <span>评论</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="events.html">
+                                                            <i class=" icon-paper-plane icon "></i>
+                                                            <span>问答</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="listen.html">
+                                                            <i class=" icon-star icon  "></i>
+                                                            <span>关注</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="video.html" data-target="#content" data-el="#bjax-el"
+                                                           data-replace="true">
+                                                            <i class=" icon-user icon  "></i>
+                                                            <span>个人资料</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="m-b hidden-nav-xs"></li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </section>
+                                </section>
+                            </aside>
+                            <section class="vbox">
+                                <section class="scrollable padder-v padder-md m-lg bg-white r-3x box-shadow">
+                                    {__CONTENT__}
+                                </section>
+                            </section>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+<script src="__STATIC__/index/js/bootstrap.js"></script>
+<script src="__STATIC__/index/js/app.js"></script>
+<script src="__STATIC__/index/js/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="__STATIC__/index/js/app.plugin.js"></script>
+
+<script>
+    // add notes
+    function addMsg($msg) {
+        var $el = $('.nav-user'), $n = $('.count:first', $el), $v = parseInt($n.text());
+        $('.count', $el).fadeOut().fadeIn().text($v + 1);
+        $($msg).hide().prependTo($el.find('.list-group')).slideDown().css('display', 'block');
+    }
+
+    var $msg = '<a href="#" class="media list-group-item">' +
+        '<span class="pull-left thumb-sm text-center">' +
+        '<i class="fa fa-envelope-o fa-2x text-success"></i>' +
+        '</span>' +
+        '<span class="media-body block m-b-none">' +
+        'Sophi sent you a email<br>' +
+        '<small class="text-muted">1 minutes ago</small>' +
+        '</span>' +
+        '</a>';
+    // setTimeout(function(){addMsg($msg);}, 1500);
+</script>
+
+</body>
+</html>

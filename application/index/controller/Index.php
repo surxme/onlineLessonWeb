@@ -259,25 +259,25 @@ class Index extends BaseController
         $id = input('param.id');
         list($uid,$user_type) = Admin::getCurUserID();
 
-        if($uid&&$uid){
+        if($uid){
             $data = [
                 'user_type'=>$user_type,
                 'uid'=>$uid,
                 'action_type'=>UserBehavior::ACTION_TYPE_WATCH_VIDEO
             ];
             $is_execute = 0;
-            $last_time = UserBehavior::getLastActionTime($data,$id);
+            $last_time = UserBehavior::getLastActionTime($data,$id)['create_time'];
             if($last_time){
-                $time_range = (int)$last_time-time()-1800;
-                if($time_range){
+                $time_range = time()-(int)$last_time-1800;
+                if($time_range>0){
                     $is_execute = 1;
                 }
             }else{
                 $is_execute = 1;
             }
 
-            Db::startTrans();
             if($is_execute){
+                Db::startTrans();
                 $v_db_obj = Db::name('video')->where('id',$id);
                 $save_res = 0;
                 $res = UserBehavior::insertBehavior($data,$id);

@@ -26,6 +26,7 @@ class UserBehavior extends Model
     protected $pk = 'id';
     protected $autoWriteTimestamp=true;
     protected $createTime='create_time';
+    protected $updateTime=false;
 
     /**
      * $data array(user_type=>'',uid=>'',action_type=>'')
@@ -36,20 +37,25 @@ class UserBehavior extends Model
     public static function insertBehavior($data,$data_id=0){
         if($data_id){
             $data['data_id'] = $data_id;
+            $data['create_time'] = time();
         }
         return Db::name('user_behavior')->insert($data);
     }
 
     /**
-     * 获取上传某个操作的时间
+     * * 获取上传某个操作的时间
      * @param $where array(user_type=>'',uid=>'',action_type=>'')
-     * @return int
+     * @param int $data_id
+     * @return array|false|\PDOStatement|string|Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public static function getLastActionTime($where,$data_id=0){
         if($data_id){
             $where['data_id'] = $data_id;
         }
-        $time = Db::name('user_behavior')->where($where)->order('id desc')->value('create_time');
+        $time = Db::name('user_behavior')->where($where)->order('id desc')->field('create_time')->find();
         return $time;
     }
 

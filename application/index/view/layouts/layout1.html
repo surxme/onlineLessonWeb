@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="__STATIC__/index/css/animate.css" type="text/css" />
     <link rel="stylesheet" href="__STATIC__/index/css/app.css" type="text/css" />
     <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
-    <!--<script type="text/javascript" src="__STATIC__/index/js/jPlayer/jplayer.flat.css"></script>-->
-    <!--<link rel="stylesheet" href="__STATIC__/admin/css/style.css">-->
     <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
     <link rel="stylesheet" href="__STATIC__/js/DPlayer.min.css">
     <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
@@ -21,16 +19,13 @@
     <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
     <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
     <script type="text/javascript" src="__STATIC__/js/DPlayer.min.js"></script>
-    <!--<script type="text/javascript" src="__STATIC__/js/layui_exts/excel.js"></script>-->
-    <!--<script type="text/javascript" src="__STATIC__/js/layui_exts/FileSaver.js"></script>-->
-    <!--<script type="text/javascript" src="__STATIC__/js/layui_exts/xlsx.js"></script>-->
 </head>
 <body class="">
 <section class="vbox">
     <header class="bg-black-only header header-md navbar navbar-fixed-top-xs">
         <div class="navbar-header aside .bg-black-only">
 
-            <a href="{:url('index')}" class="navbar-brand" style="color: #bdbdbd">
+            <a href="{:url('index/index')}" class="navbar-brand" style="color: #bdbdbd">
                 <i class="iconfont icon-bigdata-logo" style="color: #0084ff;font-size: 20px"></i>
                 <span class="hidden-nav-xs m-l-sm">BIGDATA</span>
             </a>
@@ -41,7 +36,7 @@
         <div class="navbar-left ">
             <ul class="nav navbar-nav m-n hidden-xs nav-user user">
                 <li class="">
-                    <a href="{:url('index')}" class="" style="padding-top: 10px;padding-bottom: 10px">
+                    <a href="{:url('index/index')}" class="" style="padding-top: 10px;padding-bottom: 10px">
                         <img src="__STATIC__/admin/images/logo.svg" width="40px">
                         <span class="hidden-nav-xs m-l-sm">BIGDATA</span>
                     </a>
@@ -129,24 +124,16 @@
         <section class="hbox stretch">
             <section id="content">
                 <section class="vbox" id="bjax-el">
-                    <!--<section class="scrollable padder-lg padder-v page-inner">-->
                         {__CONTENT__}
-                    <!--</section>-->
                 </section>
             </section>
         </section>
     </section>
 </section>
-
 <script src="__STATIC__/index/js/bootstrap.js"></script>
-<!-- App -->
 <script src="__STATIC__/index/js/app.js"></script>
 <script src="__STATIC__/index/js/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="__STATIC__/index/js/app.plugin.js"></script>
-<!--<script type="text/javascript" src="__STATIC__/index/js/jPlayer/jquery.jplayer.min.js"></script>-->
-<!--<script type="text/javascript" src="__STATIC__/index/js/jPlayer/add-on/jplayer.playlist.min.js"></script>-->
-<!--<script type="text/javascript" src="__STATIC__/index/js/jPlayer/demo.js"></script>-->
-<!--<script type="text/javascript" src="__STATIC__/index/js/jPlayer/jPlayer/jplayer.flat.css"></script>-->
 
 <script>
     // add notes
@@ -165,40 +152,6 @@
         '</span>'+
         '</a>';
     // setTimeout(function(){addMsg($msg);}, 1500);
-
-    // $('.login').on('click',function () {
-    //     layui.use('layer', function(){
-    //         var $ = layui.jquery,
-    //             layer = layui.layer;
-    //
-    //         //触发事件
-    //         layer.open({
-    //             type: 2
-    //             ,title: false
-    //             ,closeBtn: false
-    //             ,area: ['800px','350px']
-    //             ,shade: 0.8
-    //             ,btn: ['登录','取消']
-    //             ,btnAlign: 'c'
-    //             ,moveType: 1 //拖拽模式，0或者1
-    //             ,content: '{:url("index/login")}'
-    //             ,yes: function (index,layero) {
-    //                 var form = layer.getChildFrame('#myform', index);
-    //                 form.serialize();
-    //                 ajax_request.post('{:url("index/loginverify")}',{name:name,password:password,type:type},function (data) {
-    //
-    //                 })
-    //             }
-    //             , btn2:function (index, layero){
-    //                 layer.close(index);//关闭当前
-    //             }
-    //             ,success: function(layero){
-    //
-    //             }
-    //         });
-    //     });
-    // });
-
 </script>
 
 </body>
