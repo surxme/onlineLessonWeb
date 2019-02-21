@@ -94,7 +94,7 @@ class Index extends BaseController
     }
 
     /**
-     * 保存评论
+     * 保存评论/问答
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -108,6 +108,11 @@ class Index extends BaseController
         $user_type = input('param.user_type');
         $video_id = input('param.data_id');
         $comment = new Comment();
+
+        $user = Student::get($uid);
+        if($user['is_banned']){
+            return Util::errorArrayReturn(['msg'=>'您已被禁言,请联系管理员解除']);
+        }
 
         $msg = '操作失败，请重试';
         $data = [
@@ -141,8 +146,9 @@ class Index extends BaseController
     }
 
     /**
-     * 删除
+     * 删除评论
      * @return array
+     * @throws \think\exception\DbException
      */
     public function commentDel(){
         $id=input('param.id');
@@ -157,9 +163,9 @@ class Index extends BaseController
 
         $re= (new Comment())->where('id',$id)->delete();
         if ($re){
-            return Util::successArrayReturn();
+            return Util::successArrayReturn(['msg'=>'删除成功']);
         }else{
-            return Util::errorArrayReturn();
+            return Util::errorArrayReturn(['msg'=>'删除失败']);
         }
     }
 

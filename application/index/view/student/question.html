@@ -22,8 +22,8 @@
     }
 </style>
 <div class="m-b-md">
-    <h3 class="m-b-none text-black">课程表</h3>
-    <small class="text-muted m-b">您收藏的课程都在这里了</small>
+    <h3 class="m-b-none text-black">我的问答</h3>
+    <small class="text-muted m-b">您的历史问答都在这里了</small>
 </div>
 <section class="panel panel-default">
     <div class="table-responsive">
@@ -31,24 +31,26 @@
             <thead>
             <tr>
                 <th>课程名</th>
-                <th>课程封面</th>
-                <th>添加时间</th>
+                <th>章节名</th>
+                <th>问答标题</th>
+                <th>评论时间</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            {volist name='list' id='lesson'}
+            {volist name='list' id='comment'}
             <tr>
-                <td title="{$lesson.name}">
-                    <a href="{:url('index/details',['id'=>$lesson.lesson_id])}"
-                       style="color: #4cb6cb">{$lesson.name|msubstr=0,30,'utf-8',true}
+                <td title="{$comment.lesson_name}">
+                    <a href="{:url('index/details',['id'=>$comment.lesson_id,'video_id'=>$comment.video_id])}"
+                      style="color: #4cb6cb">{$comment.lesson_name|msubstr=0,15,'utf-8',true}
                     </a>
                 </td>
-                <td  class="showPhotos"><img class="img-circle" src="__STATIC__{$lesson.poster}" style="width: 55px;height: 30px;border-radius: 5%;"></td>
-                <td>{$lesson.create_time}</td>
+                <td title="{$comment.video_name}">{$comment.video_name}</td>
+                <td title="{$comment.content}">{$comment.content|msubstr=0,15,'utf-8',true}</td>
+                <td>{$comment.create_time|date="Y-m-d H:i:s",###}</td>
                 <td>
-                    <a href="{:url('index/details',['id'=>$lesson.lesson_id])}" class="btn btn-sm btn-info">查看</a>
-                    <button class="btn btn-sm btn-danger btn-delete" data-href="{:url('index/curriculumDel',['id'=>$lesson.id])}">移除</button>
+                    <a href="" class="btn btn-sm btn-info">查看</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-href="{:url('index/commentDel',['id'=>$comment.comment_id])}">移除</button>
                 </td>
             </tr>
             {/volist}
@@ -67,8 +69,6 @@
 
 <script>
     $(function () {
-        showphotos.init('.showPhotos');
-
         $('.btn-delete').on('click',function () {
             var url = $(this).data('href');
 

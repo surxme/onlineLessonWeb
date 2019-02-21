@@ -153,21 +153,21 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="genres.html">
-                                                            <i class=" icon-speech icon "></i>
-                                                            <span>评论</span>
+                                                        <a href="{:url('index/studentComment')}">
+                                                            <i class=" icon-speech icon <?php if(request()->path()=='index/studentcomment') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/studentcomment') echo 'text-success'; ?>">评论</span>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="events.html">
-                                                            <i class=" icon-paper-plane icon "></i>
-                                                            <span>问答</span>
+                                                        <a href="{:url('index/studentQuestion')}">
+                                                            <i class=" icon-paper-plane icon <?php if(request()->path()=='index/studentquestion') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/studentquestion') echo 'text-success'; ?>">问答</span>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="listen.html">
-                                                            <i class=" icon-star icon  "></i>
-                                                            <span>关注</span>
+                                                        <a href="{:url('index/studentSubscribe')}">
+                                                            <i class=" icon-star icon <?php if(request()->path()=='index/studentsubscribe') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/studentsubscribe') echo 'text-success'; ?>">关注</span>
                                                         </a>
                                                     </li>
                                                     <li>

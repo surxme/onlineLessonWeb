@@ -93,7 +93,10 @@ Route::group('index',function (){
     //学生个人中心
     Route::any('student','StudentController/index');
     Route::any('curriculum','StudentController/curriculum');
-
+    Route::any('curriculumDel','StudentController/curriculumDel');
+    Route::any('studentComment','StudentController/studentComment');
+    Route::any('studentQuestion','StudentController/studentQuestion');
+    Route::any('studentSubscribe','StudentController/subscribe');
 
     Route::any('schedule','StudentCenter/index');
     Route::any('scheduledel','StudentCenter/scheduleDel');
@@ -107,8 +110,8 @@ Route::group('index',function (){
 
     Route::any('comment','StudentCenter/comment');
     //评论添加在视频详情和学生个人中心可用
-    Route::any('commentadd','StudentCenter/commentAdd');
-    Route::any('commentdel','StudentCenter/commentDel');
+//    Route::any('commentadd','StudentCenter/commentAdd');
+//    Route::any('commentdel','StudentCenter/commentDel');
 
     //教师个人中心
     Route::any('tschedule','TeacherCenter/index');
