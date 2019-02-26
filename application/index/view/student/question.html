@@ -25,6 +25,15 @@
     <h3 class="m-b-none text-black">我的问答</h3>
     <small class="text-muted m-b">您的历史问答都在这里了</small>
 </div>
+{eq name="$list|count" value='0'}
+<div class="">
+    <div class="caption wrapper-lg text-center">
+        <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+        <h3 class="post-title">暂无评论</h3>
+    </div>
+</div>
+{/eq}
+{if condition="count($list) > 0"}
 <section class="panel panel-default">
     <div class="table-responsive">
         <table class="table table-striped b-t b-light">
@@ -45,9 +54,9 @@
                       style="color: #4cb6cb">{$comment.lesson_name|msubstr=0,15,'utf-8',true}
                     </a>
                 </td>
-                <td title="{$comment.video_name}">{$comment.video_name}</td>
+                <td title="{$comment.video_name}">{$comment.video_name|msubstr=0,15,'utf-8',true}</td>
                 <td title="{$comment.content}">{$comment.content|msubstr=0,15,'utf-8',true}</td>
-                <td>{$comment.create_time|date="Y-m-d H:i:s",###}</td>
+                <td>{$comment.create_time|date="Y-m-d",###}</td>
                 <td>
                     <a href="" class="btn btn-sm btn-info">查看</a>
                     <button class="btn btn-sm btn-danger btn-delete" data-href="{:url('index/commentDel',['id'=>$comment.comment_id])}">移除</button>
@@ -66,7 +75,7 @@
         </div>
     </footer>
 </section>
-
+{/if}
 <script>
     $(function () {
         $('.btn-delete').on('click',function () {

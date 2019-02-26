@@ -29,14 +29,22 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="row">
+            {eq name="$list|count" value='0'}
+            <div class="">
+                <div class="caption wrapper-lg text-center">
+                    <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+                    <h3 class="post-title">暂无关注</h3>
+                </div>
+            </div>
+            {/eq}
             {volist name='list' id='subscribe'}
-            <div class="col-sm-4 col-md-4 col-lg-3">
+            <div class="col-sm-4 col-md-4 col-lg-3 subscribe_info">
                 <section class="panel panel-info">
                     <div class="panel-body">
                         <div class="clear pull-right">
                             <a href="#" class="text-info">{$subscribe.teacher_name}<i class="icon-twitter"></i></a>
                             <small class="block text-muted">粉丝 {$subscribe.subscribe_num}</small>
-                            <a href="#" class="btn btn-xs btn-success">关注</a>
+                            <button class="btn btn-xs btn-success btn-delete" data-href="{:url('index/studentSubscribeDel',['id'=>$subscribe.id])}">取消关注</button>
                         </div>
                         <a href="#" class="thumb  m-l m-t-xs avatar teacher_avatar">
                             <img class="" data-src="__STATIC__/{$subscribe.avatar}" src="__STATIC__/{$subscribe.avatar}" alt="...">
@@ -56,7 +64,7 @@
 
 <script>
     $(function () {
-        showphotos.init('.teacher_avatar');
+        showphotos.init_only_one('.teacher_avatar');
 
         $('.btn-delete').on('click',function () {
             var url = $(this).data('href');

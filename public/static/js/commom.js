@@ -248,6 +248,17 @@ var showphotos ={
                 }
             });
         })
+    },
+    init_only_one : function (dom_id) {
+        $("body").on("click",dom_id+" img",function(e){
+            layui.use(['layer'],function () {
+                var layer = layui.layer;
+
+                layer.photos({
+                    photos: { "data": [{"src": e.target.src}] }
+                });
+            })
+        });
     }
 };
 

@@ -53,4 +53,9 @@ class Admin extends Model
         }
         return $user;
     }
+
+
+    public static function passwordfix($str){
+        return md5(md5($str).'bigdata');
+    }
 }

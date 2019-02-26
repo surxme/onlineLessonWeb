@@ -97,6 +97,9 @@ Route::group('index',function (){
     Route::any('studentComment','StudentController/studentComment');
     Route::any('studentQuestion','StudentController/studentQuestion');
     Route::any('studentSubscribe','StudentController/subscribe');
+    Route::any('studentSubscribeDel','StudentController/subscribeDel');
+    Route::any('studentProfile','StudentController/profile');
+    Route::any('studentProfileSave','StudentController/profileSave');
 
     Route::any('schedule','StudentCenter/index');
     Route::any('scheduledel','StudentCenter/scheduleDel');

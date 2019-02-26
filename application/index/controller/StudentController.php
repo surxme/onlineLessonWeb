@@ -13,9 +13,11 @@ use app\admin\model\Util;
 use app\index\model\Admin;
 use app\index\model\Comment;
 use app\index\model\Curriculum;
+use app\index\model\Student;
 use app\index\model\Subscribe;
 use app\index\model\UserBehavior;
 use think\Db;
+use think\Validate;
 
 class StudentController extends BaseController
 {
@@ -64,7 +66,7 @@ class StudentController extends BaseController
         $id = input('param.id');
 
         $curriculum = new Curriculum();
-        $res = $curriculum->where('id',$id)->delete();
+        $res = $curriculum->where('id',$id)->where('student_id',$this->uid)->delete();
 
         if($res){
             return Util::successArrayReturn(['msg'=>'移除成功']);
@@ -119,7 +121,7 @@ class StudentController extends BaseController
     public function subscribe(){
         $list = Db::name('subscribe')->alias('t')
             ->join('teacher tea','t.teacher_id = tea.id')
-            ->field('tea.name as teacher_name,tea.avatar as avatar,t.teacher_id')
+            ->field('t.id,tea.name as teacher_name,tea.avatar as avatar,t.teacher_id')
             ->where('t.uid',$this->uid)
             ->where('t.u_type ',$this->u_type)
             ->paginate(10)->each(function($item, $key){
@@ -131,5 +133,86 @@ class StudentController extends BaseController
         $this->assign('list',$list);
 
         return $this->fetch('student/subscribe');
+    }
+
+    /**
+     * 删除我的订阅
+     * @return array
+     */
+    public function subscribeDel(){
+        $id = input('param.id');
+
+        $subscribe = new Subscribe();
+        $res = $subscribe->where('id',$id)->where('uid',$this->uid)->delete();
+
+        if($res){
+            return Util::successArrayReturn(['msg'=>'移除成功']);
+        }else{
+            return Util::errorArrayReturn(['msg'=>'移除失败']);
+        }
+    }
+
+    /**
+     * 学生个人资料
+     * @throws \think\exception\DbException
+     */
+    public function profile(){
+        $info = Student::get($this->uid);
+
+        $this->assign('info',$info);
+
+        return $this->fetch('student/profile');
+    }
+
+    /**
+     * 保存
+     * @return array
+     */
+    public function profileSave(){
+        $name = input('param.name');
+        $student_no = input('param.student_no');
+        $sex = input('param.sex');
+        $bir = input('param.bir');
+        $avatar = input('param.avatar');
+        $email = input('param.email');
+        $id = input('param.id');
+        $password = input('param.password');
+
+        $data = [
+            'name' => $name,
+            'student_no' => $student_no,
+            'sex' => $sex,
+            'bir' => strtotime($bir),
+            'avatar' => $avatar,
+            'email' => $email,
+        ];
+
+        if($password){
+            $validate = new Validate([
+                'password'  => 'min:6|max:12',
+            ],[
+                'password.min' => '密码为6-12位',
+                'password.max' => '密码为6-12位',
+            ]);
+            if (!$validate->check(['password' => $password])) {
+                return Util::errorArrayReturn(['msg' => $validate->getError()]);
+            }
+            $data['password'] = Admin::passwordfix($password);
+        }
+
+        $student = new Student();
+        // 调用当前模型对应的User验证器类进行数据验证
+        if($id){
+            $data['id'] = $id;
+            $res = $student->validate(true)->save($data,['id'=>$id]);
+        }else{
+            return Util::errorArrayReturn(['msg'=>'参数错误']);
+        }
+
+        if($res){
+            return Util::successArrayReturn();
+        }else{
+            return Util::errorArrayReturn(['msg'=>$student->getError()]);
+        }
     }
 }

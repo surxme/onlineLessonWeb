@@ -4155,3 +4155,7 @@ fieldset[disabled] .i-checks input + i:before {
   background: #3d3d4b;
   border-color: #32323d;
   color: #ffffff; }
+
+.empty-info-png{
+  width: 13rem;
+}

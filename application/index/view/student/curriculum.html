@@ -25,6 +25,15 @@
     <h3 class="m-b-none text-black">课程表</h3>
     <small class="text-muted m-b">您收藏的课程都在这里了</small>
 </div>
+{eq name="$list|count" value='0'}
+<div class="">
+    <div class="caption wrapper-lg text-center">
+        <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+        <h3 class="post-title">暂无课程</h3>
+    </div>
+</div>
+{/eq}
+{if condition="count($list) > 0"}
 <section class="panel panel-default">
     <div class="table-responsive">
         <table class="table table-striped b-t b-light">
@@ -64,10 +73,12 @@
         </div>
     </footer>
 </section>
+{/if}
 
 <script>
     $(function () {
-        showphotos.init('.showPhotos');
+        // showphotos.init('.showPhotos');
+        showphotos.init_only_one('.showPhotos');
 
         $('.btn-delete').on('click',function () {
             var url = $(this).data('href');
