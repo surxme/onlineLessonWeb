@@ -101,6 +101,17 @@ Route::group('index',function (){
     Route::any('studentProfile','StudentController/profile');
     Route::any('studentProfileSave','StudentController/profileSave');
 
+    //教师个人中心
+    Route::any('teacher','TeacherController/index');
+    Route::any('curriculum','TeacherController/curriculum');
+    Route::any('curriculumDel','TeacherController/curriculumDel');
+    Route::any('studentComment','TeacherController/studentComment');
+    Route::any('studentQuestion','TeacherController/studentQuestion');
+    Route::any('studentSubscribe','TeacherController/subscribe');
+    Route::any('studentSubscribeDel','TeacherController/subscribeDel');
+    Route::any('studentProfile','TeacherController/profile');
+    Route::any('studentProfileSave','TeacherController/profileSave');
+
     Route::any('schedule','StudentCenter/index');
     Route::any('scheduledel','StudentCenter/scheduleDel');
     Route::any('favorite','StudentCenter/favorite');

@@ -1,0 +1,89 @@
+{layout name="layouts/teacherlayout" /}
+<style>
+    .page_items .pagination {
+        display: inline-flex;
+    }
+
+    .page_items .pagination .page-item .page-link {
+        font-size: 1.2rem;
+    }
+
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+</style>
+
+<section>
+    <div class="caption wrapper-lg">
+        <div class="m-b-md">
+            <h3 class="m-b-none">你好，{$curUserInfo.name}</h3>
+        </div>
+        <p>最近登录</p>
+        <div class="post-sum">
+            {volist name='login_time' id='val'}
+                <p>{$val|date='Y-m-d H:i:s',###}</p>
+            {/volist}
+        </div>
+        <div id="chart1" style="width: 100%;height: 30rem"></div>
+    </div>
+</section>
+<script>
+    //1.按部门 2.按员工 3.按日期
+    var option = {
+        title: {
+            text: '',
+            subtext: ''
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            //新增客户+新增项目的总数；客户拜访量+项目拜访量
+            data: ['观看量', '点赞量', '评论量'],
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: 'category',
+                data: ['1','2','3']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [{
+            name: '周一',
+            type: 'line',
+            data: [48, 20, 32]
+        },{
+            name: '周一',
+            type: 'line',
+            data: [5, 27, 35]
+        },
+            {
+                name: '周一',
+                type: 'line',
+                data: [51, 33, 65]
+            }],
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    var chart1 = echarts.init(document.getElementById('chart1'));
+    chart1.setOption(option);
+
+</script>

@@ -102,7 +102,11 @@
                     </a>
                     <ul class="dropdown-menu animated fadeInRight">
                         <li>
+                            {if  condition="$Think.session.bigdata_user_type eq 1"}
                             <a href="{:url('index/student')}">个人中心</a>
+                            {elseif  condition="$Think.session.bigdata_user_type eq 2"/}
+                            <a href="{:url('index/teacher')}">个人中心</a>
+                            {/if}
                         </li>
                         <li>
                             <a href="#">
