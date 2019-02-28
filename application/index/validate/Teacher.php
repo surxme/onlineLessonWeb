@@ -9,7 +9,7 @@ class Teacher extends Validate
     protected $rule=[
         'name'=>'require|max:20|chsDash',
         'teacher_no'=>'require|unique:teacher',
-        'dept_id'=>'require',
+//        'dept_id'=>'require',
         'bir'=>'require',
         'email'=>'email|require|unique:teacher',
         'avatar'=>'require',

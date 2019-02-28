@@ -156,21 +156,27 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{:url('index/curriculum')}">
-                                                            <i class="icon-calendar icon <?php if(request()->path()=='index/curriculum') echo 'text-success'; ?>"></i>
-                                                            <span class="<?php if(request()->path()=='index/curriculum') echo 'text-success'; ?>">课程表</span>
+                                                        <a href="{:url('index/schedule')}">
+                                                            <i class="icon-calendar icon <?php if(request()->path()=='index/schedule') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/schedule') echo 'text-success'; ?>">我的课程</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{:url('index/videos')}">
+                                                            <i class=" icon-social-youtube icon <?php if(request()->path()=='index/videos') echo 'text-success'; ?>"></i>
+                                                            <span class="<?php if(request()->path()=='index/videos') echo 'text-success'; ?>">我的视频</span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="{:url('index/teacherComment')}">
                                                             <i class=" icon-speech icon <?php if(request()->path()=='index/teachercomment') echo 'text-success'; ?>"></i>
-                                                            <span class="<?php if(request()->path()=='index/teachercomment') echo 'text-success'; ?>">评论</span>
+                                                            <span class="<?php if(request()->path()=='index/teachercomment') echo 'text-success'; ?>">学员评论</span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="{:url('index/teacherQuestion')}">
                                                             <i class=" icon-paper-plane icon <?php if(request()->path()=='index/teacherquestion') echo 'text-success'; ?>"></i>
-                                                            <span class="<?php if(request()->path()=='index/teacherquestion') echo 'text-success'; ?>">问答</span>
+                                                            <span class="<?php if(request()->path()=='index/teacherquestion') echo 'text-success'; ?>">学员问答</span>
                                                         </a>
                                                     </li>
                                                     <li>

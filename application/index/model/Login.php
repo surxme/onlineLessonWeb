@@ -18,7 +18,7 @@ class Login extends Model
      */
 	public function login($name,$pass,$type){
 	    $table =$this->getTableName($type);
-        $user=Db::name($table)->where("email|".$table.'_no',$name)->find();
+        $user=Db::name($table)->where("email|".$table.'_no',$name)->where('is_del',0)->find();
         if(!empty($user)){
             if($this->getMd5Password($pass)!=$user['password']){
                 return 1;

@@ -1,0 +1,88 @@
+{layout name="layouts/studentlayout" /}
+<style>
+    .page_items .pagination {
+        display: inline-flex;
+    }
+
+    .page_items .pagination .page-item .page-link {
+        font-size: 1.2rem;
+    }
+
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+    .page-inner .table td,th{
+        color: #545a5f;
+        font-weight: normal;
+    }
+
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+</style>
+<div class="m-b-md">
+    <h3 class="m-b-none text-black">我的关注</h3>
+    <small class="text-muted m-b">您的关注都在这里了</small>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            {eq name="$list|count" value='0'}
+            <div class="">
+                <div class="caption wrapper-lg text-center">
+                    <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+                    <h3 class="post-title">暂无关注</h3>
+                </div>
+            </div>
+            {/eq}
+            {volist name='list' id='subscribe'}
+            <div class="col-sm-4 col-md-4 col-lg-3 subscribe_info">
+                <section class="panel panel-info">
+                    <div class="panel-body">
+                        <div class="clear pull-right">
+                            <a href="#" class="text-info">{$subscribe.teacher_name}<i class="icon-twitter"></i></a>
+                            <small class="block text-muted">粉丝 {$subscribe.subscribe_num}</small>
+                            <button class="btn btn-xs btn-success btn-delete" data-href="{:url('index/studentSubscribeDel',['id'=>$subscribe.id])}">取消关注</button>
+                        </div>
+                        <a href="#" class="thumb  m-l m-t-xs avatar teacher_avatar">
+                            <img class="" data-src="__STATIC__/{$subscribe.avatar}" src="__STATIC__/{$subscribe.avatar}" alt="...">
+                        </a>
+                    </div>
+                </section>
+            </div>
+            {/volist}
+        </div>
+        <footer class="">
+            <div class="row">
+                {$list->render()}
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        showphotos.init_only_one('.teacher_avatar');
+
+        $('.btn-delete').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认移除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:1});
+                            }else{
+                                layer.msg(data.msg,{icon:2});
+                            }
+                        });
+                    });
+            });
+        });
+    });
+</script>

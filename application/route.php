@@ -103,29 +103,20 @@ Route::group('index',function (){
 
     //教师个人中心
     Route::any('teacher','TeacherController/index');
-    Route::any('curriculum','TeacherController/curriculum');
-    Route::any('curriculumDel','TeacherController/curriculumDel');
-    Route::any('studentComment','TeacherController/studentComment');
-    Route::any('studentQuestion','TeacherController/studentQuestion');
-    Route::any('studentSubscribe','TeacherController/subscribe');
-    Route::any('studentSubscribeDel','TeacherController/subscribeDel');
-    Route::any('studentProfile','TeacherController/profile');
-    Route::any('studentProfileSave','TeacherController/profileSave');
+    Route::any('schedule','TeacherController/schedule');
+    Route::any('videos','TeacherController/videos');
+    Route::any('videoDel','TeacherController/videoDel');
+//    Route::any('curriculumDel','TeacherController/curriculumDel');
+    Route::any('teacherComment','TeacherController/teacherComment');
+    Route::any('teacherQuestion','TeacherController/teacherQuestion');
+//    Route::any('studentSubscribe','TeacherController/subscribe');
+//    Route::any('studentSubscribeDel','TeacherController/subscribeDel');
+    Route::any('teacherProfile','TeacherController/profile');
+    Route::any('teacherProfileSave','TeacherController/profileSave');
 
     Route::any('schedule','StudentCenter/index');
     Route::any('scheduledel','StudentCenter/scheduleDel');
     Route::any('favorite','StudentCenter/favorite');
-
-    Route::any('schangepass','StudentCenter/changepass');
-    Route::any('spersoninfo','StudentCenter/personinfo');
-    Route::any('schangeinfo','StudentCenter/changeinfo');
-    Route::any('dochangepass','StudentCenter/doChangePass');
-    Route::any('collect','StudentCenter/collect');
-
-    Route::any('comment','StudentCenter/comment');
-    //评论添加在视频详情和学生个人中心可用
-//    Route::any('commentadd','StudentCenter/commentAdd');
-//    Route::any('commentdel','StudentCenter/commentDel');
 
     //教师个人中心
     Route::any('tschedule','TeacherCenter/index');

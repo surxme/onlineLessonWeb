@@ -1,0 +1,81 @@
+{layout name="layouts/teacherlayout" /}
+<style>
+    .page_items .pagination {
+        display: inline-flex;
+    }
+
+    .page_items .pagination .page-item .page-link {
+        font-size: 1.2rem;
+    }
+
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+    .page-inner .table td,th{
+        color: #545a5f;
+        font-weight: normal;
+    }
+
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+</style>
+<div class="m-b-md">
+    <h3 class="m-b-none text-black">课程表</h3>
+    <small class="text-muted m-b">您收藏的课程都在这里了</small>
+</div>
+{eq name="$list|count" value='0'}
+<div class="">
+    <div class="caption wrapper-lg text-center">
+        <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+        <h3 class="post-title">暂无课程</h3>
+    </div>
+</div>
+{/eq}
+{if condition="count($list) > 0"}
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table class="table table-striped b-t b-light">
+            <thead>
+            <tr>
+                <th>课程名</th>
+                <th>课程封面</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name='list' id='lesson'}
+            <tr>
+                <td title="{$lesson.name}">
+                    <a href="{:url('index/details',['id'=>$lesson.lesson_id])}"
+                       style="color: #4cb6cb">{$lesson.name|msubstr=0,30,'utf-8',true}
+                    </a>
+                </td>
+                <td  class="showPhotos"><img class="img-circle" src="__STATIC__{$lesson.poster}" style="width: 55px;height: 30px;border-radius: 5%;"></td>
+                <td>{$lesson.create_time}</td>
+                <td>
+                    <a href="{:url('index/details',['id'=>$lesson.lesson_id])}" class="btn btn-sm btn-info">查看</a>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    <footer class="panel-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                <small class="text-muted inline m-t-sm m-b-sm">共 {$list->total()} 条</small>
+            </div>
+            {$list->render()}
+        </div>
+    </footer>
+</section>
+{/if}
+
+<script>
+    $(function () {
+        showphotos.init_only_one('.showPhotos');
+    });
+</script>

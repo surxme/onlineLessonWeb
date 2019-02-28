@@ -17,6 +17,7 @@ use app\index\model\Student;
 use app\index\model\Subscribe;
 use app\index\model\Teacher;
 use app\index\model\UserBehavior;
+use app\index\model\Video;
 use think\Db;
 use think\Validate;
 
@@ -47,27 +48,39 @@ class TeacherController extends BaseController
      * @return mixed
      * @throws \think\exception\DbException
      */
-    public function curriculum(){
-        $curriculum = new Curriculum();
+    public function schedule(){
+        $list = Db::name('lesson_attr')->alias('t')->join('lesson','lesson.id = t.lesson_id')
+        ->where('t.teacher_id',$this->uid)->paginate(10);
 
-        $list = $curriculum->where(['t.student_id'=>$this->uid])->alias('t')
-            ->join('lesson','t.lesson_id = lesson.id')
-            ->field('lesson.id as lesson_id,t.id,t.create_time,lesson.name,lesson.poster')
-            ->paginate(10);
         $this->assign('list',$list);
 
-        return $this->fetch('teacher/curriculum');
+        return $this->fetch('teacher/schedule');
     }
 
     /**
-     * 删除我的课程
+     * 我的视频
+     * @return mixed
+     * @throws \think\exception\DbException
+     */
+    public function videos(){
+        $list = Db::name('video')->alias('t')->join('lesson','lesson.id = t.lesson_id')
+            ->field('t.name as video_name,t.id as video_id,t.create_time,lesson.name as lesson_name,t.lesson_id,lesson.poster')
+        ->where('t.teacher_id',$this->uid)->paginate(10);
+
+        $this->assign('list',$list);
+
+        return $this->fetch('teacher/videos');
+    }
+
+    /**
+     * 删除我的视频
      * @return array
      */
-    public function curriculumDel(){
+    public function videoDel(){
         $id = input('param.id');
 
-        $curriculum = new Curriculum();
-        $res = $curriculum->where('id',$id)->where('teacher_id',$this->uid)->delete();
+        $video = new Video();
+        $res = $video->where('id',$id)->where('teacher_id',$this->uid)->delete();
 
         if($res){
             return Util::successArrayReturn(['msg'=>'移除成功']);
@@ -84,8 +97,9 @@ class TeacherController extends BaseController
     public function teacherComment(){
         $list = Db::name('comment')->alias('t')->join('video v','t.data_id = v.id')
             ->join('lesson l','v.lesson_id = l.id')
+            ->join('lesson_attr la','la.lesson_id = l.id')
             ->field('t.content,t.id as comment_id,l.id as lesson_id,l.name as lesson_name,v.id as video_id,v.name as video_name,l.poster,t.create_time')
-            ->where('t.uid',$this->uid)
+            ->where('la.teacher_id',$this->uid)
             ->where('t.type',Comment::TYPE_COMMENT)
             ->paginate(10);
 
@@ -102,10 +116,11 @@ class TeacherController extends BaseController
     public function teacherQuestion(){
         $list = Db::name('comment')->alias('t')->join('video v','t.data_id = v.id')
             ->join('lesson l','v.lesson_id = l.id')
+            ->join('lesson_attr la','la.lesson_id = l.id')
             ->field('t.content,t.id as comment_id,l.id as lesson_id,
                         l.name as lesson_name,v.id as video_id,v.name as video_name,
                         l.poster,t.create_time,t.title as title')
-            ->where('t.uid',$this->uid)
+            ->where('la.teacher_id',$this->uid)
             ->where('t.type',Comment::TYPE_QUESTION)
             ->paginate(10);
 

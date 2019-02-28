@@ -1,4 +1,4 @@
-{layout name="layouts/studentlayout" /}
+{layout name="layouts/teacherlayout" /}
 <style>
     .page_items .pagination {
         display: inline-flex;
@@ -40,16 +40,16 @@
 <form class="layui-form" action="{:url('index/studentProfileSave')}" id="myform"  enctype="multipart/form-data" method="POST">
     <input type="hidden" value="{$info['id']?$info['id']:''}" name="id">
     <div class="layui-form-item">
-        <label class="layui-form-label">学生名</label>
+        <label class="layui-form-label">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="name" value="{$info['name']?$info['name']:''}" autocomplete="off" placeholder="请输入学生名" class="layui-input require">
+            <input type="text" name="name" value="{$info['name']?$info['name']:''}" autocomplete="off" placeholder="请输入用户名" class="layui-input require">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">学号</label>
+        <label class="layui-form-label">职工号</label>
         <div class="layui-input-block">
-            <input type="text" name="student_no" value="{$info['student_no']?$info['student_no']:''}" autocomplete="off" placeholder="请输入学生号" class="layui-input require">
+            <input type="text" name="teacher_no" value="{$info['teacher_no']?$info['teacher_no']:''}" autocomplete="off" placeholder="请输入职工号" class="layui-input require">
         </div>
     </div>
 
@@ -132,9 +132,8 @@
         layui.use(['form','layer'], function() {
             var layer = layui.layer;
             var params = $('#myform').serialize();
-            var url = $(this).data('href');
 
-            ajax_request.post("{:url('index/studentProfileSave')}",params,function (data) {
+            ajax_request.post("{:url('index/teacherProfileSave')}",params,function (data) {
                 if(data.is_ok=='ok'){
                     location.reload();//刷新页面
                     layer.msg(data.msg,{icon:1});

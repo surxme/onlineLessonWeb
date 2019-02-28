@@ -182,8 +182,13 @@
       <div class="tab-pane active" id="home">
         <div class="list-group">
           {volist name='video_list' id='vd'}
-          <a href="{:url('index/details',['id'=>$vd.lesson_id,'video_id'=>$vd.id])}" class="list-group-item">
-            <i class="fa fa-play-circle icon-muted fa-fw" style="color: #000000;font-size: 16px;"></i> {$vd.name}
+          <a href="{:url('index/details',['id'=>$vd.lesson_id,'video_id'=>$vd.id])}"
+             class="list-group-item {$video['id']==$vd['id']?'text-success':'text-black'}">
+            <i class="fa fa-play-circle icon-muted fa-fw
+             {$video['id']==$vd['id']?'text-success':'text-black'}"
+               style="font-size: 16px;">
+            </i>
+            {$vd.name}
           </a>
           {/volist}
         </div>
@@ -202,9 +207,9 @@
                 <div class="col-sm-3 col-xs-6 col-lg-3 text-center">
                   <section class="panel panel-info">
                     <div class="panel-body">
-                                  <span href="#" class="thumb avatar">
-                                    <img src="__STATIC__/{$t_info.avatar}" alt="...">
-                                  </span>
+                      <span href="#" class="thumb avatar">
+                        <img src="__STATIC__/{$t_info.avatar}" alt="...">
+                      </span>
                       <div class="clear">
                         <a href="#" class="text-info">{$t_info.name}</a>
                       </div>
