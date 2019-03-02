@@ -143,7 +143,7 @@ class StudentController extends BaseController
         $id = input('param.id');
 
         $subscribe = new Subscribe();
-        $res = $subscribe->where('id',$id)->where('uid',$this->uid)->delete();
+        $res = $subscribe->where('id',$id)->where('uid',$this->uid)->where('u_type',$this->u_type)->delete();
 
         if($res){
             return Util::successArrayReturn(['msg'=>'移除成功']);

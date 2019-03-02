@@ -66,6 +66,9 @@ Route::group('admin',function (){
     Route::any('question','QuestionController/index');
 });
 Route::group('index',function (){
+    Route::any('login','index/LoginController/login');
+    Route::any('logout','index/LoginController/logout');
+    Route::any('loginverify', 'index/LoginController/loginverify');
     Route::any('index','index/Index/index');
     Route::any('details','index/Index/details');
     Route::any('getComment','index/Index/getCommentsById');
@@ -74,9 +77,7 @@ Route::group('index',function (){
     Route::any('watchVideoAnchor','index/Index/watchVideoAnchor');
     Route::any('saveComment','index/Index/saveComment');
     Route::any('commentDel','index/Index/commentDel');
-    Route::any('login','index/LoginController/login');
-    Route::any('logout','index/LoginController/logout');
-    Route::any('loginverify', 'index/LoginController/loginverify');
+    Route::any('saveSubscribe', 'index/Index/saveSubscribe');
 
     //文件上传
     Route::any('upload','index/FileUpload/index');
@@ -105,32 +106,13 @@ Route::group('index',function (){
     Route::any('teacher','TeacherController/index');
     Route::any('schedule','TeacherController/schedule');
     Route::any('videos','TeacherController/videos');
+    Route::any('videoAdd','TeacherController/videoAdd');
     Route::any('videoDel','TeacherController/videoDel');
-//    Route::any('curriculumDel','TeacherController/curriculumDel');
     Route::any('teacherComment','TeacherController/teacherComment');
     Route::any('teacherQuestion','TeacherController/teacherQuestion');
-//    Route::any('studentSubscribe','TeacherController/subscribe');
-//    Route::any('studentSubscribeDel','TeacherController/subscribeDel');
+    Route::any('teacherSubscribe','TeacherController/subscribe');
+    Route::any('teacherSubscribeDel','TeacherController/subscribeDel');
     Route::any('teacherProfile','TeacherController/profile');
     Route::any('teacherProfileSave','TeacherController/profileSave');
-
-    Route::any('schedule','StudentCenter/index');
-    Route::any('scheduledel','StudentCenter/scheduleDel');
-    Route::any('favorite','StudentCenter/favorite');
-
-    //教师个人中心
-    Route::any('tschedule','TeacherCenter/index');
-    Route::any('tfavorite','TeacherCenter/favorite');
-    Route::any('tcomment','TeacherCenter/comment');
-    Route::any('tchangepass','TeacherCenter/changepass');
-    Route::any('tpersoninfo','TeacherCenter/personinfo');
-    Route::any('tchangeinfo','TeacherCenter/changeinfo');
-    Route::any('tdochangepass','TeacherCenter/doChangePass');
-    Route::any('addlesson','TeacherCenter/addLesson');
-    Route::any('addvideo','TeacherCenter/addVideo');
-    Route::any('doaddlesson','TeacherCenter/doAddLesson');
-    Route::any('doaddvideo','TeacherCenter/doAddVideo');
-    Route::any('reply','TeacherCenter/reply');
-    Route::any('doreply','TeacherCenter/doReply');
 });
 

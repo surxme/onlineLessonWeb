@@ -1,4 +1,4 @@
-{layout name="layouts/studentlayout" /}
+{layout name="layouts/teacherlayout" /}
 <style>
     .page_items .pagination {
         display: inline-flex;
@@ -44,7 +44,7 @@
                         <div class="clear pull-right">
                             <a href="#" class="text-info">{$subscribe.teacher_name}<i class="icon-twitter"></i></a>
                             <small class="block text-muted">粉丝 {$subscribe.subscribe_num}</small>
-                            <button class="btn btn-xs btn-success btn-delete" data-href="{:url('index/studentSubscribeDel',['id'=>$subscribe.id])}">取消关注</button>
+                            <button class="btn btn-xs btn-success btn-delete" data-href="{:url('index/teacherSubscribeDel',['id'=>$subscribe.id])}">取消关注</button>
                         </div>
                         <a href="#" class="thumb  m-l m-t-xs avatar teacher_avatar">
                             <img class="" data-src="__STATIC__/{$subscribe.avatar}" src="__STATIC__/{$subscribe.avatar}" alt="...">

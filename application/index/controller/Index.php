@@ -7,6 +7,7 @@ use app\index\model\Comment;
 use app\index\model\Curriculum;
 use app\index\model\Lesson;
 use app\index\model\Student;
+use app\index\model\Subscribe;
 use app\index\model\UserBehavior;
 use app\index\model\VideoAttr;
 use think\Db;
@@ -52,6 +53,15 @@ class Index extends BaseController
             $va_db_obj = $video_attr->where('video_id', $data['video']['id'])->where('uid', $uid)->where('type', 1);
             $is_thumbs_uped = $va_db_obj->find();
         }
+
+        //是否关注发布当前视频的教师
+        $is_subscribed = 0;
+        if($uid) {
+            $subscribe = new Subscribe();
+            $subscribe_obj = $subscribe->where('teacher_id', $data['video']['teacher_id'])->where('uid', $uid)->where('u_type', $user_type);
+            $is_subscribed = $subscribe_obj->find();
+        }
+
         //附件
         $attachment = json_decode($data['video']['attachment'],true);
 
@@ -65,6 +75,7 @@ class Index extends BaseController
         $this->assign('thumbs',$views['thumbs']);
         $this->assign('is_thumbs_uped',$is_thumbs_uped?1:0);
         $this->assign('attachment',$attachment);
+        $this->assign('is_subscribed',$is_subscribed?1:0);
         return $this->fetch('details');
     }
 
@@ -171,6 +182,11 @@ class Index extends BaseController
 
     /**
      * 视频点赞保存
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function thumbsUpSave(){
         $id = input('param.id');
@@ -260,6 +276,10 @@ class Index extends BaseController
 
     /**
      * 视频观看锚点 点击播放视频后需要记录用户的操作锚点（登录前提）
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function watchVideoAnchor(){
         $id = input('param.id');
@@ -297,6 +317,45 @@ class Index extends BaseController
                     Db::rollback();
                 }
             }
+        }
+    }
+
+    /**
+     * 点击订阅/关注 如果已经关注则取消关注
+     * @return array
+     */
+    public function saveSubscribe(){
+        $teacher_id = input('param.teacher_id');
+
+        if(!$this->_cur_user){
+            return Util::errorArrayReturn(['msg' => '无法获取已登录用户,请重新登录再试']);
+        }
+        $uid = $this->_cur_user['id'];
+        $u_type = $this->_cur_user['u_type'];
+
+        $data = [
+            'teacher_id' => (int)$teacher_id,
+            'uid' => $uid,
+            'u_type' =>$u_type
+        ];
+        $subscribe = new Subscribe();
+
+        $exist_id = $subscribe->where($data)->value('id');
+
+        $code = 1;
+        $msg = '关注成功';
+        if($exist_id){
+            $res = $subscribe->where('id',$exist_id)->delete();
+            $msg = '已取消关注';
+            $code = 2;
+        }else{
+            $res = $subscribe->validate(true)->save($data);
+        }
+
+        if($res){
+            return Util::successArrayReturn(['msg' => $msg , 'code' => $code]);
+        }else{
+            return Util::errorArrayReturn(['msg' => $subscribe->getError(), 'code' => $code]);
         }
     }
 }

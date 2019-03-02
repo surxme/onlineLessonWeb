@@ -34,76 +34,88 @@
     }
 </style>
 <div class="m-b-md">
-    <h3 class="m-b-none text-black">个人资料</h3>
+    <h3 class="m-b-none text-black">添加视频</h3>
 </div>
 
 <form class="layui-form" action="{:url('index/teacherProfileSave')}" id="myform"  enctype="multipart/form-data" method="POST">
     <input type="hidden" value="{$info['id']?$info['id']:''}" name="id">
     <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
+        <label class="layui-form-label">视频名</label>
         <div class="layui-input-block">
             <input type="text" name="name" value="{$info['name']?$info['name']:''}" autocomplete="off" placeholder="请输入用户名" class="layui-input require">
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">职工号</label>
-        <div class="layui-input-block">
-            <input type="text" name="teacher_no" value="{$info['teacher_no']?$info['teacher_no']:''}" autocomplete="off" placeholder="请输入职工号" class="layui-input require">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">密码</label>
-        <div class="layui-input-block">
-            <input type="password" name="password" placeholder="不输入则不修改" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">单选框</label>
-            <div class="layui-input-inline">
-                <input type="radio" name="sex" value="1" title="男" {$info['sex']?($info['sex']=='1'?'checked':''):'checked'}>
-                <input type="radio" name="sex" value="2" title="女" {$info['sex']?($info['sex']=='2'?'checked':''):''}>
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">生日</label>
-            <div class="layui-input-inline">
-                <input type="text" name="bir" value="{$info['bir']?date('Y-m-d',$info['bir']):''}" id="date" lay-verify="date" placeholder="请点击选择日期" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-block">
-            <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" value="{$info['email']?$info['email']:''}" autocomplete="off" class="layui-input">
-        </div>
-    </div>
 
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">头像</label>
+        <label class="layui-form-label">文本域</label>
         <div class="layui-input-block">
-            <div class="layui-upload">
-                <button type="button" class="layui-btn" id="test1">上传头像</button>
-                <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="demo1" src="{$info['avatar']?'__STATIC__'.$info['avatar']:''}">
-                    <input type="hidden" name="avatar" id="poster" value="{$info['avatar']?$info['avatar']:''}">
-                    <p id="demoText"></p>
-                </div>
-            </div>
+            <textarea placeholder="请输入内容" class="layui-textarea" name="intro"></textarea>
         </div>
+    </div>
+    <div class="layui-upload">
+        <button type="button" class="layui-btn layui-btn-normal" id="testList">添加</button>
+        <div class="layui-upload-list">
+            <table class="layui-table">
+                <thead>
+                <tr><th>单位名称</th>
+                    <th>文件名</th>
+                    <th>上传进度</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr></thead>
+                <tbody id="demoList"></tbody>
+            </table>
+        </div>
+        <button type="button" class="layui-btn" id="testListAction">开始上传</button>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block text-right">
             <button type="button" class="layui-btn profile-submit" >提交</button>
         </div>
     </div>
+    <button type="button" class="layui-btn" id="chooseFile">
+        <i class="layui-icon">&#xe67c;</i>选择文件
+    </button> 文件名称: <span id="fileName"></span>
+    <div style="height: 20px;"></div>
+    <button type="button" class="layui-btn" id="uploadBtn">
+        <i class="layui-icon">&#xe67c;</i>上传文件
+    </button>
+    <div style="height: 20px;"></div>
+    <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="progressBar">
+        <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+    </div>
 </form>
 
 <script>
+    var upload = layui.upload,
+        element = layui.element;
+    element.init();
+
+
+    upload.render({
+        elem: '#chooseFile', // 文件选择
+        accept:'file',
+        url: '{:url("admin/upload")}',
+        auto: false, // 设置不自动提交
+        bindAction: '#uploadBtn', // 提交按钮
+        progress: function(e , percent) {
+            console.log("进度：" + percent + '%');
+            element.progress('progressBar',percent  + '%');
+        },
+        choose: function(obj) {
+            obj.preview(function(index, file, result) {
+                $("#fileName").html(file.name);
+            });
+        },
+        done: function(res) {
+            console.log(res);
+            layer.msg(res.msg);
+        },
+        error: function(res) {
+            layer.msg(res.msg);
+        }
+    });
     //上传文件
     file_upload_manager.croppersUpload('{:url("admin/upload")}',{},'#test1',function (res,index) {
         if(res.is_ok != 'ok'){

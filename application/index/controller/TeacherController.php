@@ -72,6 +72,10 @@ class TeacherController extends BaseController
         return $this->fetch('teacher/videos');
     }
 
+    public function videoAdd(){
+        return $this->fetch('teacher/videoAdd');
+    }
+
     /**
      * 删除我的视频
      * @return array
@@ -90,7 +94,7 @@ class TeacherController extends BaseController
     }
 
     /**
-     * 获取我的评论
+     * 获取关于我的评论
      * @return mixed
      * @throws \think\exception\DbException
      */
@@ -109,7 +113,7 @@ class TeacherController extends BaseController
     }
 
     /**
-     * 获取我的评论
+     * 获取关于我的问答
      * @return mixed
      * @throws \think\exception\DbException
      */
@@ -159,7 +163,7 @@ class TeacherController extends BaseController
         $id = input('param.id');
 
         $subscribe = new Subscribe();
-        $res = $subscribe->where('id',$id)->where('uid',$this->uid)->delete();
+        $res = $subscribe->where('id',$id)->where('uid',$this->uid)->where('u_type',$this->u_type)->delete();
 
         if($res){
             return Util::successArrayReturn(['msg'=>'移除成功']);

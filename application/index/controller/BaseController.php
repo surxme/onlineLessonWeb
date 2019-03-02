@@ -6,12 +6,14 @@ use think\Controller;
 
 class BaseController extends Controller
 {
+    protected $_cur_user = 0;
     /**
      * @throws \think\exception\DbException
      */
     protected function _initialize()
     {
         $user = Admin::getCurUserInfo();
+        $this->_cur_user = $user;
         $this->assign('curUserInfo',$user);
     }
 

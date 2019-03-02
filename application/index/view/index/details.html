@@ -70,6 +70,9 @@
                 <div class="clear">
                   <div class="h3 m-t-xs m-b-xs text-dark" style="color: #333333">
                     <a href="#" class="text-info">{$video.teacher_name}</a>
+                    {neq name="$video.teacher_id" value="$curUserInfo.id"}
+                    <button class="btn btn-xs btn-success btn-subscribe {$is_subscribed==1?'btn-dark':''}" data-href="{:url('index/saveSubscribe',['teacher_id' => $video.teacher_id])}">{$is_subscribed==1?'已关注':'关注'}</button>
+                    {/neq}
                   </div>
                   <small class="text-muted">{$lesson.name}</small>
                 </div>
@@ -473,7 +476,7 @@
             })
         }
 
-        //分页数据ajax获取
+        //评论分页数据ajax获取
         $('#comment').on('click',' .page_items .pagination .page-item',function () {
             var _this = $(this);
             var page_link = _this.find('.page-link').prop('href');
@@ -484,7 +487,7 @@
             return false;
         });
 
-        //分页数据ajax获取
+        //问答分页数据ajax获取
         $('#question').on('click',' .page_items .pagination .page-item',function () {
             var _this = $(this);
             var page_link = _this.find('.page-link').prop('href');
@@ -497,6 +500,32 @@
             var refresh_dom_id = '.page-inner #question';
             var textarea_id = 'question #commentContent';
             layeditinit(page_link,is_loadding,refresh_dom_id,textarea_id);
+            return false;
+        });
+
+        //点击订阅/关注
+        $('.btn-subscribe').on('click',function () {
+            var _this = $(this);
+            var href = _this.data('href');
+
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+
+                ajax_request.post(href, {}, function (data) {
+                    if (data.is_ok = 'ok') {
+                        if (data.code==2) {
+                            _this.removeClass('btn-dark');
+                            _this.text('关注');
+                        } else {
+                            _this.addClass('btn-dark');
+                            _this.text('已关注');
+                        }
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:2});
+                    }
+                });
+            });
             return false;
         });
     });

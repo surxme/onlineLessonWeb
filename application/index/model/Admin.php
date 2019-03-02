@@ -51,6 +51,7 @@ class Admin extends Model
         }else{
             $user = Teacher::get($id);
         }
+        $user['u_type'] = $type;
         return $user;
     }
 
