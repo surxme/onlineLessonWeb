@@ -1,41 +1,30 @@
-{layout name="layouts/teacherlayout" /}
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8"/>
+    <title>BIGDATA</title>
+    <meta name="description"
+          content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <link rel="shortcut icon" href="__STATIC__/img/favicon.png"/>
+    <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
+    <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
+    <script src="__STATIC__/js/zui/js/zui.js"></script>
+    <link rel="stylesheet" href="__STATIC__/js/zui/css/zui.css">
+    <script src="__STATIC__/js/zui/lib/uploader/zui.uploader.js"></script>
+    <link rel="stylesheet" href="__STATIC__/js/zui/lib/uploader/zui.uploader.css">
+</head>
 <style>
-    .page_items .pagination {
-        display: inline-flex;
-    }
-
-    .page_items .pagination .page-item .page-link {
-        font-size: 1.2rem;
-    }
-
-    .page-inner .nav > li > a:hover {
-        text-decoration: none;
-        color: #000000;
-    }
-    .page-inner .table td,th{
-        color: #545a5f;
-        font-weight: normal;
-    }
-
-    .page-inner .nav > li > a {
-        color: #545a5f;
-    }
-
     #myform .layui-form-label{
-        /*width: 14%;*/
         width: 100px;
     }
-    #myform .layui-upload-img{
-        width: 20%;
-    }
-    #myform .layui-form-item .layui-input-inline{
-        margin-left: 10px;
-        margin-right: 0px;
-    }
+
 </style>
-<div class="m-b-md">
-    <h3 class="m-b-none text-black">添加视频</h3>
-</div>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+</fieldset>
 
 <form class="layui-form" action="{:url('index/teacherProfileSave')}" id="myform"  enctype="multipart/form-data" method="POST">
     <input type="hidden" value="{$info['id']?$info['id']:''}" name="id">
@@ -46,115 +35,143 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属课程</label>
+        <div class="layui-input-block">
+            <select name="lesson_id" lay-filter="type">
+                <option value=""></option>
+                {volist name='lesson' id='value'}
+                <option value="{$value.id}" {$info['type_id']?($info['type_id']==$value['id']?'selected':''):''}>{$value.name}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
 
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">文本域</label>
+        <label class="layui-form-label">简介</label>
         <div class="layui-input-block">
             <textarea placeholder="请输入内容" class="layui-textarea" name="intro"></textarea>
         </div>
     </div>
-    <div class="layui-upload">
-        <button type="button" class="layui-btn layui-btn-normal" id="testList">添加</button>
-        <div class="layui-upload-list">
-            <table class="layui-table">
-                <thead>
-                <tr><th>单位名称</th>
-                    <th>文件名</th>
-                    <th>上传进度</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                </tr></thead>
-                <tbody id="demoList"></tbody>
-            </table>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">视频</label>
+        <div class="layui-input-block">
+            <div id='uploader1' class="uploader">
+                <div class="uploader-message text-center">
+                    <div class="content"></div>
+                    <button type="button" class="close">×</button>
+                </div>
+                <div class="uploader-files file-list file-list-lg" data-drag-placeholder="请拖拽文件到此处"></div>
+                <div class="uploader-actions">
+                    <div class="uploader-status pull-right text-muted"></div>
+                    <button type="button" class="btn btn-link uploader-btn-browse"><i class="icon icon-plus"></i> 选择文件</button>
+                    <button type="button" class="btn btn-link uploader-btn-start"><i class="icon icon-cloud-upload"></i> 开始上传</button>
+                </div>
+            </div>
         </div>
-        <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+        <input class="uploader1_input" type="hidden" name="path" value="">
     </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block text-right">
-            <button type="button" class="layui-btn profile-submit" >提交</button>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">附件</label>
+        <div class="layui-input-block">
+            <div id='uploader2' class="uploader">
+                <div class="uploader-message text-center">
+                    <div class="content"></div>
+                    <button type="button" class="close">×</button>
+                </div>
+                <div class="uploader-files file-list file-list-lg" data-drag-placeholder="请拖拽文件到此处"></div>
+                <div class="uploader-actions">
+                    <div class="uploader-status pull-right text-muted"></div>
+                    <button type="button" class="btn btn-link uploader-btn-browse"><i class="icon icon-plus"></i> 选择文件</button>
+                    <!--<button type="button" class="btn btn-link uploader-btn-start"><i class="icon icon-cloud-upload"></i> 开始上传</button>-->
+                </div>
+            </div>
         </div>
-    </div>
-    <button type="button" class="layui-btn" id="chooseFile">
-        <i class="layui-icon">&#xe67c;</i>选择文件
-    </button> 文件名称: <span id="fileName"></span>
-    <div style="height: 20px;"></div>
-    <button type="button" class="layui-btn" id="uploadBtn">
-        <i class="layui-icon">&#xe67c;</i>上传文件
-    </button>
-    <div style="height: 20px;"></div>
-    <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="progressBar">
-        <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+        <input class="uploader2_input" type="hidden" name="attachment" value="">
     </div>
 </form>
+<script type="text/javascript">
+    $('#uploader1').uploader({
+        url: '{:url("index/videoUpload")}'
+        ,filters:{
+            mime_types: [
+                {title: '视频', extensions: 'avi,mp4,flv,wmv,rmvb'},
+            ],
+            max_file_size: '1024mb',
+            prevent_duplicates: true // 不允许上传重复文件
+        }
+        ,chunk_size:0
+        ,limitFilesCount:1//最大数量
+        ,multi_selection:false //是否能同时选择多个文件
+        ,lang:'zh_cn'
+        ,rename:false
+        ,renameByClick:false
+        ,deleteActionOnDone: function(file, doRemoveFile) {
+            doRemoveFile();
+            $('.uploader1_input').val('');
+        }
+        ,onUploadFile: function(file,responseObject) {
+            // console.log('成功');
+        }
+        ,responseHandler: function(responseObject, file) {
+            var data = $.parseJSON(responseObject.response);
 
-<script>
-    var upload = layui.upload,
-        element = layui.element;
-    element.init();
-
-
-    upload.render({
-        elem: '#chooseFile', // 文件选择
-        accept:'file',
-        url: '{:url("admin/upload")}',
-        auto: false, // 设置不自动提交
-        bindAction: '#uploadBtn', // 提交按钮
-        progress: function(e , percent) {
-            console.log("进度：" + percent + '%');
-            element.progress('progressBar',percent  + '%');
-        },
-        choose: function(obj) {
-            obj.preview(function(index, file, result) {
-                $("#fileName").html(file.name);
-            });
-        },
-        done: function(res) {
-            console.log(res);
-            layer.msg(res.msg);
-        },
-        error: function(res) {
-            layer.msg(res.msg);
+            if(data.is_ok == 'ok'){
+                $('.uploader1_input').val(data.file_url);
+            }else{
+                new $.zui.Messager(data.msg, {
+                    type: 'danger'
+                }).show();
+            }
         }
     });
-    //上传文件
-    file_upload_manager.croppersUpload('{:url("admin/upload")}',{},'#test1',function (res,index) {
-        if(res.is_ok != 'ok'){
-            layer.msg('上传失败');
-        }else{
-            var file_url = '__STATIC__/'+res.file_url;
-            $('#demo1').attr('src', file_url);
-            $('#poster').val(res.file_url);
-            layui.layer.close(index);
-            layer.msg('上传成功');
+
+    var attachments = {};
+
+    $('#uploader2').uploader({
+        autoUpload:true
+        ,url: '{:url("index/attachUpload")}'
+        ,filters:{
+            // mime_types: [
+            //     {title: '视频', extensions: 'avi,mp4,flv,wmv,rmvb'},
+            // ],
+            max_file_size: '1024mb',
+            prevent_duplicates: true // 不允许上传重复文件
+        }
+        ,chunk_size:0
+        ,limitFilesCount:9//最大数量
+        // ,multi_selection:false //是否能同时选择多个文件
+        ,lang:'zh_cn'
+        ,rename:false
+        ,renameByClick:false
+        ,deleteActionOnDone: function(file, doRemoveFile) {
+            delete(attachments[file.id]);
+            var attach_vals = Object.values(attachments);
+            $('.uploader2_input').val(attach_vals.join(','));
+            doRemoveFile();
+        }
+        ,onUploadFile: function(file) {
+            // console.log('上传成功', file);
+        }
+        ,responseHandler: function(responseObject, file) {
+            var data = $.parseJSON(responseObject.response);
+
+            if(data.is_ok == 'ok'){
+                attachments[file.id] = data.file_name+'_|_'+data.file_url;
+                var attach_vals = Object.values(attachments);
+                $('.uploader2_input').val(attach_vals.join(','));
+            }else{
+                new $.zui.Messager(data.msg, {
+                    type: 'danger'
+                }).show();
+            }
         }
     });
-    layui.use(['form', 'layedit', 'laydate'], function() {
-        var form = layui.form
-            , layer = layui.layer
-            , laydate = layui.laydate;
-
-        //日期
-        laydate.render({
-            elem: '#date'
-            ,format:'yyyy-MM-dd'
-        });
+    layui.use(['form', 'layer','layedit', 'laydate','upload'], function(){
+        var form = layui.form;
     });
-
-    $('.profile-submit').on('click',function () {
-        layui.use(['form','layer'], function() {
-            var layer = layui.layer;
-            var params = $('#myform').serialize();
-
-            ajax_request.post("{:url('index/teacherProfileSave')}",params,function (data) {
-                if(data.is_ok=='ok'){
-                    location.reload();//刷新页面
-                    layer.msg(data.msg,{icon:1});
-                }else{
-                    layer.msg(data.msg,{icon:2});
-                }
-            });
-            return false;
-        });
-        return false;
-    })
 </script>
+</body>
+</html>

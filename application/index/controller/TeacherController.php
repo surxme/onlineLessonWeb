@@ -13,6 +13,7 @@ use app\admin\model\Util;
 use app\index\model\Admin;
 use app\index\model\Comment;
 use app\index\model\Curriculum;
+use app\index\model\Lesson;
 use app\index\model\Student;
 use app\index\model\Subscribe;
 use app\index\model\Teacher;
@@ -72,8 +73,37 @@ class TeacherController extends BaseController
         return $this->fetch('teacher/videos');
     }
 
+    /**
+     * 添加/修改课程
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function videoAdd(){
+        $lesson = new Lesson();
+        $my_lesson = $lesson->alias('t')->join('lesson_attr la','t.id = la.lesson_id')
+            ->where('la.teacher_id',$this->uid)->field('t.id,t.name')->select();
+        $this->assign('lesson',$my_lesson);
         return $this->fetch('teacher/videoAdd');
+    }
+
+    public function videoSaveAdd(){
+        $data = input('param.');
+
+        if(!$this->uid){
+            return Util::errorArrayReturn(['msg' => '暂无已登录用户']);
+        }
+
+        $data['teacher_id'] = $this->uid;
+        $video = new Video();
+
+        $res = $video->data($data)->save();
+        if($res){
+            return Util::successArrayReturn(['msg'=>'操作成功']);
+        }else{
+            return Util::errorArrayReturn(['msg'=>'操作失败']);
+        }
     }
 
     /**

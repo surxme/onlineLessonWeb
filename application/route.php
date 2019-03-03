@@ -83,6 +83,8 @@ Route::group('index',function (){
     Route::any('upload','index/FileUpload/index');
     Route::any('layeditUpload','index/FileUpload/layeditPicUpload');
     Route::any('excelImport','index/FileUpload/PhpExcelImport');
+    Route::any('videoUpload','index/FileUpload/videoUpload');
+    Route::any('attachUpload','index/FileUpload/attachUpload');
 
     //注册
     Route::any('sreg','index/Index/sReg');
@@ -107,6 +109,7 @@ Route::group('index',function (){
     Route::any('schedule','TeacherController/schedule');
     Route::any('videos','TeacherController/videos');
     Route::any('videoAdd','TeacherController/videoAdd');
+    Route::any('videoSaveAdd','TeacherController/videoSaveAdd');
     Route::any('videoDel','TeacherController/videoDel');
     Route::any('teacherComment','TeacherController/teacherComment');
     Route::any('teacherQuestion','TeacherController/teacherQuestion');

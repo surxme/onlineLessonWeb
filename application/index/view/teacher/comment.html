@@ -57,7 +57,7 @@
                 <td title="{$comment.video_name}">{$comment.video_name|msubstr=0,15,'utf-8',true}</td>
                 <td title="{$comment.content}">{$comment.content|msubstr=0,15,'utf-8',true}</td>
                 <!--<td  class="showPhotos"><img class="img-circle" src="__STATIC__{$comment.poster}" style="width: 55px;height: 30px;border-radius: 5%;"></td>-->
-                <td>{$comment.create_time|date="Y-m-d H:i:s",###}</td>
+                <td>{$comment.create_time|date="Y-m-d H:i",###}</td>
                 <td>
                     <button data-content="{$comment.content}" class="btn btn-sm btn-info btn-detail">查看</button>
                 </td>

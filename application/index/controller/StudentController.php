@@ -47,11 +47,9 @@ class StudentController extends BaseController
      * @throws \think\exception\DbException
      */
     public function curriculum(){
-        $curriculum = new Curriculum();
-
-        $list = $curriculum->where(['t.student_id'=>$this->uid])->alias('t')
+        $list = Db::name('curriculum')->where(['t.student_id'=>$this->uid])->alias('t')
             ->join('lesson','t.lesson_id = lesson.id')
-            ->field('lesson.id as lesson_id,t.id,t.create_time,lesson.name,lesson.poster')
+            ->field('lesson.id as lesson_id,t.id,lesson.name,lesson.poster,t.create_time')
             ->paginate(10);
         $this->assign('list',$list);
 
