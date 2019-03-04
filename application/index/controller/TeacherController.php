@@ -96,13 +96,30 @@ class TeacherController extends BaseController
         }
 
         $data['teacher_id'] = $this->uid;
+
+        $attachments = input('param.attachment');
+
+        $attach_arr = explode(',',$attachments);
+
+        $attach_data = [];
+
+        foreach ($attach_arr as $k => $attach){
+            $tmp = explode('_|_',$attach);
+            $attach_data[] = [
+                'file_url' => $tmp[1],
+                'file_name' => $tmp[0]
+            ];
+        }
+
+        $data['attachment'] = json_encode($attach_data);
+
         $video = new Video();
 
-        $res = $video->data($data)->save();
+        $res = $video->validate(true)->save($data);
         if($res){
             return Util::successArrayReturn(['msg'=>'操作成功']);
         }else{
-            return Util::errorArrayReturn(['msg'=>'操作失败']);
+            return Util::errorArrayReturn(['msg'=>$video->getError()]);
         }
     }
 
@@ -173,7 +190,7 @@ class TeacherController extends BaseController
             ->join('teacher tea','t.teacher_id = tea.id')
             ->field('t.id,tea.name as teacher_name,tea.avatar as avatar,t.teacher_id')
             ->where('t.uid',$this->uid)
-            ->where('t.u_type ',$this->u_type)
+            ->where('t.u_type ',UserBehavior::USER_TYPE_TEACHER)
             ->paginate(10)->each(function($item, $key){
                 $item['subscribe_num'] = Subscribe::where('teacher_id',$item['teacher_id'])->count();
                 return $item;
