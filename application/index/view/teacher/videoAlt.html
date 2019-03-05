@@ -41,7 +41,7 @@
             <select name="lesson_id" lay-filter="type">
                 <option value=""></option>
                 {volist name='lesson' id='value'}
-                <option value="{$value.id}" {$info['type_id']?($info['type_id']==$value['id']?'selected':''):''}>{$value.name}</option>
+                <option value="{$value.id}" {$info['lesson_id']?($info['lesson_id']==$value['id']?'selected':''):''}>{$value.name}</option>
                 {/volist}
             </select>
         </div>
@@ -50,7 +50,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">简介</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入内容" class="layui-textarea" name="intro"></textarea>
+            <textarea placeholder="请输入内容" class="layui-textarea" name="intro">{$info['intro']?$info['intro']:''}</textarea>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <input class="uploader1_input" type="hidden" name="path" value="">
+        <input class="uploader1_input" type="hidden" name="path" value="{$info['path_str']?$info['path_str']:''}">
     </div>
 
     <div class="layui-form-item layui-form-text">
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-        <input class="uploader2_input" type="hidden" name="attachment" value="">
+        <input class="uploader2_input" type="hidden" name="attachment" value="{$info['attachment_str']?$info['attachment_str']:''}">
     </div>
 </form>
 <script type="text/javascript">
@@ -102,6 +102,7 @@
             max_file_size: '1024mb',
             prevent_duplicates: true // 不允许上传重复文件
         }
+        ,staticFiles: {$info["path"]?$info["path"]:'[]'}
         ,chunk_size:0
         ,limitFilesCount:1//最大数量
         ,multi_selection:false //是否能同时选择多个文件
@@ -119,7 +120,7 @@
             var data = $.parseJSON(responseObject.response);
 
             if(data.is_ok == 'ok'){
-                $('.uploader1_input').val(data.file_url);
+                $('.uploader1_input').val(file.name+'_|_'+data.file_name+'_|_'+data.file_url+'_|_'+file.loaded);
             }else{
                 new $.zui.Messager(data.msg, {
                     type: 'danger'
@@ -128,7 +129,7 @@
         }
     });
 
-    var attachments = {};
+    var attachments = {$info['attachment_init_obj']?$info['attachment_init_obj']:'[]'};
 
     $('#uploader2').uploader({
         autoUpload:true
@@ -140,26 +141,28 @@
             max_file_size: '1024mb',
             prevent_duplicates: true // 不允许上传重复文件
         }
+        ,staticFiles: {$info["attachment"]?$info["attachment"]:'[]'}
         ,chunk_size:0
         ,limitFilesCount:9//最大数量
         // ,multi_selection:false //是否能同时选择多个文件
         ,lang:'zh_cn'
         ,rename:false
         ,renameByClick:false
-        ,deleteActionOnDone: function(file, doRemoveFile) {
-            delete(attachments[file.id]);
+        ,deleteActionOnDone: function(file, doRemoveFile) { //因为一般不会
+            delete(attachments[file.file_name]);
             var attach_vals = Object.values(attachments);
             $('.uploader2_input').val(attach_vals.join(','));
             doRemoveFile();
         }
         ,onUploadFile: function(file) {
-            // console.log('上传成功', file);
+            // console.log(file);
         }
         ,responseHandler: function(responseObject, file) {
             var data = $.parseJSON(responseObject.response);
 
             if(data.is_ok == 'ok'){
-                attachments[file.id] = data.file_name+'_|_'+data.file_url;
+                //{'原始文件名'：'原始文件名_|_上传后生成的文件名_|_上传后生成的地址_|_上传后的大小'}
+                attachments[file.remoteData.file_name] = file.name+'_|_'+data.file_name+'_|_'+data.file_url+'_|_'+file.loaded;
                 var attach_vals = Object.values(attachments);
                 $('.uploader2_input').val(attach_vals.join(','));
             }else{

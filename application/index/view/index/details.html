@@ -89,7 +89,7 @@
           <div id="jp_container_1" class="teacher_info item">
             <div class="jp-type-single pos-rlt">
               <div id="jplayer_1" class="jp-jplayer jp-video" style="width: 100%; height: auto;">
-                <!--<video id="vplay" src="__STATIC__/{$video.path}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>-->
+                <!--<video id="vplay" src="__STATIC__/{$video.path_url}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>-->
                 <div id="dplayer"></div>
               </div>
             </div>
@@ -106,7 +106,7 @@
                 {volist name='attachment' id='attach'}
                 <div class="col-md-4 col-sm-6">
                  {$attach.file_name}
-                 <a href="__STATIC__/{$attach.file_url}" download="{$attach.file_name}"><i class="text-success icon-arrow-down"></i></a>
+                 <a href="__STATIC__/{$attach.url}" download="{$attach.file_name}"><i class="text-success icon-arrow-down"></i></a>
                 </div>
                  {/volist}
                </div>
@@ -261,7 +261,7 @@
             screenshot: true,
             logo:'__STATIC__/admin/images/logo.svg',
             video: {
-                url: '__STATIC__/<?php  echo str_replace("\\","/",$video["path"]) ?>',
+                url: '__STATIC__/<?php  echo str_replace("\\","/",$video["path_url"]) ?>',
                 // pic: '__STATIC__/<?php  echo str_replace("\\","/",$lesson["poster"]) ?>'
             }
         });

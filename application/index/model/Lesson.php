@@ -67,6 +67,8 @@ class Lesson extends Model
                 ->find();
         }
 
+        $video['path_url'] = json_decode($video['path'],true)[0]['url'];
+
         //相关推荐
         $suggestion = Db::name('lesson')->alias('t')->where('type_id',$lesson['type_id'])
             ->whereNotIn('t.id',$id)

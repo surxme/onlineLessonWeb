@@ -48,7 +48,7 @@
                         <ul class="nav nav-pills">
                             <li class="nav-item">
                                 <!--<a class="nav-link btn btn-light mr-1 type_add" id="addType" href="#" data-title="视频添加" data-id=""-->
-                                <!--data-href="{:url('admin/videoAdd')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>-->
+                                <!--data-href="{:url('admin/videoAlt')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>-->
                             </li>
                         </ul>
                     </div>
@@ -74,7 +74,7 @@
                             <td>{$vo.teacher_name}</td>
                             <td class="showPhotos"><img src="__STATIC__{$vo.poster}" width="100px" alt=""></td>
                             <td>
-                                <!--<a class="layui-btn layui-btn-xs video_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/videoAdd',['id'=>$vo.id])}">编辑</a>-->
+                                <!--<a class="layui-btn layui-btn-xs video_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/videoAlt',['id'=>$vo.id])}">编辑</a>-->
                                 <a class="layui-btn layui-btn-danger layui-btn-xs video_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/videoDel',['id'=>$vo.id])}">删除</a>
                             </td>
                         </tr>

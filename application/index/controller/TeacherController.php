@@ -80,42 +80,58 @@ class TeacherController extends BaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function videoAdd(){
+    public function videoAlt(){
+        $id = input('param.id');
+
+        $video = [];
+        if($id){
+            $video = Video::get($id);
+            $video['attachment_str'] = Video::implodeAttachments($video['attachment']);
+            $video['attachment_init_obj'] = Video::initAttachmentData($video['attachment']);
+            $video['path_str'] = Video::implodeAttachments($video['path']);
+            $video['path_init_obj'] = Video::initAttachmentData($video['path']);
+//            $video['attachment'] = json_decode($video['attachment'],true);
+        }
+
         $lesson = new Lesson();
         $my_lesson = $lesson->alias('t')->join('lesson_attr la','t.id = la.lesson_id')
             ->where('la.teacher_id',$this->uid)->field('t.id,t.name')->select();
+
         $this->assign('lesson',$my_lesson);
-        return $this->fetch('teacher/videoAdd');
+        $this->assign('info',$video);
+
+        return $this->fetch('teacher/videoAlt');
     }
 
-    public function videoSaveAdd(){
+    public function videoSaveAlt(){
         $data = input('param.');
+        $id = input('param.id');
 
         if(!$this->uid){
             return Util::errorArrayReturn(['msg' => '暂无已登录用户']);
         }
 
         $data['teacher_id'] = $this->uid;
-
         $attachments = input('param.attachment');
-
-        $attach_arr = explode(',',$attachments);
+        $video_file = input('param.path');
 
         $attach_data = [];
-
-        foreach ($attach_arr as $k => $attach){
-            $tmp = explode('_|_',$attach);
-            $attach_data[] = [
-                'file_url' => $tmp[1],
-                'file_name' => $tmp[0]
-            ];
+        if ($attachments){
+            $attach_data = Video::explodeAttachments($attachments);
         }
-
         $data['attachment'] = json_encode($attach_data);
+        $video_data = Video::explodeAttachments($video_file);
+        $data['path'] = json_encode($video_data);
 
         $video = new Video();
 
-        $res = $video->validate(true)->save($data);
+        if($id){
+            $data['id'] = $id;
+            $res = $video->validate(true)->save($data,['id'=>$id]);
+        }else{
+            $res = $video->validate(true)->save($data);
+        }
+
         if($res){
             return Util::successArrayReturn(['msg'=>'操作成功']);
         }else{

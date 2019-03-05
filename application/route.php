@@ -40,8 +40,8 @@ Route::group('admin',function (){
     Route::any('test','LessonController/test');
 //后台视频管理
     Route::any('video','VideoController/index');
-    Route::any('videoAdd','VideoController/add');
-    Route::any('videoSaveAdd','VideoController/saveAdd');
+    Route::any('videoAlt','VideoController/alt');
+    Route::any('videoSaveAlt','VideoController/saveAlt');
     Route::any('videoDel','VideoController/del');
 //学生信息
     Route::any('student','StudentController/index');
@@ -108,8 +108,8 @@ Route::group('index',function (){
     Route::any('teacher','TeacherController/index');
     Route::any('schedule','TeacherController/schedule');
     Route::any('videos','TeacherController/videos');
-    Route::any('videoAdd','TeacherController/videoAdd');
-    Route::any('videoSaveAdd','TeacherController/videoSaveAdd');
+    Route::any('videoAlt','TeacherController/videoAlt');
+    Route::any('videoSaveAlt','TeacherController/videoSaveAlt');
     Route::any('videoDel','TeacherController/videoDel');
     Route::any('teacherComment','TeacherController/teacherComment');
     Route::any('teacherQuestion','TeacherController/teacherQuestion');
