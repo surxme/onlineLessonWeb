@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>BigData</title>
+  <link rel="stylesheet" href="__STATIC__/admin/css/style.css">
+  <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+  <link rel="shortcut icon" href="__STATIC__/img/favicon.png" />
+  <script src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+  <script src="__STATIC__/js/layer/layer.js"></script>
+  <script src="__STATIC__/js/layui/layui.js"></script>
+  <script src="__STATIC__/js/commom.js"></script>
+</head>
+
+<body>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+      <div class="row">
+        <div class="content-wrapper full-page-wrapper d-flex align-items-center auth register-full-bg">
+          <div class="row w-100">
+            <div class="col-lg-5 mx-auto">
+              <div class="auth-form-light text-left p-5">
+                <h2 class="text-center"><a href="{:url('index/index')}"><img src="__STATIC__/img/favicon.png" width="50px" alt=""></a></h2>
+                <h2 class="text-center">注册</h2>
+                <form class="pt-4">
+                  <form>
+                    <div class="form-group">
+                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="工号/学生号">
+                      <i class="mdi mdi-account"></i>
+                    </div>
+                    <div class="form-group">
+                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="用户名">
+                      <i class="mdi mdi-account"></i>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" id="exampleInputPassword2" placeholder="邮箱">
+                      <i class="mdi mdi-eye"></i>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="密码">
+                      <i class="mdi mdi-eye"></i>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" id="exampleInputPassword2" placeholder="确认密码">
+                      <i class="mdi mdi-eye"></i>
+                    </div>
+                    <div class="form-group">
+                      <label for="userType">身份</label>
+                      <select class="form-control" id="userType">
+                        <option value="1" style="color: #333333">学生</option>
+                        <option value="2" style="color: #333333">教师</option>
+                      </select>
+                    </div>
+                    <div class="mt-5">
+                      <a class="btn btn-block btn-primary btn-lg font-weight-medium" href="../../index.html">注册</a>
+                    </div>
+                    <div class="mt-2 text-center">
+                      <a href="{:url('index/login')}" class="auth-link text-black">已有账号? <span class="font-weight-medium">登录</span></a>
+                    </div>
+                  </form>                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

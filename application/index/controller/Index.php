@@ -20,9 +20,43 @@ class Index extends BaseController
      */
     public function index(){
         $params = input('param.');
+        $params['order'] = input('param.order',1);
         $list = (new Lesson())->search($params);
+        $this->assign('params',$params);
         $this->assign('list',$list);
         return $this->fetch('index');
+    }
+
+
+    /**
+     * 点击教师名进入教师个人详情界面
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function teacherHome(){
+        $teacher_id = input('teacher_id');
+        if(!$teacher_id){
+            $this->redirect('index/index');
+        }
+
+        $teacher = Db::name('teacher')->alias('t')
+            ->join('dept','t.dept_id = dept.id','LEFT')
+            ->where('t.id',$teacher_id)
+            ->field('t.id,t.name,t.bir,t.sex,t.avatar,t.email,dept.name as dept_name')
+            ->find();
+
+        $params = [
+            'teacher_id' => $teacher_id
+        ];
+
+        $lesson = new Lesson($params);
+        $list = $lesson->search();
+        $this->assign('list',$list);
+        $this->assign('teacher',$teacher);
+
+        return $this->fetch('index/teacherhome');
     }
 
     /**

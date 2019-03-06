@@ -65,14 +65,14 @@
           <div class="bg hidden-xs ">
               <div class="clearfix">
                 <a href="#" class="pull-left thumb-md avatar b-3x m-r">
-                  <img src="__STATIC__/{$video.avatar}" alt="...">
+                  <img src="__STATIC__/{$video['avatar']?$video['avatar']:'img/default_poster.jpg'}" alt="...">
                 </a>
                 <div class="clear">
                   <div class="h3 m-t-xs m-b-xs text-dark" style="color: #333333">
-                    <a href="#" class="text-info">{$video.teacher_name}</a>
-                    {neq name="$video.teacher_id" value="$curUserInfo.id"}
+                    <a href="{:url('index/teacherhome',['teacher_id'=>$video.teacher_id])}" class="text-info">{$video.teacher_name}</a>
+                    {if(!empty($curUserInfo.id)&&$video.teacher_id!=$curUserInfo.id)}
                     <button class="btn btn-xs btn-success btn-subscribe {$is_subscribed==1?'btn-dark':''}" data-href="{:url('index/saveSubscribe',['teacher_id' => $video.teacher_id])}">{$is_subscribed==1?'已关注':'关注'}</button>
-                    {/neq}
+                    {/if}
                   </div>
                   <small class="text-muted">{$lesson.name}</small>
                 </div>
@@ -214,7 +214,7 @@
                         <img src="__STATIC__/{$t_info.avatar}" alt="...">
                       </span>
                       <div class="clear">
-                        <a href="#" class="text-info">{$t_info.name}</a>
+                        <a href="{:url('index/teacherhome',['teacher_id'=>$t_info.teacher_id])}" class="text-info">{$t_info.name}</a>
                       </div>
                     </div>
                   </section>

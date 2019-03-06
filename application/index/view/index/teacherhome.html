@@ -1,18 +1,26 @@
-<style>
-    .page_items .pagination{
-        display: inline-flex;
-    }
-    .page_items .pagination .page-item .page-link{
-        font-size: 1.2rem;
-    }
-</style>
-
 {layout name="layouts/layout1" /}
-<header class="header bg-light dk padder-lg">
-    <p class="font-thin padder recently"><a class="{$params['order']==1?'text-success':''}" href="{:url('index',['order'=>1])}">最新</a></p>
-    <p class="font-thin padder popular"><a class="{$params['order']==2?'text-success':''}" href="{:url('index',['order'=>2])}">最热</a></p>
-</header>
 <section class="scrollable padder-lg padder-v page-inner">
+    <div class="well bg-white b m-t">
+        <div class="row">
+            <div class="col-xs-12 ">
+                <div class="panel-body">
+                    <span class=" pull-left m-r thumb-md">
+                        <img src="__STATIC__/{$teacher['avatar']?$teacher['avatar']:img/default_avatar.jpg}" class="img-rounded">
+                    </span>
+                    <div class="clear">
+                        <p>
+                            姓名：{$teacher.name} <br>
+                            性别：{$teacher['sex']==1?'男':'女'}<br>
+                            生日：{$teacher.bir|date="Y-m-d",###}<br>
+                            邮箱: {$teacher.email}<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="line"></div>
+    <p class="m-b-lg text-center">关联课程 </p>
     <div class="row row-sm">
         {eq name="$list|count" value='0'}
         <div class="">

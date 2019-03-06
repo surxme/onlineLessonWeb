@@ -19,18 +19,32 @@ class Lesson extends Model
     protected $createTime='create_time';
     protected $updateTime='update_time';
 
-    public function search($params,$pageSize = 12){
+    public function search($params = [],$pageSize = 12){
         $where = [];
-        $list = Db::name('lesson')->alias('t')->order('id desc');
+        $list = Db::name('lesson')->alias('t');
 
-        $subsql = Db::name('video')->group('lesson_id')->field('lesson_id,count(*) as counts')->select(false);
+        $subsql = Db::name('video')->group('lesson_id')->field('lesson_id,count(*) as counts,sum(hits) as l_hits')->select(false);
 
         if(isset($params['search_key'])){
             $where['t.name'] = array('like','%'.$params['search_key'].'%');
         }
 
+        if(isset($params['teacher_id'])){
+            $list->join('lesson_attr la','la.lesson_id = t.id');
+            $where['la.teacher_id'] = array('in',$params['teacher_id']);
+        }
+
         //子查询联查视频不为空的课程做展示
         $list = $list->join(['('.$subsql.')'=>'v'],'v.lesson_id = t.id')->where($where);
+
+        if(isset($params['order'])){
+            if($params['order'] == 1){
+                $list->order('t.create_time desc');
+            }
+            if($params['order'] == 2){
+                $list->order('v.l_hits desc');
+            }
+        }
 
         $list = $list->paginate($pageSize)->each(function ($item,$key){
             $teachers = Teacher::where('id','in',$item['teacher_ids'])->column('name');
