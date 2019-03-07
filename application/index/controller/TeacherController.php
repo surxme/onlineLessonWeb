@@ -37,12 +37,39 @@ class TeacherController extends BaseController
         parent::_initialize();
     }
 
+    /**
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function index(){
         $userBehavior = new UserBehavior();
         $last_login_time = $userBehavior->getLastLoginRecord($this->uid,UserBehavior::USER_TYPE_TEACHER,UserBehavior::ACTION_TYPE_LOGIN);
+
+        $start = mktime(0, 0, 0, date('m'), date('d') - 6, date('Y'));
+        $end = mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')) - 1;
+
+        //最近7天点击量
+        list($xAxis_name_arr1,$echart_data_increment1) = Teacher::getEchartData($start,$end,$this->uid,'hits','观看量');
+//        $this->assign('xAxis_name_arr',$xAxis_name_arr1);
+//        $this->assign('echart_data_increment',$echart_data_increment1);
+        //最近7天点赞量
+        list($xAxis_name_arr2,$echart_data_increment2) = Teacher::getEchartData($start,$end,$this->uid,'thumbs','点赞量');
+        $xAxis_name_arr = [$xAxis_name_arr1,$xAxis_name_arr2];
+        $echart_data_increment = [$echart_data_increment1,$echart_data_increment2];
+
+        $this->assign('xAxis_name_arr',json_encode($xAxis_name_arr1));
+        $this->assign('echart_data_increment',json_encode($echart_data_increment));
+
+
+
+
         $this->assign('login_time',$last_login_time);
         return $this->fetch('teacher/index');
     }
+
+
 
     /**
      * 我的课程表
