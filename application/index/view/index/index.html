@@ -17,7 +17,8 @@
         {eq name="$list|count" value='0'}
         <div class="">
             <div class="caption wrapper-lg text-center">
-                <h2 class="post-title"><a href="#">暂无可访问课程资源</a></h2>
+                <h3 class="post-title"><img class="home-info-png" src="__STATIC__/img/empty-emo.png"></h3>
+                <h3 class="post-title">{$params['search_key']?'没找到<span class="text-danger">\"'.$params['search_key'].'\"</span>相关的内容':'什么都没有...'}</h3>
             </div>
         </div>
         {/eq}

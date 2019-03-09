@@ -69,6 +69,9 @@ Route::group('index',function (){
     Route::any('login','index/LoginController/login');
     Route::any('logout','index/LoginController/logout');
     Route::any('register','index/RegisterController/index');
+    Route::any('registerSave','index/RegisterController/registerSave');
+    Route::any('resetpass','index/RegisterController/resetPass');
+    Route::any('forget','index/RegisterController/forget');
     Route::any('loginverify', 'index/LoginController/loginverify');
     Route::any('index','index/Index/index');
     Route::any('details','index/Index/details');
@@ -82,6 +85,10 @@ Route::group('index',function (){
 
     Route::any('teacherhome','index/Index/teacherhome');
 
+
+    //email
+    Route::any('sendmail','index/MailerController/index');
+    Route::any('sendforget','index/MailerController/sendForget');
 
     //文件上传
     Route::any('upload','index/FileUpload/index');

@@ -5,7 +5,7 @@ function verifyinput() {
         var $this = $(this);
         if($this.val() == '' && ok){
             ok = false;
-            layer.msg( $this.data('name')+'不能为空');
+            layer.msg( $this.data('name')+'不能为空',{icon:2});
         }
     });
 

@@ -26,41 +26,42 @@
                 <h2 class="text-center"><a href="{:url('index/index')}"><img src="__STATIC__/img/favicon.png" width="50px" alt=""></a></h2>
                 <h2 class="text-center">注册</h2>
                 <form class="pt-4">
-                  <form>
                     <div class="form-group">
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="工号/学生号">
+                      <input type="text" class="form-control" id="no" placeholder="学号">
                       <i class="mdi mdi-account"></i>
                     </div>
                     <div class="form-group">
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="用户名">
-                      <i class="mdi mdi-account"></i>
+                      <input type="text" class="form-control" id="name" placeholder="用户名">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword2" placeholder="邮箱">
+                      <div class="input-group">
+                        <input type="email" class="form-control" id="email" placeholder="邮箱">
+                        <span class="input-group-append">
+                          <button class="btn btn-info btn-sm btn-confirm text-sm">验证</button>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="verifycode" placeholder="请点击获取验证码，并填写">
+                      <i class="mdi mdi-eye"></i>
+                    </div>
+                  <div class="form-group">
+                      <input type="password" class="form-control" id="pass" placeholder="密码">
                       <i class="mdi mdi-eye"></i>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="密码">
+                      <input type="password" class="form-control" id="confirmpass" placeholder="确认密码">
                       <i class="mdi mdi-eye"></i>
-                    </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword2" placeholder="确认密码">
-                      <i class="mdi mdi-eye"></i>
-                    </div>
-                    <div class="form-group">
-                      <label for="userType">身份</label>
-                      <select class="form-control" id="userType">
-                        <option value="1" style="color: #333333">学生</option>
-                        <option value="2" style="color: #333333">教师</option>
-                      </select>
                     </div>
                     <div class="mt-5">
-                      <a class="btn btn-block btn-primary btn-lg font-weight-medium" href="../../index.html">注册</a>
+                      <a class="btn btn-block btn-primary btn-lg font-weight-medium btn-register">注册</a>
                     </div>
                     <div class="mt-2 text-center">
                       <a href="{:url('index/login')}" class="auth-link text-black">已有账号? <span class="font-weight-medium">登录</span></a>
                     </div>
-                  </form>                  
+                  <div class="mt-2 text-center">
+                      <p class="auth-link text-danger">注册教师请联系管理员</p>
+                    </div>
                 </form>
               </div>
             </div>
@@ -70,5 +71,48 @@
     </div>
   </div>
 </body>
+
+<script>
+  $('.btn-confirm').on('click',function () {
+
+      var email = $('#email').val();
+      if (email == ''){
+          layer.msg('请填写邮箱',{icon:2});
+          return false;
+      }
+      ajax_request.post('{:url("index/sendmail")}',{email:email},function (data) {
+          if(data.is_ok == 'ok'){
+              layer.msg(data.msg,{icon:1});
+          }else{
+              layer.msg(data.msg,{icon:2});
+          }
+      });
+      return false;
+  });
+  
+  $('.btn-register').on('click',function () {
+      var pass = $('#pass').val();
+      var confirmpass = $('#confirmpass').val();
+
+      if(pass!==confirmpass){
+          layer.msg('确认密码不一致',{icon:2});
+      }
+      var student_no = $('#no').val();
+      var name = $('#name').val();
+      var email = $('#email').val();
+      var verifycode = $('#verifycode').val();
+
+      ajax_request.post('{:url("index/registerSave")}',
+          {student_no:student_no,pass:pass,confirmpass:confirmpass,name:name,email:email,verifycode:verifycode},
+          function (data) {
+          if(data.is_ok == 'ok'){
+              layer.msg(data.msg,{icon:1});
+              location.assign('{:url("index/login")}');
+          }else{
+              layer.msg(data.msg,{icon:2});
+          }
+      })
+  })
+</script>
 
 </html>
