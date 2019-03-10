@@ -30,6 +30,9 @@
                 删除
               </button>
               {/if}
+              {if condition="$type eq 2"}
+                <a href="{:url('index/questionDetail',['id'=>$item.id])}" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-mail-reply text-muted"></i> 回复</a>
+              {/if}
             </div>
           </div>
         </section>

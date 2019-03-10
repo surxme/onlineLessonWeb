@@ -29,7 +29,7 @@ class Lesson extends Model
 
         $list = $list->where($where);
         $list = $list->paginate($pageSize)->each(function ($item,$key){
-            $teachers = Teacher::where('id','in',$item['teacher_ids'])->column('name');
+            $teachers = Db::name('teacher')->where('id','in',$item['teacher_ids'])->column('name');
             $item['teachers_name'] = implode(',',$teachers);
             return $item;
         });

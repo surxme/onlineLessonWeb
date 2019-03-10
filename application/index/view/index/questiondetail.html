@@ -1,0 +1,116 @@
+{layout name="layouts/layout" /}
+<style>
+    .question-content img{
+        max-width: 30rem;
+    }
+</style>
+<section class="scrollable padder-lg padder-v page-inner">
+    <div class="m-t">
+        <p class="h5">
+            <a href="{:url('index/details',['id'=>$breadcrumbs.lesson_id])}">{$breadcrumbs.lesson_name}</a>
+            \
+            <a href="{:url('index/details',['id'=>$breadcrumbs.lesson_id,'video_id'=>$breadcrumbs.video_id])}">{$breadcrumbs.video_name}</a>
+        </p>
+        <div class="row m-t-sm">
+            <div class="col-xs-12 ">
+                <div class="bg hidden-xs ">
+                    <div class="clearfix">
+                        <a href="#" class="pull-left thumb-sm avatar b-3x m-r">
+                            <img src="/bigdata/public/static/\uploads\poster\5c3364a531495.jpg" alt="...">
+                        </a>
+                        <div class="clear">
+                            <div class="h4 m-t-sm m-b-sm text-dark" style="color: #333333">
+                                <a href="/bigdata/public/index/teacherhome/teacher_id/2.html" class="text-info">roy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-t">
+        <div class="row row-sm">
+            <section class="panel panel-default">
+                <section class="panel-body">
+                    <article class="media">
+                        <div class="media-body">
+                            <div class="pull-right media-xs text-center text-muted">
+                                <small class="label bg-light">{$question.create_time|date='Y-m-d H:i',###}</small>
+                            </div>
+                            <p class="h4 m-b">{$question.content}</p>
+                            <small class="block m-t-sm question-content">{$question.title}</small>
+                        </div>
+                    </article>
+                </section>
+            </section>
+        </div>
+
+        <div class="row row-sm">
+            <section class="comment-list block">
+                <article id="comment-id-1" class="comment-item">
+                    <a class="pull-left thumb-sm avatar">
+                        <img src="/bigdata/public/static/\uploads\poster\5c3364a531495.jpg" class="img-circle" alt="...">
+                    </a>
+                    <span class="arrow left"></span>
+                    <section class="comment-body panel panel-default">
+                        <header class="panel-heading bg-white">
+                            <a href="#">John smith</a>
+                            <span class="text-muted m-l-sm pull-right">
+                                <i class="fa fa-clock-o"></i>
+                                2019-03-11 12:07
+                            </span>
+                        </header>
+                        <div class="panel-body">
+                            <div>Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.</div>
+                            <div class="comment-action m-t-sm">
+                                <a href="#comment-form" class="btn btn-default btn-xs">
+                                    <i class="fa fa-mail-reply text-muted"></i> 回复
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+                <!-- .comment-reply -->
+                <article id="comment-id-2" class="comment-item comment-reply">
+                    <a class="pull-left thumb-sm avatar">
+                        <img src="/bigdata/public/static/\uploads\poster\5c3364a531495.jpg" alt="...">
+                    </a>
+                    <span class="arrow left"></span>
+                    <section class="comment-body panel panel-default text-sm">
+                        <div class="panel-body">
+                          <span class="text-muted m-l-sm pull-right">
+                            <i class="fa fa-clock-o"></i>
+                            2019-03-11 13:07
+                          </span>
+                            <a href="#">Mika Sam</a>
+                            Report this comment is helpful
+                            <div class="comment-action m-t-sm">
+                                <a href="#comment-form" class="btn btn-default btn-xs">
+                                    <i class="fa fa-mail-reply text-muted"></i> 回复
+                                </a>
+                            </div>
+                        </div>
+
+                    </section>
+                </article>
+                <article class="comment-item media" id="comment-form">
+                    <a class="pull-left thumb-sm avatar"><img src="/bigdata/public/static/\uploads\poster\5c3364a531495.jpg" alt="..."></a>
+                    <section class="media-body">
+                        <form action="index.html" class="m-b-none">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Input your comment here">
+                                <span class="input-group-btn">
+                              <button class="btn btn-primary" type="button">POST</button>
+                            </span>
+                            </div>
+                        </form>
+                    </section>
+                </article>
+            </section>
+        </div>
+
+        <div class="row text-center page_items">
+
+        </div>
+    </div>
+</section>

@@ -53,7 +53,8 @@ class Dept extends Model
             );
         }
         //所有教师
-        $teacher_arr = Teacher::all();
+//        $teacher_arr = Teacher::all();
+        $teacher_arr = Db::name('teacher')->where('is_del',0)->select();
         foreach ($teacher_arr as $data) {
             foreach ($dept as $k=> $item){
                 if($item['id'] == $data['dept_id']){

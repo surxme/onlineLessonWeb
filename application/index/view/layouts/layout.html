@@ -141,7 +141,17 @@
     </section>
 </section>
 <div class="waifu" style="opacity: 0.8">
+    <div class="waifu-tips"></div>
     <canvas id="live2d"  class="live2d"></canvas>
+    <div class="waifu-tool">
+        <span class="fui-home"></span>
+        <span class="fui-chat"></span>
+        <span class="fui-eye"></span>
+        <span class="fui-user"></span>
+        <span class="fui-photo"></span>
+        <span class="fui-info-circle"></span>
+        <span class="fui-cross"></span>
+    </div>
 </div>
 <script src="__STATIC__/index/js/bootstrap.js"></script>
 <script src="__STATIC__/index/js/app.js"></script>
@@ -150,11 +160,12 @@
 
 <script>
     // add notes
+    live2d_settings['hitokotoAPI'] = 'hitokoto.cn';  // 一言 API
     live2d_settings['modelId'] = 5;                  // 默认模型 ID
     live2d_settings['modelTexturesId'] = 1;          // 默认材质 ID
     live2d_settings['modelStorage'] = false;         // 不储存模型 ID
     /* 在 initModel 前添加 */
-    initModel('waifu-tips.json');
+    initModel('__STATIC__/js/waifu-tips.json');
 
     function addMsg($msg){
         var $el = $('.nav-user'), $n = $('.count:first', $el), $v = parseInt($n.text());

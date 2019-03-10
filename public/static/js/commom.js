@@ -60,7 +60,7 @@ var file_upload_manager = {
     },
     croppersUpload: function(up_url,attach_data,dom_id,callback){
         layui.config({
-            base: 'cropper/' //layui自定义layui组件目录
+            base: '../static/js/cropper/' //layui自定义layui组件目录
         }).use(['form','croppers'], function () {
             var $ = layui.jquery
                 ,croppers = layui.croppers

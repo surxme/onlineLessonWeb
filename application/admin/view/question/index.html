@@ -58,7 +58,7 @@
                             <td>{$i}</td>
                             <td>{$vo.name}</td>
                             <td><label class="badge {$vo['user_type']==1?'badge-info':'badge-success'}">{$vo.type_name}</label></td>
-                            <td title="{$vo.title}">{$vo.title|msubstr=0,20,'utf-8',true}</td>
+                            <td title="{$vo.content}">{$vo.content|msubstr=0,20,'utf-8',true}</td>
                             <td>{$vo.video_name}</td>
                             <td>{$vo.lesson_name}</td>
                             <td>

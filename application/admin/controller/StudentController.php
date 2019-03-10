@@ -31,7 +31,7 @@ class StudentController extends BaseController
     public function add(){
         $id = input('param.id');
         if($id){
-            $info = Student::get($id);
+            $info = Db::name('student')->where('id',$id)->find();
             $this->assign('info',$info);
         }
 

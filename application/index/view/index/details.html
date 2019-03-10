@@ -465,14 +465,16 @@
             var url = _this.data('href');
             layui.use(['layer'], function() {
                 var layer = layui.layer;
-                ajax_request.post(url, {}, function (data) {
-                    if (data.is_ok == 'ok') {
-                        layer.msg(data.msg,{icon:1});
-                        _this.parent().parent().parent().parent().remove();
-                    }else{
-                        layer.msg(data.msg,{icon:2});
-                    }
-                })
+                layer.confirm('确认删除',{btn:['确认','取消']},function () {
+                  ajax_request.post(url, {}, function (data) {
+                      if (data.is_ok == 'ok') {
+                          layer.msg(data.msg,{icon:1});
+                          _this.parent().parent().parent().parent().remove();
+                      }else{
+                          layer.msg(data.msg,{icon:2});
+                      }
+                  })
+                });
             })
         }
 

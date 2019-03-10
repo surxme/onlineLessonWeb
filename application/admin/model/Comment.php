@@ -34,12 +34,13 @@ class Comment extends Model
 
         $list =$list->where($where)->order('id desc')->field($field)->paginate(10)->each(function($item, $key){
             $item['type_name'] = $item['user_type']==1?'学生':'教师';
-            $user = Student::get($item['uid']);
+            $user = Db::name('student')->where('id',$item['uid'])->find();
             if($item['user_type']==1){
                 $item['name'] = $user['name'];
                 $item['is_banned'] = $user['is_banned'];
             }else{
-                $item['name'] = Teacher::get($item['uid'])['name'];
+                $user = Db::name('teacher')->where('id',$item['uid'])->find();
+                $item['name'] = $user['name'];
             }
             return $item;
         });
