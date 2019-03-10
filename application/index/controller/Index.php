@@ -27,7 +27,6 @@ class Index extends BaseController
         return $this->fetch('index');
     }
 
-
     /**
      * 点击教师名进入教师个人详情界面
      * @return mixed

@@ -79,16 +79,20 @@ class StudentController extends BaseController
 
     /**
      * 删除
-     */
-    /**
      * @return array
      */
     public function del(){
         $id=input('param.id');
-        $re = Student::update(['is_del'=>1],['id'=>$id]);
-        if ($re){
+        Db::startTrans();
+        try{
+            Student::destroy($id);
+            Student::update(['is_del'=>1],['id'=>$id]);
+            // 提交事务
+            Db::commit();
             return Util::successArrayReturn();
-        }else{
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
             return Util::errorArrayReturn();
         }
     }

@@ -11,16 +11,19 @@ namespace app\admin\model;
 
 use think\Db;
 use think\Model;
+use traits\model\SoftDelete;
 
 class Student extends Model
 {
     protected $pk = 'id';
+    use SoftDelete;
+    protected $deleteTime = 'delete_time';
     protected $autoWriteTimestamp=true;
     protected $createTime='create_time';
     protected $updateTime='update_time';
 
     public function search($params,$pageSize = 10){
-        $where = [];
+        $where = ['is_del'=>0];
         $list = Db::name('student')->alias('t')->order('id desc');
 
         if(isset($params['search_key'])){

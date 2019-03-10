@@ -95,10 +95,16 @@ class TeacherController extends BaseController
      */
     public function del(){
         $id=input('param.id');
-        $re = Teacher::update(['is_del'=>1],['id'=>$id]);
-        if ($re){
+        Db::startTrans();
+        try{
+            Teacher::destroy($id);
+            Teacher::update(['is_del'=>1],['id'=>$id]);
+            // 提交事务
+            Db::commit();
             return Util::successArrayReturn();
-        }else{
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
             return Util::errorArrayReturn();
         }
     }
