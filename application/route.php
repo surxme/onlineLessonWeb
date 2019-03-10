@@ -85,6 +85,7 @@ Route::group('index',function (){
 
     Route::any('teacherhome','index/Index/teacherhome');
 
+    Route::any('test','index/RegisterController/test');
 
     //email
     Route::any('sendmail','index/MailerController/index');

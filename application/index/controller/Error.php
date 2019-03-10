@@ -11,7 +11,7 @@ class Error extends Controller
         $this->redirect('index/index');
     }
 
-    public function _empty(){
-        $this->redirect('index/index');
-    }
+//    public function _empty(){
+//        $this->redirect('index/index');
+//    }
 }

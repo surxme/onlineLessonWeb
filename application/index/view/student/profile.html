@@ -116,10 +116,8 @@
             layer.msg('上传成功');
         }
     });
-    layui.use(['form', 'layedit', 'laydate'], function() {
-        var form = layui.form
-            , layer = layui.layer
-            , laydate = layui.laydate;
+    layui.use(['laydate'], function() {
+        var laydate = layui.laydate;
 
         //日期
         laydate.render({

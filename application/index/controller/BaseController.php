@@ -17,7 +17,7 @@ class BaseController extends Controller
         $this->assign('curUserInfo',$user);
     }
 
-    public function _empty(){
-        $this->redirect('index/index');
-    }
+//    public function _empty(){
+//        $this->redirect('index/index');
+//    }
 }

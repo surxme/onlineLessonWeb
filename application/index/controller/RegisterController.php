@@ -129,4 +129,8 @@ class RegisterController extends Controller
             return Util::errorArrayReturn(['msg' => $user->getError()]);
         }
     }
+    
+    public function test(){
+        return $this->fetch('index/404');
+    }
 }

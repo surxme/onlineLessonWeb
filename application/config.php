@@ -247,4 +247,9 @@ return [
     'MAIL_FROMNAME' => '移动web学习', // 发件人姓名
     'MAIL_CHARSET' => 'utf-8', // 设置邮件编码
     'MAIL_ISHTML' => TRUE,
+    'http_exception_template'    =>  [
+        // 定义404错误的重定向页面地址
+        404 =>  APP_PATH . 'index/view/exception_html/404.html',
+        500 =>  APP_PATH . 'index/view/exception_html/500.html',
+    ],
 ];

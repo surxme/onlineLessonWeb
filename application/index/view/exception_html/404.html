@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>  
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="__STATIC__/index/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/app.css" type="text/css" />
+  <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+  <![endif]-->
+</head>
+<body class="bg-light dk">
+    <section id="content">
+    <div class="row m-n">
+      <div class="col-sm-4 col-sm-offset-4">
+        <div class="text-center m-b-lg">
+          <h1 class="h text-white animated fadeInDownBig">404</h1>
+        </div>
+        <div class="list-group auto m-b-sm m-b-lg">
+          <a href="{:url('index/index')}" class="list-group-item">
+            <i class="fa fa-chevron-right icon-muted"></i>
+            <i class="fa fa-fw fa-home icon-muted"></i> 首页
+          </a>
+          <a href="{history(-1)}" class="list-group-item">
+            <i class="fa fa-chevron-right icon-muted"></i>
+            <i class="fa fa-fw fa-home icon-muted"></i> 返回
+          </a>
+          <p class="jump">
+            页面自动 <a id="href" href="<?php echo($url);?>">跳转</a> 等待时间： <b id="wait"><?php echo($wait);?></b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+    <script type="text/javascript">
+        (function(){
+            var wait = document.getElementById('wait'),
+                href = document.getElementById('href').href;
+            var interval = setInterval(function(){
+                var time = --wait.innerHTML;
+                if(time <= 0) {
+                    location.href = href;
+                    clearInterval(interval);
+                };
+            }, 1000);
+        })();
+    </script>
+</body>
+</html>
