@@ -25,7 +25,12 @@ class Question extends BaseController
         $id = input('param.id');
 
         //问题
-        $question = Db::name('comment')->where(['id'=>$id,'type'=>Comment::TYPE_QUESTION])->find();
+        $question = Db::name('comment')
+            ->alias('t')
+            ->join('student','t.uid = student.id')
+            ->where(['t.id'=>$id,'t.type'=>Comment::TYPE_QUESTION])
+            ->field('t.*,student.name as student_name,student.avatar as student_avatar')
+            ->find();
 
         $breadcrumbs = Db::name('video')
             ->alias('t')
