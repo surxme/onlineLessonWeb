@@ -75,8 +75,13 @@ Route::group('index',function (){
     Route::any('loginverify', 'index/LoginController/loginverify');
     Route::any('index','index/Index/index');
     Route::any('details','index/Index/details');
+
+
     Route::any('getComment','index/Index/getCommentsById');
     Route::any('questionDetail','index/Question/detail');
+    Route::any('saveQuestionReplay','index/Question/saveQuestionReplay');
+
+
     Route::any('thumbsUpSave','index/Index/thumbsUpSave');
     Route::any('curriculumSave','index/Index/curriculumSave');
     Route::any('watchVideoAnchor','index/Index/watchVideoAnchor');

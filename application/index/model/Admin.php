@@ -52,6 +52,9 @@ class Admin extends Model
             $user = Teacher::get($id);
         }
         $user['u_type'] = $type;
+        if(!$id){
+            $user = [];
+        }
         return $user;
     }
 

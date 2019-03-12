@@ -1,7 +1,9 @@
 <?php
 namespace app\index\controller;
 
+use app\admin\model\Util;
 use app\index\model\Comment;
+use app\index\model\CommentReply;
 use app\index\model\Lesson;
 use app\index\model\Student;
 use app\index\model\Teacher;
@@ -47,7 +49,7 @@ class Question extends BaseController
 
 
         //所有回复楼层
-        $reply = Db::name('comment_replay')
+        $reply = Db::name('comment_reply')
             ->where('data_id',$question['id'])
             ->where('type',Comment::TYPE_QUESTION)
             ->where('floor_id',0)
@@ -61,8 +63,16 @@ class Question extends BaseController
                 $item['comment_uname'] = $user['name'];
                 $item['comment_uname_avatar'] = $user['avatar'];
 
+                if($item['receive_user_type'] == UserBehavior::USER_TYPE_STUDENT){
+                    $receive_user = Student::get($item['receive_uid']);
+                }else{
+                    $receive_user = Teacher::get($item['receive_uid']);
+                }
+                $item['comment_receive_uname'] = $receive_user['name'];
+                $item['comment_receive_uname_avatar'] = $receive_user['avatar'];
+
                 //楼层下的子回复
-                $child_reply = Db::name('comment_replay')
+                $child_reply = Db::name('comment_reply')
                     ->where('data_id',$item['data_id'])
                     ->where('floor_id',$item['id'])
                     ->where('type',Comment::TYPE_QUESTION)
@@ -94,5 +104,56 @@ class Question extends BaseController
         $this->assign('question',$question);
 
         return $this->fetch('index/questiondetail');
+    }
+
+    /**
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function saveQuestionReplay(){
+        //{content:content,comment_id:comment_id,floor_id:floor_id,question_id:question_id},
+        if(empty($this->_cur_user)){
+            return Util::errorArrayReturn(['msg'=>'暂未登录']);
+        }
+
+        $content = input('param.content');
+        $comment_id = input('param.comment_id');
+        $floor_id = input('param.floor_id');
+        $question_id = input('param.question_id');
+
+        $comment = ['uid'=>0,'user_type'=>1];
+        //被回复的评论
+        if($comment_id){
+            $comment = Db::name('comment_reply')->where('id',$comment_id)->find();
+        }
+        if($comment_id==0){
+            $comment = Db::name('comment')->where('id',$question_id)->find();
+        }
+        $receive_uid = $comment['uid'];
+        $receive_user_type = $comment['user_type'];
+
+        $insert_data = [
+            'data_id' => $question_id,
+            'comment_id' => $comment_id,
+            'uid' => $this->_cur_user['id'],
+            'user_type' => $this->_cur_user['u_type'],
+            'receive_uid' => $receive_uid,
+            'receive_user_type' => $receive_user_type,
+            'content' => $content,
+            'floor_id' => $floor_id,
+            'type' => Comment::TYPE_QUESTION,
+        ];
+
+        $comment_reply = new CommentReply();
+
+        $res = $comment_reply->validate(true)->save($insert_data);
+
+        if($res){
+            return Util::successArrayReturn();
+        }else{
+            return Util::errorArrayReturn(['msg'=>$comment_reply->getError()]);
+        }
     }
 }
