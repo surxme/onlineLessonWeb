@@ -5,6 +5,7 @@ use app\admin\model\Util;
 use app\index\model\Comment;
 use app\index\model\CommentReply;
 use app\index\model\Lesson;
+use app\index\model\Notice;
 use app\index\model\Student;
 use app\index\model\Teacher;
 use app\index\model\UserBehavior;
@@ -53,6 +54,7 @@ class Question extends BaseController
             ->where('data_id',$question['id'])
             ->where('type',Comment::TYPE_QUESTION)
             ->where('floor_id',0)
+            ->order('id desc')
             ->paginate(10)
             ->each(function ($item,$key){
                 if($item['user_type'] == UserBehavior::USER_TYPE_STUDENT){
@@ -147,13 +149,26 @@ class Question extends BaseController
         ];
 
         $comment_reply = new CommentReply();
-
         $res = $comment_reply->validate(true)->save($insert_data);
 
-        if($res){
-            return Util::successArrayReturn();
-        }else{
+        if(!$res){
             return Util::errorArrayReturn(['msg'=>$comment_reply->getError()]);
         }
+        //通知信息
+        $notice_data = [
+            'uid' => $this->_cur_user['id'],
+            'user_type' => $this->_cur_user['u_type'],
+            'type' => Notice::TYPE_REPLY,
+            'receive_id' => $receive_uid,
+            'receive_user_type' => $receive_user_type,
+            'detail_id' => $comment_reply->getLastInsID(),
+        ];
+
+        //如果是二级楼层回复有楼层id直接显示该楼层下以及下面的二级信息
+        //如果没有就直接显示从该楼开始的offset后面的所有回复信息
+        $notice = new Notice();
+        $notice->data($notice_data)->save();
+
+        return Util::successArrayReturn();
     }
 }

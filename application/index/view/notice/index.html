@@ -1,0 +1,124 @@
+{layout name="layouts/layout" /}
+<style>
+    .page-inner .panel{
+        border: none;
+    }
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+    .page-inner .nav > li:hover {
+        background-color: #edf2f3;
+    }
+    .page-inner .list-group-item {
+        margin-bottom: 0px;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+    .page-inner .files-list div{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .page-inner .tab-content > .tab-pane {
+        min-height: 15rem;
+    }
+    .page-inner .lesson-intro img{
+        max-width: 100%;
+    }
+    .page-inner .page_items .pagination{
+        display: inline-flex;
+    }
+</style>
+<div class="scrollable padder-lg padder-v page-inner">
+    <section class="panel panel-default">
+        <header class="panel-heading bg-light">
+            <ul class="nav nav-tabs">
+                <li class="{$type == 1?'active':''} reply" data-href="{:url('index/noticeList',['type'=>1])}"><a href="#reply" data-toggle="tab">回复</a></li>
+                <li class="{$type == 2?'active':''} remind"  data-href="{:url('index/noticeList',['type'=>2])}"><a href="#profile" data-toggle="tab">提醒</a></li>
+            </ul>
+        </header>
+        <div class="panel-body bg-white notice-content">
+            <div class="tab-content">
+                <div class="tab-pane {$type == 1?'active':''}" id="reply">
+                    {if($type == 1)}
+                    <div class="post-sum col-sm-12 no-padder">
+                        <div class="panel">
+                            <div class="panel-collapse in">
+                                {volist name='list' id='vo'}
+                                    <article class="media">
+                                        <div class="media-body">
+                                            <a href="{:url('index/questiondetail',['id'=>$vo.question_id])}" class="h5">{$vo.user_name}回复您的问题</a>
+                                            <small class="block m-t-xs">{$vo.content}</small>
+                                            <em class="text-xs"> <span class="text-danger">{$vo.create_time|date='Y-m-d H:i',###}</span></em>
+                                        </div>
+                                    </article>
+                                    <div class="line pull-in"></div>
+                                {/volist}
+                            </div>
+                        </div>
+                        {$list->render()}
+                    </div>
+                    {/if}
+                </div>
+                <div class="tab-pane {$type == 2?'active':''}" id="profile">
+                    {if($type == 2)}
+                    <div class="post-sum col-sm-12 no-padder">
+                        <div class="panel">
+                            <div class="panel-collapse in">
+                                {volist name='list' id='vo'}
+                                <article class="media">
+                                    <div class="media-body">
+                                        <a href="{:url('index/details',['id'=>$vo.lesson_id,'video_id'=>$vo.detail_id])}" target="_blank" class="h5">新课程通知</a>
+                                        <small class="block m-t-xs">{$vo.content}</small>
+                                        <em class="text-xs"><span class="text-danger">{$vo.create_time|date='Y-m-d H:i',###}</span></em>
+                                    </div>
+                                </article>
+                                <div class="line pull-in"></div>
+                                {/volist}
+                            </div>
+                        </div>
+                        {$list->render()}
+                    </div>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    $(function(){
+        $('.reply').on('click',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            refreshDom(url,{},'.page-inner .notice-content #reply')
+        });
+        $('.remind').on('click',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            refreshDom(url,{},'.page-inner .notice-content #profile')
+        });
+
+        $('#notice-content').on('click','#reply .page_items .pagination .page-item',function () {
+            var _this = $(this);
+            var page_link = _this.find('.page-link').prop('href');
+
+            if(page_link){
+                refreshDom(page_link,{},'.page-inner #reply');
+            }
+            return false;
+        });
+
+        $('#notice-content').on('click','#profile .page_items .pagination .page-item',function () {
+            var _this = $(this);
+            var page_link = _this.find('.page-link').prop('href');
+
+            if(page_link){
+                refreshDom(page_link,{},'.page-inner #profile');
+            }
+            return false;
+        });
+    })
+</script>

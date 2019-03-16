@@ -12,9 +12,8 @@ namespace app\index\controller;
 use app\admin\model\Util;
 use app\index\model\Admin;
 use app\index\model\Comment;
-use app\index\model\Curriculum;
 use app\index\model\Lesson;
-use app\index\model\Student;
+use app\index\model\Notice;
 use app\index\model\Subscribe;
 use app\index\model\Teacher;
 use app\index\model\UserBehavior;
@@ -130,6 +129,12 @@ class TeacherController extends BaseController
         return $this->fetch('teacher/videoAlt');
     }
 
+    /**
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function videoSaveAlt(){
         $data = input('param.');
         $id = input('param.id');
@@ -157,6 +162,41 @@ class TeacherController extends BaseController
             $res = $video->validate(true)->save($data,['id'=>$id]);
         }else{
             $res = $video->validate(true)->save($data);
+        }
+
+        if(!$id){
+            //关注课程的人
+            $insert_data = [];
+            $detail_id = $video->getLastInsID();
+
+            $curriculum_users = Db::name('curriculum')->where('lesson_id',$data['lesson_id'])->select();
+            foreach ($curriculum_users as $c_user){
+                $insert_data[] = [
+                    'uid' => $this->uid,
+                    'user_type' => $this->u_type,
+                    'type' => Notice::TYPE_NEW_LESSON,
+                    'receive_id' => $c_user['student_id'],
+                    'receive_user_type' => UserBehavior::USER_TYPE_STUDENT,
+                    'detail_id' => $detail_id
+                ];
+            }
+
+            $subscribe_users = Db::name('subscribe')->where('teacher_id',$this->uid)->select();
+            foreach ($subscribe_users as $s_user){
+                $insert_data[] = [
+                    'uid' => $this->uid,
+                    'user_type' => $this->u_type,
+                    'type' => Notice::TYPE_NEW_LESSON,
+                    'receive_id' => $s_user['uid'],
+                    'receive_user_type' => $s_user['u_type'],
+                    'detail_id' => $detail_id
+                ];
+            }
+            //如果是二级楼层回复有楼层id直接显示该楼层下以及下面的二级信息
+            //如果没有就直接显示从该楼开始的offset后面的所有回复信息
+            $insert_data = array_unique($insert_data,SORT_REGULAR);
+            $notice = new Notice();
+            $notice->saveAll($insert_data);
         }
 
         if($res){

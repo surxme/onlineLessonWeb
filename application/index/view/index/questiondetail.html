@@ -105,7 +105,7 @@
                 {/volist}
                 <!-- .comment-reply -->
                 <article class="comment-item media" id="comment-form">
-                    <a class="pull-left thumb-sm avatar"><img src="/bigdata/public/static/\uploads\poster\5c3364a531495.jpg" alt="..."></a>
+                    <a class="pull-left thumb-sm avatar"><img src="__STATIC__/{$curUserInfo['avatar']?$curUserInfo['avatar']:'img/default_avatar.jpg'}" alt="..."></a>
                     <section class="media-body bg-white">
                         <form class="m-b-none">
                             <div class="input-group clear m-b-sm">
@@ -150,6 +150,7 @@
         _this.parent().parent().find('.reply-div').toggle();
     });
 
+    //二级楼层回复
     $('.comment-list').on('click','.btn-child-reply',function () {
         var _this = $(this);
         var content = _this.siblings('textarea').val();
@@ -158,7 +159,7 @@
         var params = {content:content,comment_id:comment_id,floor_id:floor_id,question_id:question_id};
         replysave(params);
     });
-
+    //楼层回复
     $('.comment-list').on('click','.btn-floor-reply',function () {
         layedit.sync(index);
         var _this = $(this);
@@ -169,6 +170,7 @@
         replysave(params);
     });
 
+    //回复
     function replysave(params) {
         layui.use(['layer', 'layedit'], function () {
             var layer = layui.layer;

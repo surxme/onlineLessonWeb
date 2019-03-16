@@ -82,6 +82,10 @@ Route::group('index',function (){
     Route::any('saveQuestionReplay','index/Question/saveQuestionReplay');
 
 
+    Route::any('getNoticeNum','index/NoticeController/getNewNoticeNum');
+    Route::any('noticeList','index/NoticeController/index');
+
+
     Route::any('thumbsUpSave','index/Index/thumbsUpSave');
     Route::any('curriculumSave','index/Index/curriculumSave');
     Route::any('watchVideoAnchor','index/Index/watchVideoAnchor');

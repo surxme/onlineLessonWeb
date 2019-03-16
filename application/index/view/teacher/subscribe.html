@@ -42,7 +42,7 @@
                 <section class="panel panel-info">
                     <div class="panel-body">
                         <div class="clear pull-right">
-                            <a href="#" class="text-info">{$subscribe.teacher_name}<i class="icon-twitter"></i></a>
+                            <a href="{:url('index/teacherhome',['teacher_id'=>$subscribe.teacher_id])}" class="text-info">{$subscribe.teacher_name}<i class="icon-twitter"></i></a>
                             <small class="block text-muted">粉丝 {$subscribe.subscribe_num}</small>
                             <button class="btn btn-xs btn-success btn-delete" data-href="{:url('index/teacherSubscribeDel',['id'=>$subscribe.id])}">取消关注</button>
                         </div>

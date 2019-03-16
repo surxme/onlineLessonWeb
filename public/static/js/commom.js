@@ -132,7 +132,7 @@ function refreshDom(url,data,refresh_dom_id,beforeRefresh,afterRefresh){
 
         ajax_request.post(url,data,function(res_data){
             if(beforeRefresh){
-                beforeRefresh();
+                beforeRefresh(res_data);
             }
             var new_dom = $(res_data).find(refresh_dom_id);
             if(new_dom.length <= 0){
@@ -433,3 +433,5 @@ var export_import_manager = {
         });
     }
 };
+
+
