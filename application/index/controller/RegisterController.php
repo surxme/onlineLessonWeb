@@ -131,6 +131,7 @@ class RegisterController extends Controller
     }
     
     public function test(){
-        return $this->fetch('index/404');
+        $this->error('aaaaa');
+//        return $this->fetch('exception_html/404');
     }
 }

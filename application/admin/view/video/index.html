@@ -61,7 +61,7 @@
                             <th>名称</th>
                             <th>所属课程</th>
                             <th>提交人</th>
-                            <th>视频封面</th>
+                            <!--<th>视频封面</th>-->
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -72,7 +72,7 @@
                             <td>{$vo.name}</td>
                             <td>{$vo.lesson_name}</td>
                             <td>{$vo.teacher_name}</td>
-                            <td class="showPhotos"><img src="__STATIC__{$vo.poster}" width="100px" alt=""></td>
+                            <!--<td class="showPhotos"><img src="__STATIC__{$vo.poster}" width="100px" alt=""></td>-->
                             <td>
                                 <!--<a class="layui-btn layui-btn-xs video_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/videoAlt',['id'=>$vo.id])}">编辑</a>-->
                                 <a class="layui-btn layui-btn-danger layui-btn-xs video_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/videoDel',['id'=>$vo.id])}">删除</a>
@@ -95,7 +95,7 @@
 
 <script>
     $(function () {
-        showphotos.init('.showPhotos');
+        // showphotos.init('.showPhotos');
 
         $('.search-btn').on('click',function () {
             var params = $('.filters').serialize();

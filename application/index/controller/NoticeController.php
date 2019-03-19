@@ -33,7 +33,7 @@ class NoticeController extends BaseController
         //如果type=1表示查看回复，需要显示回答的内容和回复人的名字
         //如果是新课程通知则需要显示新课程的名字和通知人的名字
         $list = Db::name('notice')->where($where)
-            ->paginate(2)
+            ->paginate(10)
             ->each(function ($item,$key){
                 if($item['user_type'] == UserBehavior::USER_TYPE_STUDENT){
                     $user = Db::name('student')->where('id',$item['uid'])->find();

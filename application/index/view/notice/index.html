@@ -47,12 +47,25 @@
                     <div class="post-sum col-sm-12 no-padder">
                         <div class="panel">
                             <div class="panel-collapse in">
+                                {eq name="$list|count" value='0'}
+                                <div class="caption wrapper-lg text-center">
+                                    <h4 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h4>
+                                    <h4 class="post-title">暂无消息</h4>
+                                </div>
+                                {/eq}
                                 {volist name='list' id='vo'}
                                     <article class="media">
+                                        <div class="pull-left  m-t-sm">
+                                            {if($vo['status'] == 0)}
+                                            <i class="text-danger fa fa-circle"></i>
+                                            {else /}
+                                            <i class="text-white fa fa-circle"></i>
+                                            {/if}
+                                        </div>
                                         <div class="media-body">
-                                            <a href="{:url('index/questiondetail',['id'=>$vo.question_id])}" class="h5">{$vo.user_name}回复您的问题</a>
+                                            <a href="{:url('index/questiondetail',['id'=>$vo.question_id,'is_check'=>$vo.status,'notice_id'=>$vo.id])}" class="h5">{$vo.user_name}回复您的问题</a>
+                                            <em class="text-xs pull-right"> <span class="">{$vo.create_time|date='Y-m-d H:i',###}</span></em>
                                             <small class="block m-t-xs">{$vo.content}</small>
-                                            <em class="text-xs"> <span class="text-danger">{$vo.create_time|date='Y-m-d H:i',###}</span></em>
                                         </div>
                                     </article>
                                     <div class="line pull-in"></div>
@@ -68,12 +81,25 @@
                     <div class="post-sum col-sm-12 no-padder">
                         <div class="panel">
                             <div class="panel-collapse in">
+                                {eq name="$list|count" value='0'}
+                                <div class="caption wrapper-lg text-center">
+                                    <h4 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h4>
+                                    <h4 class="post-title">暂无消息</h4>
+                                </div>
+                                {/eq}
                                 {volist name='list' id='vo'}
                                 <article class="media">
+                                    <div class="pull-left  m-t-sm">
+                                        {if($vo['status'] == 0)}
+                                        <i class="text-danger fa fa-circle"></i>
+                                        {else /}
+                                        <i class="text-white fa fa-circle"></i>
+                                        {/if}
+                                    </div>
                                     <div class="media-body">
-                                        <a href="{:url('index/details',['id'=>$vo.lesson_id,'video_id'=>$vo.detail_id])}" target="_blank" class="h5">新课程通知</a>
+                                        <a href="{:url('index/details',['id'=>$vo.lesson_id,'video_id'=>$vo.detail_id,'is_check'=>$vo.status,'notice_id'=>$vo.id])}" target="_blank" class="h5">新课程通知</a>
+                                        <em class="text-xs pull-right"><span class="">{$vo.create_time|date='Y-m-d H:i',###}</span></em>
                                         <small class="block m-t-xs">{$vo.content}</small>
-                                        <em class="text-xs"><span class="text-danger">{$vo.create_time|date='Y-m-d H:i',###}</span></em>
                                     </div>
                                 </article>
                                 <div class="line pull-in"></div>

@@ -6,6 +6,7 @@ use app\index\model\Admin;
 use app\index\model\Comment;
 use app\index\model\Curriculum;
 use app\index\model\Lesson;
+use app\index\model\Notice;
 use app\index\model\Student;
 use app\index\model\Subscribe;
 use app\index\model\UserBehavior;
@@ -68,6 +69,14 @@ class Index extends BaseController
     public function details(){
         $video_id = input('param.video_id',0);
         $id = input('param.id');
+        $is_check = input('param.is_check');
+        $notice_id = input('param.notice_id',0);
+
+        if($notice_id&&$is_check == 0){
+            Notice::where('id', $notice_id)
+                ->update(['status' => '1']);
+        }
+
         $data = Lesson::getOneLessonById($id,$video_id);
         list($uid,$user_type) = Admin::getCurUserID();
 

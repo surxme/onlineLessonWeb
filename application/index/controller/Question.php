@@ -24,8 +24,21 @@ class Question extends BaseController
         return $this->fetch('index');
     }
 
+    /**
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function detail(){
         $id = input('param.id');
+        $is_check = input('param.is_check');
+        $notice_id = input('param.notice_id',0);
+
+        if($notice_id&&$is_check == 0){
+            Notice::where('id', $notice_id)
+                ->update(['status' => '1']);
+        }
 
         //问题
         $question = Db::name('comment')

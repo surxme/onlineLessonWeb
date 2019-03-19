@@ -64,11 +64,13 @@
                         </header>
                         <div class="panel-body">
                             <div>{$item.content}</div>
+                            {if($item.uid!=$curUserInfo.id||$item.user_type != $curUserInfo.u_type)}
                             <div class="comment-action m-t-sm">
                                 <span class="btn btn-default btn-xs btn-reply">
                                     <i class="fa fa-mail-reply text-muted"></i> 回复
                                 </span>
                             </div>
+                            {/if}
                             <div class="reply-div" hidden>
                                 <textarea class="form-control" rows="3" placeholder="请输入..." style="resize: none;"></textarea>
                                 <button type="submit" class="btn btn-success m-t-sm btn-child-reply" data-id="{$item.id}" data-floor_id="{$item.id}">提交</button>
@@ -88,11 +90,13 @@
                                 </span>
                                 <p><span class="text-info">{$child.comment_uname}{$child['user_type']==2?'<label class="label bg-success m-l-xs">教师</label>':''} </span> 回复 <span class="text-info">{$child.comment_receive_uname}</span></p>
                                 {$child.content}
+                                {if($child.uid!=$curUserInfo.id||$child.user_type!=$curUserInfo.u_type)}
                                 <div class="comment-action m-t-sm">
                                     <span class="btn btn-default btn-xs btn-reply">
                                         <i class="fa fa-mail-reply text-muted"></i> 回复
                                     </span>
                                 </div>
+                                {/if}
                                 <div class="reply-div" hidden>
                                     <textarea class="form-control" rows="3" placeholder="请输入..." style="resize: none;"></textarea>
                                     <button class="btn btn-success m-t-sm btn-child-reply" data-id="{$child.id}" data-floor_id="{$item.id}">提交</button>
