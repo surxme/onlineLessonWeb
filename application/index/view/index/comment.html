@@ -39,15 +39,15 @@
       </article>
       {/volist}
       <!-- comment form -->
-      {if condition="$user_type neq 2"}
+      {if condition="$user_type&&$user_type neq 2"}
       <article class="comment-item media" id="comment-form">
         <a class="pull-left thumb-sm avatar"><img src="{$user_type==1?'__STATIC__'.$user['avatar']:'__STATIC__/img/default_avatar.jpg'}" alt="..."></a>
         <section class="media-body">
           <form action="index.html" class="m-b-none">
-            <div class="input-group">
+            <div class="input-group" style="width: 100%">
               <input type="text" name="commentTitle" class="form-control" placeholder="{$type==1?'请输入评论':'请输入提问主题'}">
               <textarea id="commentContent" name="commentContent" style="display: none;"></textarea>
-              <span class="input-group-btn">
+              <span class="input-group-btn {$type==2?'pull-left':''}">
                 <button class="btn btn-primary saveCommentbtn" type="button"
                         data-href="{:url('index/saveComment',['type'=>$type==1?'1':'2','user_type'=>$user_type])}">提交</button>
               </span>

@@ -56,7 +56,7 @@ class Lesson extends Model
     }
 
     public static function getOneLessonById($id,$video_id=0){
-        $subsql = Db::name('video')->group('lesson_id')->field('lesson_id,count(*) as counts')->select(false);
+        $subsql = Db::name('video')->group('lesson_id')->field('lesson_id,count(*) as counts,sum(hits) as hits,sum(thumbs) as thumbs')->select(false);
 
         //课程基本信息
         $lesson = Db::name('lesson')->alias('t')
@@ -87,7 +87,7 @@ class Lesson extends Model
         $suggestion = Db::name('lesson')->alias('t')->where('type_id',$lesson['type_id'])
             ->whereNotIn('t.id',$id)
             ->join(['('.$subsql.')'=>'v'],'v.lesson_id = t.id')
-            ->field('id,name,poster,hits')
+            ->field('id,name,poster,v.hits')
             ->limit(3)
             ->order('hits','desc')
             ->select();

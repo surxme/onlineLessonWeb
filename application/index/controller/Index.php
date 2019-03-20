@@ -351,7 +351,7 @@ class Index extends BaseController
                 $res = UserBehavior::insertBehavior($data,$id);
                 //已经点赞
                 if($res) {
-                    $save_res = $v_db_obj->setInc('thumbs');
+                    $save_res = $v_db_obj->setInc('hits');
                 }
                 if($save_res){
                     Db::commit();

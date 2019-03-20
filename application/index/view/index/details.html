@@ -341,13 +341,14 @@
         //评论信息异步获取
         $('.getCommentBtn').on('click',function () {
             var _this = $(this);
-            var is_loadding = _this.find('.is_loadding_dom');
-            var url = _this.data('href');
-            refreshDom(url,{},'.page-inner #comment',function () {
-                is_loadding.show();
-            },function () {
-                is_loadding.hide();
-            })
+
+            layui.use(['layer', 'layedit'], function () {
+                var layer = layui.layer;
+                var url = _this.data('href');
+                var indexpwd = layer.load(1);
+                refreshDom(url, {}, '.page-inner #comment');
+                layer.close(indexpwd);
+            });
         });
 
         //问答信息异步获取
@@ -387,6 +388,7 @@
             layui.use(['layer', 'layedit'], function () {
                 var layer = layui.layer;
                 layedit = layui.layedit;
+                var indexpwd = layer.load(1);
 
                 ajax_request.post(url, {}, function (res_data) {
                     is_loadding.show();
@@ -405,6 +407,7 @@
                     });
                     index = layedit.build(textarea_id, {height: 200}); //建立编辑器
                 });
+                layer.close(indexpwd);
             });
         }
 
@@ -453,15 +456,15 @@
         //删除问答
         $('#question').on('click','.btn-comment-del',function () {
             var _this = $(this);
-            commentDel(_this);
+            commentDel(_this,'.getQuestionBtn');
         });
 
         //删除评论
         $('#comment').on('click','.btn-comment-del',function () {
             var _this = $(this);
-            commentDel(_this);
+            commentDel(_this,'.getCommentBtn');
         });
-        function commentDel(_this){
+        function commentDel(_this,dom_id){
             var url = _this.data('href');
             layui.use(['layer'], function() {
                 var layer = layui.layer;
@@ -469,7 +472,8 @@
                   ajax_request.post(url, {}, function (data) {
                       if (data.is_ok == 'ok') {
                           layer.msg(data.msg,{icon:1});
-                          _this.parent().parent().parent().parent().remove();
+                          // _this.parent().parent().parent().parent().remove();
+                          $(dom_id).trigger('click');
                       }else{
                           layer.msg(data.msg,{icon:2});
                       }
