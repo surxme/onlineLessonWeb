@@ -95,7 +95,7 @@ Route::group('index',function (){
 
     Route::any('teacherhome','index/Index/teacherhome');
 
-    Route::any('test','index/RegisterController/test');
+    Route::any('test','index/TeacherController/dealchunk');
 
     //email
     Route::any('sendmail','index/MailerController/index');
@@ -107,6 +107,7 @@ Route::group('index',function (){
     Route::any('excelImport','index/FileUpload/PhpExcelImport');
     Route::any('videoUpload','index/FileUpload/videoUpload');
     Route::any('attachUpload','index/FileUpload/attachUpload');
+    Route::any('dealChunk','index/TeacherController/dealChunk');
 
     //注册
     Route::any('sreg','index/Index/sReg');

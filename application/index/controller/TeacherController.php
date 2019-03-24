@@ -130,6 +130,42 @@ class TeacherController extends BaseController
     }
 
     /**
+     * 大文件分片上传后合并操作
+     * @return array
+     */
+    public function dealChunk(){
+        //[{
+        //"name":"01\u3001Apache Hadoop--Hadoop\u4ecb\u7ecd.mp4",
+        //"file_name":"5c97a4ae2b1ee.mp4",
+        //"url":"\\uploads\\videos\\5c97a4ae2b1ee.mp4",
+        //"size":"26282683"
+        //}]
+        $chunk_file = input('chunk');
+        $ext= input('ext');
+        $block_info = explode('_|_',$chunk_file);
+        $save_name = $block_info[0];
+
+        if(empty($block_info)){
+            return Util::errorArrayReturn(['msg'=>'没有找到已上传分片']);
+        }
+
+        $fp = fopen(ROOT_PATH  . 'public' . DS  . 'static' .DS . 'uploads' . DS . 'videos' . DS . $save_name.$ext,"wb");
+        foreach ($block_info as $block_file) {
+            $block_file = ROOT_PATH  . 'public' . DS  . 'static' .DS . 'uploads' . DS . 'videos' . DS .$block_file;
+            $handle = fopen($block_file,"rb");
+            fwrite($fp,fread($handle,filesize($block_file)));
+            fclose($handle);
+            unset($handle);
+            unlink($block_file);
+        }
+        $path = [
+            "file_name" => $save_name.$ext,
+            "file_url" => DS . 'uploads' . DS . 'videos' . DS .$save_name.$ext
+        ];
+
+        return Util::successArrayReturn(['path'=>$path]);
+    }
+    /**
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -152,7 +188,12 @@ class TeacherController extends BaseController
             $attach_data = Video::explodeAttachments($attachments);
         }
         $data['attachment'] = json_encode($attach_data);
+
+        if($video_file == ''){
+            return Util::errorArrayReturn(['msg' => '请先上传视频']);
+        }
         $video_data = Video::explodeAttachments($video_file);
+
         $data['path'] = json_encode($video_data);
 
         $video = new Video();

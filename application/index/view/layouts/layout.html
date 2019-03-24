@@ -127,17 +127,17 @@
         </section>
     </section>
 </section>
-<!--<div class="waifu" style="opacity: 0.8">-->
-    <!--<div class="waifu-tips"></div>-->
-    <!--<canvas id="live2d"  class="live2d"></canvas>-->
-<!--</div>-->
+<div class="waifu" style="opacity: 0.8">
+    <div class="waifu-tips"></div>
+    <canvas id="live2d"  class="live2d"></canvas>
+</div>
 <script src="__STATIC__/index/js/bootstrap.js"></script>
 <script src="__STATIC__/index/js/app.js"></script>
 <script src="__STATIC__/index/js/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="__STATIC__/index/js/app.plugin.js"></script>
 
 <script>
-    // initModel('__STATIC__/js/waifu-tips.json');
+    initModel('__STATIC__/js/waifu-tips.json');
 
     function getCounts() {
         ajax_request.post('{:url("index/getNoticeNum")}',{},function (data) {

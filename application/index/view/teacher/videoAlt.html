@@ -93,6 +93,8 @@
     </div>
 </form>
 <script type="text/javascript">
+    var chunk = [];
+
     $('#uploader1').uploader({
         url: '{:url("index/videoUpload")}'
         ,filters:{
@@ -103,7 +105,7 @@
             prevent_duplicates: true // 不允许上传重复文件
         }
         ,staticFiles: {$info["path"]?$info["path"]:'[]'}
-        ,chunk_size:0
+        ,chunk_size:'20mb'
         ,limitFilesCount:1//最大数量
         ,multi_selection:false //是否能同时选择多个文件
         ,lang:'zh_cn'
@@ -112,6 +114,7 @@
         ,deleteActionOnDone: function(file, doRemoveFile) {
             doRemoveFile();
             $('.uploader1_input').val('');
+            chunk = [];
         }
         ,onUploadFile: function(file,responseObject) {
             // console.log('成功');
@@ -125,6 +128,24 @@
                 new $.zui.Messager(data.msg, {
                     type: 'danger'
                 }).show();
+            }
+        },
+        onChunkUploaded:function (file, responseObject) {
+            var data = $.parseJSON(responseObject.response);
+            chunk.push(data.file_name);
+
+            if(responseObject.offset == responseObject.total){
+                console.log(chunk);
+                ajax_request.post('{:url("index/dealChunk")}',{ext:file.ext,chunk:chunk.join('_|_')},function (res) {
+                    if(res.is_ok == 'ok'){
+                        console.log(res);
+                        $('.uploader1_input').val(file.name+'_|_'+res.path.file_name+'_|_'+res.path.file_url+'_|_'+file.loaded);
+                    }else{
+                        new $.zui.Messager(res.msg, {
+                            type: 'danger'
+                        }).show();
+                    }
+                })
             }
         }
     });
