@@ -129,9 +129,9 @@ class FileUpload extends  BaseController
             ->limit(1)
             ->find()['id'];
 
-        $teacher = new Teacher();
-
         foreach ($arrExcel as $key => $value) {
+            //把new放在外面导致只能插入一条数据
+            $teacher = new Teacher();
             $data = array(
                 'name'=>$arrExcel[$key][0],
                 'teacher_no'=>$arrExcel[$key][1],
@@ -146,6 +146,7 @@ class FileUpload extends  BaseController
             );
 
             $id = $teacher->validate(true)->save($data);
+
             if($id){
                 $success_count++;
             }else{
@@ -165,17 +166,16 @@ class FileUpload extends  BaseController
      * @param $fail_array
      */
     public function studentImport($arrExcel,&$success_count,&$fail_counts,&$fail_array){
-        $student = new Student();
-
         foreach ($arrExcel as $key => $value) {
+            $student = new Student();
             $data = array(
                 'name'=>$arrExcel[$key][0],
                 'student_no'=>$arrExcel[$key][1],
                 'password'=>Admin::passwordfix('s123456'),
                 'sex' => $arrExcel[$key][2]=='女'?2:1,
-                'bir' => strtotime($arrExcel[$key][4]),
+                'bir' => strtotime($arrExcel[$key][3]),
                 'avatar' => DS . 'uploads' . DS . 'poster'.DS.'logo.svg',
-                'email' => $arrExcel[$key][5],
+                'email' => $arrExcel[$key][4],
                 'create_time' => time(),
                 'update_time' => time()
             );

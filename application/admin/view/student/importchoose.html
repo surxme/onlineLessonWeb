@@ -58,8 +58,6 @@
             , exts : 'xlsx|csv'
             , bindAction: '#upfile_btn'
             ,before: function(obj){
-                console.log('11111');
-                console.log($.isEmptyObject(obj));
                 if($.isEmptyObject(obj)){
                     layer.alert('请先选择需要导入的文件');
                     return false;
@@ -67,10 +65,9 @@
             }
             , done: function (res) {
                 if(res.code > 0){
-                    layer.alert('上传失败');
+                    layer.alert(res.msg);
                 }else{
                     layer.alert('上传完成,导入成功:'+res.success_counts+',失败:'+res.fail_counts);
-                    $('#excel_file').reset();
                     if(res.fail_counts>0) {
                         export_import_manager.normalExport(res.fail_array, '失败部分反馈', {
                             key: '原文件行号',

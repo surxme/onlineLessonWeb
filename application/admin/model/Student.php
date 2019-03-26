@@ -15,9 +15,9 @@ use traits\model\SoftDelete;
 
 class Student extends Model
 {
-    protected $pk = 'id';
     use SoftDelete;
-    protected $deleteTime = 'delete_time';
+    protected $pk = 'id';
+    protected static $deleteTime = 'delete_time';
     protected $autoWriteTimestamp=true;
     protected $createTime='create_time';
     protected $updateTime='update_time';
