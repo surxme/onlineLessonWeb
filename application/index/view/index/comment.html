@@ -22,7 +22,12 @@
             </span>
           </header>
           <div class="panel-body">
-            <div>{$item.content}</div>
+            <div>
+              {if condition="$type eq 1"}
+                {$item.content}
+              {else /}
+                <a href="{:url('index/questionDetail',['id'=>$item.id])}" target="_blank">{$item.content}</a>
+              {/if}
             <div class="comment-action m-t-sm">
               {if condition="(!empty($user)) and ($user.id eq $item.uid)"}
               <button data-href="{:url('index/commentDel',['id'=>$item.id])}" class="btn btn-default btn-xs btn-comment-del">

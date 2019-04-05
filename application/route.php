@@ -17,6 +17,11 @@ Route::group('admin',function (){
     Route::any('loginverify', 'admin/LoginController/loginverify');
 //主页
     Route::any('index','Index/index');
+//管理员管理
+    Route::any('admin','AdminController/index');
+    Route::any('adminAdd','AdminController/add');
+    Route::any('adminSaveAdd','AdminController/saveAdd');
+    Route::any('adminDel','AdminController/del');
 //文件上传
     Route::any('upload','FileUpload/index');
     Route::any('layeditUpload','FileUpload/layeditPicUpload');

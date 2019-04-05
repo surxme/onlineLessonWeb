@@ -29,6 +29,10 @@ class Lesson extends Model
             $where['t.name'] = array('like','%'.$params['search_key'].'%');
         }
 
+        if($params['ltype']!=''){
+            $where['t.type_id'] = $params['ltype'];
+        }
+
         if(isset($params['teacher_id'])){
             $list->join('lesson_attr la','la.lesson_id = t.id');
             $where['la.teacher_id'] = array('in',$params['teacher_id']);

@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\index\model\Admin;
 use think\Controller;
+use think\Db;
 
 class BaseController extends Controller
 {
@@ -14,7 +15,11 @@ class BaseController extends Controller
     {
         $user = Admin::getCurUserInfo();
         $this->_cur_user = $user;
+
+        $lessonType = Db::name('type')->select();
+
         $this->assign('curUserInfo',$user);
+        $this->assign('lessonType',$lessonType);
     }
 
 //    public function _empty(){
