@@ -29,7 +29,7 @@ class Lesson extends Model
             $where['t.name'] = array('like','%'.$params['search_key'].'%');
         }
 
-        if($params['ltype']!=''){
+        if(isset($params['ltype'])&&$params['ltype']!=''){
             $where['t.type_id'] = $params['ltype'];
         }
 
