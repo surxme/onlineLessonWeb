@@ -25,7 +25,7 @@ class Lesson extends Model
 
         $subsql = Db::name('video')->group('lesson_id')->field('lesson_id,count(*) as counts,sum(hits) as l_hits')->select(false);
 
-        if(isset($params['search_key'])){
+        if(isset($params['search_key'])&&$params['search_key']!=''){
             $where['t.name'] = array('like','%'.$params['search_key'].'%');
         }
 

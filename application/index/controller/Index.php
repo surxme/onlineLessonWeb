@@ -23,6 +23,7 @@ class Index extends BaseController
         $params = input('param.');
         $params['order'] = input('param.order',1);
         $params['ltype'] = input('param.ltype','');
+        $params['search_key'] = input('param.search_key','');
         $list = (new Lesson())->search($params);
         $this->assign('params',$params);
         $this->assign('list',$list);

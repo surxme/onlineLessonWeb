@@ -53,6 +53,8 @@
             <div class="form-group">
                 <div class="input-group">
                     <input type="text" name="search_key" value="{$params['search_key']?$params['search_key']:''}" class="form-control input-sm no-border rounded" placeholder="搜索...">
+                    <input type="hidden" name="order" value="{$params['order']?$params['order']:''}">
+                    <input type="hidden" name="ltype" value="{$params['ltype']?$params['ltype']:''}">
                     <span class="input-group-btn">
                       <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button>
                     </span>

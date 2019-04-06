@@ -131,6 +131,9 @@ class FileUpload extends  BaseController
 
         foreach ($arrExcel as $key => $value) {
             //把new放在外面导致只能插入一条数据
+            if(count($arrExcel[$key])!=5){
+                return Util::successJsonReturn(['code' => 1,'msg' => '请按指定格式整理好excel']);
+            }
             $teacher = new Teacher();
             $data = array(
                 'name'=>$arrExcel[$key][0],
@@ -168,6 +171,9 @@ class FileUpload extends  BaseController
     public function studentImport($arrExcel,&$success_count,&$fail_counts,&$fail_array){
         foreach ($arrExcel as $key => $value) {
             $student = new Student();
+            if(count($arrExcel[$key])!=4){
+                return Util::successJsonReturn(['code' => 1,'msg' => '请按指定格式整理好excel']);
+            }
             $data = array(
                 'name'=>$arrExcel[$key][0],
                 'student_no'=>$arrExcel[$key][1],

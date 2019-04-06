@@ -15,10 +15,10 @@
         <div class="btn-group pull-right" >
             <button class="btn btn-default dropdown-toggle text-sm" data-toggle="dropdown">类别 <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li><a href="{:url('index',['order'=>$params['order'],'ltype'=>''])}"><p class="{$params['ltype']==''?'text-success':''}">全部</p></a></li>
+                <li><a href="{:url('index',['order'=>$params['order'],'ltype'=>'','search_key'=>$params['search_key']])}"><p class="{$params['ltype']==''?'text-success':''}">全部</p></a></li>
                 {volist name='lessonType' id='ltype'}
                     <li>
-                        <a href="{:url('index',['order'=>$params['order'],'ltype'=>$ltype.id])}">
+                        <a href="{:url('index',['order'=>$params['order'],'ltype'=>$ltype.id,'search_key'=>$params['search_key']])}">
                             <p class="{$params['ltype']==$ltype['id']?'text-success':''}">{$ltype.name}</p>
                         </a>
                     </li>
