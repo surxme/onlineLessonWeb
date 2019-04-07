@@ -70,7 +70,7 @@ class DeptController extends BaseController
     public function del(){
         $id=input('param.id');
 
-        $lesson_count = Db::name('dept')->where(['p_id',$id])->count();
+        $lesson_count = Db::name('dept')->where(['p_id'=>$id])->count();
         if($lesson_count>0){
             return Util::errorArrayReturn(['msg' => '该部门下还包含子部门,暂不能删除']);
         }

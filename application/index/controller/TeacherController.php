@@ -61,9 +61,6 @@ class TeacherController extends BaseController
         $this->assign('xAxis_name_arr',json_encode($xAxis_name_arr1));
         $this->assign('echart_data_increment',json_encode($echart_data_increment));
 
-
-
-
         $this->assign('login_time',$last_login_time);
         return $this->fetch('teacher/index');
     }
