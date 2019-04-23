@@ -32,69 +32,12 @@ class Dept extends Model
 
         return $list;
     }
-    public static function getDept($default_choosed_arr=[]){
-        $dept = Dept::all();
-        $data_arr = [];
-
-        //所有部门
-        foreach ($dept as $data) {
-            $data_arr[] = array(
-                'value' => $data['id'],
-                'title' => $data['name'],
-                'parent_id' => $data['p_id'],
-                'disabled' => true,
-                'data' => []
-            );
-        }
-        //所有教师
-        $teacher_arr = Teacher::all();
-        foreach ($teacher_arr as $data) {
-            foreach ($dept as $k=> $item){
-                if($item['id'] == $data['dept_id']){
-                    $data_arr[$k]['data'][] = array(
-                        'value' => $data['id'],
-                        'title' => $data['name'],
-                        'dept_id' => $data['dept_id'],
-                        'data' => [],
-                        'checked' => in_array($data['id'],$default_choosed_arr)?true:false,
-                    );
-                }
-            }
-        }
-        $top_dept = [];
-
-        //顶级部门
-        foreach ($data_arr as $k => $item) {
-            if($item['parent_id'] == 0){
-                $top_dept[] = $item;
-            }
-        }
-
-        $data_bak = $data_arr;
-        //划分本书从属关系
-        foreach ($data_arr as $k => $item){
-            foreach ($data_bak as $j => $value){
-                if($value['parent_id'] == $item['value']){
-                    $data_arr[$k]['data'][] = $value;
-                }
-            }
-        }
-
-        foreach ($top_dept as $k => $value){
-            foreach ($data_arr as $j => $item){
-                if($value['value'] == $item['parent_id']){
-                    $top_dept[$k]['data'][] = $item;
-                }
-            }
-        }
-        return $top_dept;
-    }
     /**
      * @param array $default_choosed_arr
      * @return array
      * @throws \think\exception\DbException
      */
-    public static function getDept1($default_choosed_arr=[]){
+    public static function getDept($default_choosed_arr=[]){
         $dept = Dept::all();
         $data_arr = [];
         $teachers = [];
@@ -109,8 +52,6 @@ class Dept extends Model
                 'data' => []
             );
         }
-        $dept_tree = self::list_to_tree($data_arr,'value','parent_id','data');
-
         //所有教师
         $teacher_arr = Db::name('teacher')->where('is_del',0)->select();
 
@@ -119,12 +60,13 @@ class Dept extends Model
                 'value' => $teacher['id'],
                 'title' => $teacher['name'],
                 'dept_id' => $teacher['dept_id'],
-                'disabled' => in_array($teacher['id'],$default_choosed_arr)?false:true,
+                'checked' => in_array($teacher['id'],$default_choosed_arr)?true:false,
                 'data' => []
             );
         }
 
-        $res = self::getTeacherTree($dept_tree,$teacher_arr,$default_choosed_arr);
+        $res = self::getTeacherTree($data_arr,'value','parent_id','data',$teachers,0);
+
         return $res;
     }
 
@@ -179,16 +121,45 @@ class Dept extends Model
         return $tree;
     }
 
-    public static function getTeacherTree(&$dept_tree,$teacher_arr,$default_choosed_arr = []){
-        foreach ($dept_tree as $k=> $dept_item){
-            foreach ($teacher_arr as $teacher){
-                if($dept_item['value'] == $teacher['value']){
+    public static function getTeacherTree($list, $pk = 'id', $pid = 'pid', $child = 'children',$user_dept = [], $root = 0)
+    {
+        $dept_ids_arr = array_unique(array_column($user_dept,'dept_id'));
+        $user_dept_info = [];
 
+        foreach ($dept_ids_arr as $dept_id){
+            foreach ($user_dept as $user){
+                if($user['dept_id'] = $dept_id){
+                    $user_dept_info[$dept_id][] = $user;
                 }
-
             }
         }
-
-        return $dept_tree;
+        // 创建Tree
+        $tree = array();
+        if (is_array($list)) {
+            // 创建基于主键的数组引用
+            foreach ($list as $key => $data) {
+                $refer[$data[$pk]] =& $list[$key];
+            }
+            foreach ($list as $key => $data) {
+                // 判断是否存在parent
+                $parentId = $data[$pid];
+                if ($root == $parentId) {
+                    if(isset($user_dept_info[$list[$key]['value']])){
+                        $list[$key]['data'] = array_merge($list[$key]['data'],$user_dept_info[$list[$key]['value']]);
+                    }
+                    $tree[] =& $list[$key];
+                } else {
+                    if (isset($refer[$parentId])) {
+                        if(isset($user_dept_info[$list[$key]['value']])){
+                            $list[$key]['data'] = array_merge($list[$key]['data'],$user_dept_info[$list[$key]['value']]);
+                        }
+                        $parent =& $refer[$parentId];
+                        $parent[$child][] =& $list[$key];
+                        // $parent['children'][] =& $list[$key];
+                    }
+                }
+            }
+        }
+        return $tree;
     }
 }
