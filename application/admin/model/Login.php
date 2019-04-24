@@ -15,6 +15,7 @@ class Login extends Model
             }else{
                 Session::set('bigdata_admin_name',$name);
                 Session::set('bigdata_admin_id',$admin['id']);
+                Session::set('bigdata_admin_is_super',$admin['is_super']);
                 return 3;
             }
         }else{

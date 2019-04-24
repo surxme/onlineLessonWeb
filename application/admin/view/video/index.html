@@ -102,6 +102,14 @@
             refreshDom('{:url("admin/video")}',params,'#adminvideo .table-responsive');
         });
 
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                refreshDom('{:url("admin/video")}',params,'#adminvideo .table-responsive');
+                return false;
+            }
+        });
+
         $('.video_edit').on('click',function () {
             alt('编辑类别',$(this));
         });

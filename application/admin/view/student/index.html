@@ -111,6 +111,14 @@
             search(params);
         });
 
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                search(params);
+                return false;
+            }
+        });
+
         function search(params){
             refreshDom('{:url("admin/student")}',params,'#adminstudent .table-responsive');
         }

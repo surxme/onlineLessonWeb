@@ -16,6 +16,7 @@ class Admin extends Model
     public function search($params){
         $where = [];
         $list = Db::name('admin')->alias('t');
+        $where['id'] = ['<>',self::getCurAdminID()];
 
         if(isset($params['search_key'])){
             $where['name'] = array('like','%'.$params['search_key'].'%');

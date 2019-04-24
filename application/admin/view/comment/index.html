@@ -104,6 +104,14 @@
             refreshDom('{:url("admin/comment")}',params,'#admincomment .table-responsive');
         });
 
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                refreshDom('{:url("admin/comment")}',params,'#admincomment .table-responsive');
+                return false;
+            }
+        });
+
         $('.comment_ban').on('click',function () {
             var url = $(this).data('href');
             var title = $(this).data('title');

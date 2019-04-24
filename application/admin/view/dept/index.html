@@ -88,6 +88,14 @@
             refreshDom('{:url("admin/dept")}',params,'#admindept .table-responsive');
         });
 
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                refreshDom('{:url("admin/dept")}',params,'#admindept .table-responsive');
+                return false;
+            }
+        });
+
         $('.dept_edit').on('click',function () {
             alt('编辑部门',$(this));
         });

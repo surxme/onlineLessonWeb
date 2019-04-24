@@ -95,6 +95,14 @@
             refreshDom('{:url("admin/admin")}',params,'#adminadmin .table-responsive');
         });
 
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                refreshDom('{:url("admin/admin")}', params, '#adminadmin .table-responsive');
+                return false;
+            }
+        });
+
         $('.admin_edit').on('click',function () {
             alt('编辑管理员',$(this));
         });
