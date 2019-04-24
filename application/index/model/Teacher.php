@@ -48,14 +48,32 @@ class Teacher extends Model
      */
     public static function getEchartData($start,$end,$uid,$type,$name){
         $group_way = "%Y/%c/%e";
-        $hits = Db::name('video')
-            ->where('teacher_id',$uid)
-            ->where('create_time','>=',$start)
-            ->where('create_time','<=',$end)
-            ->group('FROM_UNIXTIME(create_time,"'.$group_way.'")')
-            ->order('create_time asc')
-            ->field('sum('.$type.') as counts,FROM_UNIXTIME(create_time,"'.$group_way.'") as time_id')
-            ->select();
+        $hits = [];
+        if($type == 'thumbs'){
+            $hits = Db::name('video_attr')
+                ->alias('t')
+                ->join('video v','t.video_id = v.id')
+                ->where('teacher_id',$uid)
+                ->where('t.create_time','>=',$start)
+                ->where('t.create_time','<=',$end)
+                ->where('t.type',1)
+                ->group('FROM_UNIXTIME(t.create_time,"'.$group_way.'")')
+                ->order('t.create_time asc')
+                ->field('count(*) as counts,FROM_UNIXTIME(t.create_time,"'.$group_way.'") as time_id')
+                ->select();
+        }else if($type == 'hits'){
+            $hits = Db::name('user_behavior')
+                ->alias('t')
+                ->join('video v','t.data_id = v.id')
+                ->where('teacher_id',$uid)
+                ->where('t.create_time','>=',$start)
+                ->where('t.create_time','<=',$end)
+                ->where('t.action_type',2)
+                ->group('FROM_UNIXTIME(t.create_time,"'.$group_way.'")')
+                ->order('t.create_time asc')
+                ->field('count(*) as counts,FROM_UNIXTIME(t.create_time,"'.$group_way.'") as time_id')
+                ->select();
+        }
 
         $date_arr = self::getDateNameArr($start,$end);
         self::IsLostData($date_arr,$hits,'time');
