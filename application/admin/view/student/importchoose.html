@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加课程</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__STATIC__/admin/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <link rel="shortcut icon" href="__STATIC__/admin/images/favicon.png" />
+    <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui_exts/excel.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui_exts/FileSaver.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui_exts/xlsx.js"></script>
+</head>
+<style>
+    body{
+        background: #FFFFFF;
+    }
+    #myform .layui-upload-drag {
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<body>
+
+<form class="layui-form" action="" id="myform"  enctype="multipart/form-data" method="POST">
+    <div class="layui-form-item layui-form-text">
+        <a href="__STATIC__/uploads/excel/学生信息导入样例.xlsx">下载学生excel导入格式样例</a>
+        <div class="layui-upload-drag" id="excel_file">
+            <i class="layui-icon"></i>
+            <p>点击上传，或将文件拖拽到此处</p>
+            <p style="color: #dc3545">请提前调整好字段顺序，默认除去第一行才开始导入(为了除去表头信息行)</p>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <div class="layui-upload-drag">
+            <button type="button" class="layui-btn" id="upfile_btn">开始上传</button>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    //上传文件
+    layui.use('upload', function() {
+        var $ = layui.jquery
+            , upload = layui.upload;
+        upload.render({
+            elem: '#excel_file'
+            , url: '{:url("admin/excelImport",["type"=>2])}'
+            , auto: false
+            , accept : 'file'
+            , field : 'excel'
+            , exts : 'xlsx|csv'
+            , bindAction: '#upfile_btn'
+            ,before: function(obj){
+                if($.isEmptyObject(obj)){
+                    layer.alert('请先选择需要导入的文件');
+                    return false;
+                }
+            }
+            , done: function (res) {
+                if(res.code > 0){
+                    layer.alert(res.msg);
+                }else{
+                    layer.alert('上传完成,导入成功:'+res.success_counts+',失败:'+res.fail_counts);
+                    if(res.fail_counts>0) {
+                        export_import_manager.normalExport(res.fail_array, '失败部分反馈', {
+                            key: '原文件行号',
+                            student_no: '学号',
+                            msg: '失败原因'
+                        })
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

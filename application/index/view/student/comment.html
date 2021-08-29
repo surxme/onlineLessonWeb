@@ -1,0 +1,115 @@
+{layout name="layouts/studentlayout" /}
+<style>
+    .page_items .pagination {
+        display: inline-flex;
+    }
+
+    .page_items .pagination .page-item .page-link {
+        font-size: 1.2rem;
+    }
+
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+    .page-inner .table td,th{
+        color: #545a5f;
+        font-weight: normal;
+    }
+
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+</style>
+<div class="m-b-md">
+    <h3 class="m-b-none text-black">我的评论</h3>
+    <small class="text-muted m-b">您的历史评论都在这里了</small>
+</div>
+{eq name="$list|count" value='0'}
+<div class="">
+    <div class="caption wrapper-lg text-center">
+        <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+        <h3 class="post-title">暂无评论</h3>
+    </div>
+</div>
+{/eq}
+{if condition="count($list) > 0"}
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table class="table table-striped b-t b-light">
+            <thead>
+            <tr>
+                <th>课程名</th>
+                <th>章节名</th>
+                <th>评论内容</th>
+                <th>评论时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name='list' id='comment'}
+            <tr>
+                <td title="{$comment.lesson_name}">
+                    <a href="{:url('index/details',['id'=>$comment.lesson_id,'video_id'=>$comment.video_id])}"
+                       style="color: #4cb6cb">{$comment.lesson_name|msubstr=0,15,'utf-8',true}
+                    </a>
+                </td>
+                <td title="{$comment.video_name}">{$comment.video_name|msubstr=0,15,'utf-8',true}</td>
+                <td title="{$comment.content}">{$comment.content|msubstr=0,15,'utf-8',true}</td>
+                <!--<td  class="showPhotos"><img class="img-circle" src="__STATIC__{$comment.poster}" style="width: 55px;height: 30px;border-radius: 5%;"></td>-->
+                <td>{$comment.create_time|date="Y-m-d H:i",###}</td>
+                <td>
+                    <button data-content="{$comment.content}" class="btn btn-sm btn-info btn-detail">查看</button>
+                    <button class="btn btn-sm btn-danger btn-delete" data-href="{:url('index/commentDel',['id'=>$comment.comment_id])}">移除</button>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    <footer class="panel-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                <small class="text-muted inline m-t-sm m-b-sm">共 {$list->total()} 条</small>
+            </div>
+            {$list->render()}
+        </div>
+    </footer>
+</section>
+{/if}
+<script>
+    $(function () {
+        $('.btn-delete').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认移除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:1});
+                            }else{
+                                layer.msg(data.msg,{icon:2});
+                            }
+                        });
+                    });
+            });
+        });
+
+        $('.btn-detail').on('click',function () {
+            var content = $(this).data('content');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.open({
+                    title: '评论详情',
+                    area: ['420px', '240px'] //宽高
+                    ,content: content,
+                    btn:[]
+                });
+            });
+        });
+    });
+</script>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加课程</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__STATIC__/admin/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/js/cropper/cropper.css">
+
+    <link rel="stylesheet" href="__STATIC__/iconfont/iconfont.css">
+    <link rel="shortcut icon" href="__STATIC__/admin/images/favicon.png" />
+    <script type="text/javascript" src="__STATIC__/js/layui/layui.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/commom.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/layui-xtree.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/cropper/cropper.js"></script>
+    <script type="text/javascript" src="__STATIC__/js/cropper/croppers.js"></script>
+
+</head>
+<style>
+    body{
+        background: #FFFFFF;
+    }
+    #myform .layui-form-label{
+        /*width: 14%;*/
+        width: 100px;
+    }
+    /*#myform .layui-input-block{*/
+        /*margin-left: 15%;*/
+    /*}*/
+    #myform .layui-upload-img{
+        width: 20%;
+    }
+    #myform .layui-form-item .layui-input-inline{
+        margin-left: 10px;
+        margin-right: 0px;
+    }
+</style>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>{$info['id']?'编辑':'添加'}教师</legend>
+</fieldset>
+
+<form class="layui-form" action="" id="myform"  enctype="multipart/form-data" method="POST">
+    <div class="layui-form-item">
+        <label class="layui-form-label">教师名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" value="{$info['name']?$info['name']:''}" autocomplete="off" placeholder="请输入教师名" class="layui-input require">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">职工号</label>
+        <div class="layui-input-block">
+            <input type="text" name="teacher_no" value="{$info['teacher_no']?$info['teacher_no']:''}" autocomplete="off" placeholder="请输入职工号" class="layui-input require">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门</label>
+        <div class="layui-input-block">
+            <select name="dept_id" lay-filter="type">
+                <option value="">请选择部门</option>
+                {volist name='dept' id='value'}
+                <option value="{$value.id}" {$info['dept_id']?($info['dept_id']==$value['id']?'selected':''):''}>{$value.name}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="sex" value="1" title="男" {$info['sex']?($info['sex']=='1'?'checked':''):'checked'}>
+                <input type="radio" name="sex" value="2" title="女" {$info['sex']?($info['sex']=='2'?'checked':''):''}>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">生日</label>
+            <div class="layui-input-inline">
+                <input type="text" name="bir" value="{$info['bir']?date('Y-m-d',$info['bir']):''}" id="date" lay-verify="date" placeholder="请点击选择日期" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" value="{$info['email']?$info['email']:''}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="test1">上传头像</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" src="{$info['avatar']?'__STATIC__'.$info['avatar']:''}">
+                    <input type="hidden" name="avatar" id="poster" value="{$info['avatar']?$info['avatar']:''}">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    //上传文件
+    // layui.config({
+    //     base: 'cropper/' //layui自定义layui组件目录
+    // }).use(['form','croppers'], function () {
+    //     var $ = layui.jquery
+    //         ,croppers = layui.croppers
+    //         ,layer= layui.layer;
+    //
+    //     //创建一个头像上传组件
+    //     croppers.render({
+    //         elem: '#editimg'
+    //         ,saveW:150     //保存宽度
+    //         ,saveH:150
+    //         ,mark:1/1    //选取比例
+    //         ,area:'600px'  //弹窗宽度
+    //         ,url: '{:url("admin/upload")}'  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+    //         ,done: function(res,index){
+    //             console.log(res.file_url);
+    //             $('#demo1').attr('src', res.file_url);
+    //             $('#poster').val(res.file_url);
+    //             layui.layer.close(index);
+    //         }
+    //     });
+    // });
+    file_upload_manager.croppersUpload('{:url("admin/upload")}',{},'#test1',function (res,index) {
+        if(res.is_ok != 'ok'){
+            layer.msg('上传失败');
+        }else{
+            var file_url = '__STATIC__/'+res.file_url;
+            $('#demo1').attr('src', file_url);
+            $('#poster').val(res.file_url);
+            layui.layer.close(index);
+            layer.msg('上传成功');
+        }
+    });
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form
+            , layer = layui.layer
+            , laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+            ,format:'yyyy-MM-dd'
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+{layout name="layouts/layout" /}
+<style>
+    .question-content img{
+        max-width: 30rem;
+    }
+</style>
+<section class="scrollable padder-lg padder-v page-inner">
+    <div class="m-t">
+        <p class="h5 text-brown">
+            <a href="{:url('index/details',['id'=>$breadcrumbs.lesson_id])}">{$breadcrumbs.lesson_name}</a>
+            \
+            <a href="{:url('index/details',['id'=>$breadcrumbs.lesson_id,'video_id'=>$breadcrumbs.video_id])}">{$breadcrumbs.video_name}</a>
+        </p>
+        <div class="row m-t-sm">
+            <div class="col-xs-12 ">
+                <div class="bg hidden-xs ">
+                    <div class="clearfix">
+                        <a href="#" class="pull-left thumb-sm avatar b-3x m-r">
+                            <img src="__STATIC__/{$question.student_avatar}" alt="...">
+                        </a>
+                        <div class="clear">
+                            <div class="h4 m-t-sm m-b-sm text-dark" style="color: #333333">
+                                <p class="text-info">{$question.student_name}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-t">
+        <div class="row row-sm">
+            <section class="panel panel-default">
+                <section class="panel-body">
+                    <article class="media">
+                        <div class="media-body">
+                            <div class="pull-right media-xs text-center text-muted">
+                                <small class="label bg-light">{$question.create_time|date='Y-m-d H:i',###}</small>
+                            </div>
+                            <p class="h4 m-b">{$question.content}</p>
+                            <small class="block m-t-sm question-content">{$question.title}</small>
+                        </div>
+                    </article>
+                </section>
+            </section>
+        </div>
+
+        <div class="row row-sm">
+            <section class="comment-list block">
+                {volist name='reply' id='item'}
+                <article id="comment-id-1" class="comment-item">
+                    <a class="pull-left thumb-sm avatar">
+                        <img src="__STATIC__/{$item.comment_uname_avatar}" class="img-circle" alt="...">
+                    </a>
+                    <span class="arrow left"></span>
+                    <section class="comment-body panel panel-default">
+                        <header class="panel-heading bg-white">
+                            <p>{$item.comment_uname} {$item['user_type']==2?'<label class="label bg-success m-l-xs">教师</label>':''}</p>
+
+                            <span class="text-muted m-l-sm pull-right">
+                                <i class="fa fa-clock-o"></i>
+                                {$item.create_time|date='Y-m-d H:i',###}
+                            </span>
+                        </header>
+                        <div class="panel-body">
+                            <div>{$item.content}</div>
+                            {if(empty($curUserInfo)||$item.uid!=$curUserInfo.id||$item.user_type != $curUserInfo.u_type)}
+                            <div class="comment-action m-t-sm">
+                                <span class="btn btn-default btn-xs btn-reply">
+                                    <i class="fa fa-mail-reply text-muted"></i> 回复
+                                </span>
+                            </div>
+                            {/if}
+                            <div class="reply-div" hidden>
+                                <textarea class="form-control" rows="3" placeholder="请输入..." style="resize: none;"></textarea>
+                                <button type="submit" class="btn btn-success m-t-sm btn-child-reply" data-id="{$item.id}" data-floor_id="{$item.id}">提交</button>
+                            </div>
+                        </div>
+                    </section>
+                    {volist name='item.child' id='child'}
+                    <article class="comment-item comment-reply">
+                        <a class="pull-left thumb-sm avatar">
+                            <img src="__STATIC__/{$child.comment_uname_avatar}" alt="...">
+                        </a>
+                        <span class="arrow left"></span>
+                        <section class="comment-body panel panel-default text-sm">
+                            <div class="panel-body">
+                                <span class="text-muted m-l-sm pull-right">
+                                    <i class="fa fa-clock-o"></i>{$child.create_time|date='Y-m-d H:i',###}
+                                </span>
+                                <p><span class="text-info">{$child.comment_uname}{$child['user_type']==2?'<label class="label bg-success m-l-xs">教师</label>':''} </span> 回复 <span class="text-info">{$child.comment_receive_uname}</span></p>
+                                {$child.content}
+                                {if(empty($curUserInfo)||$child.uid!=$curUserInfo.id||$child.user_type!=$curUserInfo.u_type)}
+                                <div class="comment-action m-t-sm">
+                                    <span class="btn btn-default btn-xs btn-reply">
+                                        <i class="fa fa-mail-reply text-muted"></i> 回复
+                                    </span>
+                                </div>
+                                {/if}
+                                <div class="reply-div" hidden>
+                                    <textarea class="form-control" rows="3" placeholder="请输入..." style="resize: none;"></textarea>
+                                    <button class="btn btn-success m-t-sm btn-child-reply" data-id="{$child.id}" data-floor_id="{$item.id}">提交</button>
+                                </div>
+                            </div>
+                        </section>
+                    </article>
+                    {/volist}
+                </article>
+                {/volist}
+                <!-- .comment-reply -->
+                <article class="comment-item media" id="comment-form">
+                    <a class="pull-left thumb-sm avatar"><img src="__STATIC__/{$curUserInfo['avatar']?$curUserInfo['avatar']:'img/default_avatar.jpg'}" alt="..."></a>
+                    <section class="media-body bg-white">
+                        <form class="m-b-none">
+                            <div class="input-group clear m-b-sm">
+                                <textarea class="form-control" id="replyContent" name="replyContent" style="display: none;"></textarea>
+                            </div>
+                            <span class="input-group-btn m-t-sm">
+                              <button class="btn btn-success btn-floor-reply" type="button" data-id="0" data-floor_id="0">提交</button>
+                            </span>
+                        </form>
+                    </section>
+                </article>
+            </section>
+        </div>
+
+        <div class="row text-center page_items">
+            {$reply->render()}
+        </div>
+    </div>
+</section>
+<script>
+    var question_id = '{$question.id}';
+    var  index,layedit;
+    function layeditinit(textarea_id){
+        layui.use(['layer', 'layedit'], function () {
+            var layer = layui.layer;
+                layedit = layui.layedit;
+
+            layedit.set({
+                uploadImage: {
+                    url: '{:url("admin/layeditUpload")}' //接口url
+                },
+                placeholder:'请输入...'
+            });
+            index = layedit.build(textarea_id, {height: 150}); //建立编辑器
+        });
+    }
+
+    layeditinit('replyContent');
+
+    $('.comment-list').on('click','.btn-reply',function () {
+        var _this = $(this);
+        _this.parent().parent().find('.reply-div').toggle();
+    });
+
+    //二级楼层回复
+    $('.comment-list').on('click','.btn-child-reply',function () {
+        var _this = $(this);
+        var content = _this.siblings('textarea').val();
+        var comment_id = _this.data('id');
+        var floor_id = _this.data('floor_id');
+        var params = {content:content,comment_id:comment_id,floor_id:floor_id,question_id:question_id};
+        replysave(params);
+    });
+    //楼层回复
+    $('.comment-list').on('click','.btn-floor-reply',function () {
+        layedit.sync(index);
+        var _this = $(this);
+        var content = $('#replyContent').val();
+        var comment_id = _this.data('id');
+        var floor_id = _this.data('floor_id');
+        var params = {content:content,comment_id:comment_id,floor_id:floor_id,question_id:question_id};
+        replysave(params);
+    });
+
+    //回复
+    function replysave(params) {
+        layui.use(['layer', 'layedit'], function () {
+            var layer = layui.layer;
+            if($.trim(params.content) == ''){
+                layer.msg('内容不能为空',{icon:2});
+                return false;
+            }
+            ajax_request.post('{:url("index/saveQuestionReplay")}', params,
+                function (data) {
+                    if(data.is_ok == 'ok'){
+                        layer.msg(data.msg,{icon:1});
+                        location.reload();
+                    }else{
+                        layer.msg(data.msg,{icon:2});
+                    }
+                }
+            );
+        })
+    }
+</script>

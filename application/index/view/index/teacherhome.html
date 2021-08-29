@@ -1,0 +1,54 @@
+{layout name="layouts/layout" /}
+<section class="scrollable padder-lg padder-v page-inner">
+    <div class="well bg-white b m-t">
+        <div class="row">
+            <div class="col-xs-12 ">
+                <div class="panel-body">
+                    <span class=" pull-left m-r thumb-md">
+                        <img src="__STATIC__/{$teacher['avatar']?$teacher['avatar']:img/default_avatar.jpg}" class="img-rounded">
+                    </span>
+                    <div class="clear">
+                        <p>
+                            姓名：{$teacher.name} <br>
+                            性别：{$teacher['sex']==1?'男':'女'}<br>
+                            邮箱: {$teacher.email}<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="line"></div>
+    <p class="m-b-lg text-center">关联课程 </p>
+    <div class="row row-sm">
+        {eq name="$list|count" value='0'}
+        <div class="">
+            <div class="caption wrapper-lg text-center">
+                <h2 class="post-title"><a href="#">暂无可访问课程资源</a></h2>
+            </div>
+        </div>
+        {/eq}
+        {volist name='list' id='vo'}
+        <div class="col-xs-6 col-sm-3 col-md-2">
+            <div class="item">
+                <div class="pos-rlt">
+                    <div class="item-overlay opacity r r-2x bg-black">
+                        <div class="center text-center m-t-n">
+                            <a href="{:url('index/details',['id'=>$vo.id])}"><i class="fa fa-play-circle i-2x"></i></a>
+                        </div>
+                    </div>
+                    <a href="#"><img src="__STATIC__{$vo.poster}" alt="" style="height: 7em;" class="r r-2x img-full"></a>
+                </div>
+                <div class="padder-v">
+                    <a href="{:url('index/details',['id'=>$vo.id])}" class="text-ellipsis">{$vo.name}</a>
+                    <!--<a href="#" class="text-ellipsis text-xs text-muted">Miaow</a>-->
+                </div>
+            </div>
+        </div>
+        {/volist}
+    </div>
+
+    <div class="row text-center page_items">
+        {$list->render()}
+    </div>
+</section>

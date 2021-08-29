@@ -1,0 +1,538 @@
+{layout name="layouts/layout" /}
+<style>
+  .page-inner .video_params .list-group-item,.page-inner .panel{
+    background-color:#f2f4f8;
+  }
+  .page-inner .video_params .panel{
+    border: none;
+  }
+  .page-inner .suggestion {
+    background-color: white;
+  }
+  .page-inner .nav > li > a:hover {
+    text-decoration: none;
+    color: #000000;
+  }
+  .page-inner .nav > li > a {
+    color: #545a5f;
+  }
+   .page-inner .nav > li:hover {
+    background-color: #edf2f3;
+  }
+   .page-inner .list-group-item {
+     margin-bottom: 0px;
+     border: none;
+     border-bottom: 1px solid #ddd;
+  }
+  .page-inner .files-list div{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .page-inner .tab-content > .tab-pane {
+    min-height: 15rem;
+  }
+  .page-inner .lesson-intro img{
+     max-width: 100%;
+  }
+  .page-inner .page_items .pagination{
+    display: inline-flex;
+  }
+  @media{
+    .dplayer-logo {
+      width: 20px;
+    }
+  }
+  @media (min-width: 768px) {
+    .dplayer-logo {
+      width: 25px;
+    }
+  }
+  @media (min-width: 992px) {
+    .dplayer-logo {
+      width: 30px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .dplayer-logo {
+      width: 40px;
+    }
+  }
+</style>
+<section class="scrollable padder-lg padder-v page-inner">
+  <div class="row">
+      <div class="col-sm-12">
+        <div class="panel clearfix">
+          <div class="bg hidden-xs ">
+              <div class="clearfix">
+                <a href="#" class="pull-left thumb-md avatar b-3x m-r">
+                  <img src="__STATIC__/{$video['avatar']?$video['avatar']:'img/default_poster.jpg'}" alt="...">
+                </a>
+                <div class="clear">
+                  <div class="h3 m-t-xs m-b-xs text-dark" style="color: #333333">
+                    <a href="{:url('index/teacherhome',['teacher_id'=>$video.teacher_id])}" class="text-info">{$video.teacher_name}</a>
+                    {if(!empty($curUserInfo.id)&&$video.teacher_id!=$curUserInfo.id)}
+                    <button class="btn btn-xs btn-success btn-subscribe {$is_subscribed==1?'btn-dark':''}" data-href="{:url('index/saveSubscribe',['teacher_id' => $video.teacher_id])}">{$is_subscribed==1?'已关注':'关注'}</button>
+                    {/if}
+                  </div>
+                  <small class="text-muted">{$lesson.name}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+   <div class="row">
+      <div class="col-sm-8">
+        <div class="panel">
+          <!-- video player -->
+          <div id="jp_container_1" class="teacher_info item">
+            <div class="jp-type-single pos-rlt">
+              <div id="jplayer_1" class="jp-jplayer jp-video" style="width: 100%; height: auto;">
+                <!--<video id="vplay" src="__STATIC__/{$video.path_url}" poster="__STATIC__/{$lesson.poster}" style="width: 100%;object-fit: fill"  controls="controls"></video>-->
+                <div id="dplayer"></div>
+              </div>
+            </div>
+          </div>
+          <!-- / video player -->
+          <div class="padder-v">
+            <h3 class="m-t-none text-black">{$video.name}</h3>
+            <div class="post-sum">
+                <p>{$video.intro}</p>
+            </div>
+            {neq name="$attachment|count" value="0"}
+              <p style="margin: 0px">附件：</p>
+              <div class="post-sum col-sm-12 no-padder files-list">
+                {volist name='attachment' id='attach'}
+                <div class="col-md-4 col-sm-6">
+                 {$attach.name}
+                 <a href="__STATIC__/{$attach.url}" download="{$attach.name}"><i class="text-success icon-arrow-down"></i></a>
+                </div>
+                 {/volist}
+               </div>
+            {/neq}
+            <div class="line b-b"></div>
+            <div class="text-muted">
+              <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">{$video.teacher_name}</a>
+              <i class="fa fa-clock-o icon-muted"></i> {$video.create_time|date='Y-m-d H:i',###}
+            </div>
+          </div>
+          <h4 class="m-t-lg m-b">课程相关</h4>
+        </div>
+      </div>
+      <div class="col-sm-4 video_params">
+          <div class="panel panel-default">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="">
+                  <i class="icon-drawer"></i>
+                  <span class="badge pull-right">{$lesson.typename}</span>
+                  所属区
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="">
+                  <i class="icon-eye"></i>
+                  <span class="badge pull-right">{$hits}</span>
+                  观看量
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="">
+                  <a class="thumbsSavebtn" href="#" data-href="{:url('index/thumbsUpSave',['id'=>$video.id,'type'=>1])}" title="点击收藏/取消点赞本视频"><i class="icon-like {$is_thumbs_uped==1?'text-success':''}"></i></a>
+                  <span class="badge pull-right">{$thumbs}</span>
+                  点赞量
+                </div>
+              </li>
+              {eq name="$user_type" value='1'}
+              <li class="list-group-item">
+                <div class="">
+                  <a class="curriculumSavebtn" data-href="{:url('index/curriculumSave',['id'=>$lesson.id])}" title="加入到我的课程表/从我的课程表中删除"><i class="icon-calendar"></i> 加入我的课程表</a>
+                </div>
+              </li>
+              {/eq}
+            </ul>
+            {if condition="count($suggestion) neq 0 "}
+            <div class="panel-body m-t-sm suggestion">
+              {volist name='suggestion' id='sugs'}
+              <article class="media">
+                <a href="{:url('index/details',['id'=>$sugs.id])}" class="pull-left thumb-md m-t-xs">
+                  <img src="__STATIC__/{$sugs.poster}">
+                </a>
+                <div class="media-body">
+                  <a href="{:url('index/details',['id'=>$sugs.id])}" class="font-semibold" title="{$sugs.name}">{$sugs.name|msubstr=0,15,'utf-8',true}</a>
+                  <div class="text-xs block m-t-xs"><i class="icon-fire"></i> {$sugs.hits}
+                  </div>
+                </div>
+              </article>
+              {/volist}
+            </div>
+            {/if}
+          </div>
+        </div>
+    </div>
+  <section class="panel-default">
+  <header class="panel-heading bg-light">
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active"><a href="#home" data-toggle="tab">课程目录</a></li>
+      <li><a href="#profile" data-toggle="tab">课程介绍</a></li>
+      <li><a class="getCommentBtn" href="#comment" data-href="{:url('index/getComment',['type'=>1,'id'=>$video.id])}" data-toggle="tab">评论</a></li>
+      <li><a class="getQuestionBtn" href="#question" data-href="{:url('index/getComment',['type'=>2,'id'=>$video.id])}" data-toggle="tab">问答</a></li>
+    </ul>
+  </header>
+  <div class="panel-body" style="background-color: white">
+    <div class="tab-content">
+      <div class="tab-pane active" id="home">
+        <div class="list-group">
+          {volist name='video_list' id='vd'}
+          <a href="{:url('index/details',['id'=>$vd.lesson_id,'video_id'=>$vd.id])}"
+             class="list-group-item {$video['id']==$vd['id']?'text-success':'text-black'}">
+            <i class="fa fa-play-circle icon-muted fa-fw
+             {$video['id']==$vd['id']?'text-success':'text-black'}"
+               style="font-size: 16px;">
+            </i>
+            {$vd.name}
+          </a>
+          {/volist}
+        </div>
+      </div>
+      <div class="tab-pane" id="profile">
+        <div class="post-sum col-sm-12 no-padder">
+          <div class="panel">
+            <div class="panel-heading">
+              <a class="accordion-toggle" data-toggle="collapse">
+                相关教师
+              </a>
+            </div>
+            <div class="panel-collapse in">
+              <div class="panel-body text-sm">
+                {volist name='with_teachers' id='t_info'}
+                <div class="col-sm-3 col-xs-6 col-lg-3 text-center">
+                  <section class="panel panel-info">
+                    <div class="panel-body">
+                      <span href="#" class="thumb avatar">
+                        <img src="__STATIC__/{$t_info.avatar}" alt="...">
+                      </span>
+                      <div class="clear">
+                        <a href="{:url('index/teacherhome',['teacher_id'=>$t_info.teacher_id])}" class="text-info">{$t_info.name}</a>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                {/volist}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="post-sum col-sm-12 no-padder">
+          <div class="panel">
+            <div class="panel-heading">
+              <a class="accordion-toggle" data-toggle="collapse">
+                课程简介
+              </a>
+            </div>
+            <div class="panel-collapse in">
+              <div class="panel-body text-sm lesson-intro">
+                {$lesson.intro}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="comment">
+        <div class="text-center wrapper hidden is_loadding_dom">
+          <i class="fa fa-spinner fa fa-spin fa fa-large"></i>
+        </div>
+      </div>
+      <div class="tab-pane" id="question">
+        <div class="text-center wrapper hidden is_loadding_dom">
+          <i class="fa fa-spinner fa fa-spin fa fa-large"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</section>
+<script type="text/javascript" src="__STATIC__/js/DPlayer.min.js"></script>
+<script>
+    $(function(){
+        const dp = new DPlayer({
+            container: document.getElementById('dplayer'),
+            screenshot: true,
+            logo:'__STATIC__/admin/images/logo.svg',
+            video: {
+                url: '__STATIC__/<?php  echo str_replace("\\","/",$video["path_url"]) ?>',
+                // pic: '__STATIC__/<?php  echo str_replace("\\","/",$lesson["poster"]) ?>'
+            }
+        });
+
+        //点赞/收藏
+        $('.thumbsSavebtn').on('click',function () {
+            var _this = $(this);
+            thumbsSave(_this);
+        });
+
+        dp.on('playing',function(){
+            $.ajax({
+                type: "post",
+                url: "{:url('index/watchVideoAnchor',['id'=>$video.id])}",
+                data: {},
+                success : function(){
+                    // console.log('记录播放视频锚点');
+                },
+                error: function(){
+                    // console.log('记录播放视频锚点');
+                }
+            });
+        });
+        $('#vplay').on('playing',function () {
+            $.ajax({
+                type: "post",
+                url: "{:url('index/watchVideoAnchor',['id'=>$video.id])}",
+                data: {},
+                success : function(){
+                    // console.log('记录播放视频锚点');
+                },
+                error: function(){
+                    // console.log('记录播放视频锚点');
+                }
+            });
+        });
+
+        //加入课程表
+        $('.curriculumSavebtn').on('click',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            thumbsSave(_this);
+
+            ajax_request(url,{},function (data) {
+                if(data.is_ok == 'ok'){
+                    layer.msg(data.msg,{icon:1});
+                }else{
+                    layer.msg('请求失败，请重试',{icon:2});
+                }
+            })
+        });
+
+        function thumbsSave(_this){
+            var url = _this.data('href');
+            var is_check = _this.children('i').hasClass('text-success');
+            var num = _this.siblings('.badge').text();
+
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+                ajax_request.post(url, {}, function (data) {
+                    if (data.is_ok == 'ok') {
+                        if (data.code==1) {
+                            _this.children('i').removeClass('text-success');
+                            _this.siblings('.badge').text(parseInt(num) - 1);
+                        } else {
+                            _this.children('i').addClass('text-success');
+                            _this.siblings('.badge').text(parseInt(num) + 1)
+                        }
+                        layer.msg(data.msg, {icon: 1});
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                })
+            });
+        }
+
+        //评论信息异步获取
+        $('.getCommentBtn').on('click',function () {
+            var _this = $(this);
+
+            layui.use(['layer', 'layedit'], function () {
+                var layer = layui.layer;
+                var url = _this.data('href');
+                var indexpwd = layer.load(1);
+                refreshDom(url, {}, '.page-inner #comment');
+                layer.close(indexpwd);
+            });
+        });
+
+        //问答信息异步获取
+        var  index,layedit;
+        $('.getQuestionBtn').on('click',function () {
+            var _this = $(this);
+            var is_loadding = _this.find('.is_loadding_dom');
+            var url = _this.data('href');
+            var refresh_dom_id = '.page-inner #question';
+            var textarea_id = 'question #commentContent';
+            layeditinit(url,is_loadding,refresh_dom_id,textarea_id)
+            // layui.use(['layer', 'layedit'], function () {
+            //     var layer = layui.layer;
+            //         layedit = layui.layedit;
+            //
+            //     ajax_request.post(url, {}, function (res_data) {
+            //         is_loadding.show();
+            //         var new_dom = $(res_data).find(refresh_dom_id);
+            //         if (new_dom.length <= 0) {
+            //             layer.msg('刷新错误');
+            //             return;
+            //         }
+            //         $(refresh_dom_id).html(new_dom.html());
+            //         is_loadding.hide();
+            //         layedit.set({
+            //             uploadImage: {
+            //                 url: '{:url("admin/layeditUpload")}' //接口url
+            //             },
+            //             placeholder:'请输入问题详细说明...'
+            //         });
+            //         index = layedit.build('question #commentContent', {height: 200}); //建立编辑器
+            //     });
+            // });
+        });
+
+        function layeditinit(url,is_loadding,refresh_dom_id,textarea_id){
+            layui.use(['layer', 'layedit'], function () {
+                var layer = layui.layer;
+                layedit = layui.layedit;
+                var indexpwd = layer.load(1);
+
+                ajax_request.post(url, {}, function (res_data) {
+                    is_loadding.show();
+                    var new_dom = $(res_data).find(refresh_dom_id);
+                    if (new_dom.length <= 0) {
+                        layer.msg('刷新错误');
+                        return;
+                    }
+                    $(refresh_dom_id).html(new_dom.html());
+                    is_loadding.hide();
+                    layedit.set({
+                        uploadImage: {
+                            url: '{:url("admin/layeditUpload")}' //接口url
+                        },
+                        placeholder:'请输入问题详细说明...'
+                    });
+                    index = layedit.build(textarea_id, {height: 200}); //建立编辑器
+                });
+                layer.close(indexpwd);
+            });
+        }
+
+        //保存问答
+        $('#question').on('click','.saveCommentbtn',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            layedit.sync(index);
+            var content = $('#question input[name="commentTitle"]').val();
+            var title = $('#question textarea[name="commentContent"]').val();
+            var data_id = '{$video.id}';
+
+            var params = {content: content,title:title,data_id:data_id};
+
+            saveComent(url,params,'.getQuestionBtn');
+        });
+
+        //保存评论
+        $('#comment').on('click','.saveCommentbtn',function () {
+            var _this = $(this);
+            var url = _this.data('href');
+            var content = $('#comment input[name="commentTitle"]').val();
+            var data_id = '{$video.id}';
+
+            var params = {content: content,title:'',data_id:data_id};
+
+            saveComent(url,params,'.getCommentBtn');
+        });
+
+        function saveComent(url,params,refresh_dom_id){
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+                ajax_request.post(url, params, function (data) {
+                    if (data.is_ok == 'ok') {
+                        layer.msg(data.msg,{icon:1});
+                        $(refresh_dom_id).trigger('click');
+                    } else {
+                        layer.msg(data.msg,{icon:2});
+                    }
+                }, function () {
+                    layer.msg('请求失败',{icon:2});
+                })
+            });
+        }
+
+        //删除问答
+        $('#question').on('click','.btn-comment-del',function () {
+            var _this = $(this);
+            commentDel(_this,'.getQuestionBtn');
+        });
+
+        //删除评论
+        $('#comment').on('click','.btn-comment-del',function () {
+            var _this = $(this);
+            commentDel(_this,'.getCommentBtn');
+        });
+        function commentDel(_this,dom_id){
+            var url = _this.data('href');
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+                layer.confirm('确认删除',{btn:['确认','取消']},function () {
+                  ajax_request.post(url, {}, function (data) {
+                      if (data.is_ok == 'ok') {
+                          layer.msg(data.msg,{icon:1});
+                          // _this.parent().parent().parent().parent().remove();
+                          $(dom_id).trigger('click');
+                      }else{
+                          layer.msg(data.msg,{icon:2});
+                      }
+                  })
+                });
+            })
+        }
+
+        //评论分页数据ajax获取
+        $('#comment').on('click',' .page_items .pagination .page-item',function () {
+            var _this = $(this);
+            var page_link = _this.find('.page-link').prop('href');
+
+            if(page_link){
+                refreshDom(page_link,{},'.page-inner #comment');
+            }
+            return false;
+        });
+
+        //问答分页数据ajax获取
+        $('#question').on('click',' .page_items .pagination .page-item',function () {
+            var _this = $(this);
+            var page_link = _this.find('.page-link').prop('href');
+
+            if(page_link){
+                refreshDom(page_link,{},'.page-inner #question');
+            }
+            var _this = $(this);
+            var is_loadding = $('.is_loadding_dom');
+            var refresh_dom_id = '.page-inner #question';
+            var textarea_id = 'question #commentContent';
+            layeditinit(page_link,is_loadding,refresh_dom_id,textarea_id);
+            return false;
+        });
+
+        //点击订阅/关注
+        $('.btn-subscribe').on('click',function () {
+            var _this = $(this);
+            var href = _this.data('href');
+
+            layui.use(['layer'], function() {
+                var layer = layui.layer;
+
+                ajax_request.post(href, {}, function (data) {
+                    if (data.is_ok = 'ok') {
+                        if (data.code==2) {
+                            _this.removeClass('btn-dark');
+                            _this.text('关注');
+                        } else {
+                            _this.addClass('btn-dark');
+                            _this.text('已关注');
+                        }
+                        layer.msg(data.msg,{icon:1});
+                    }else{
+                        layer.msg(data.msg,{icon:2});
+                    }
+                });
+            });
+            return false;
+        });
+    });
+</script>

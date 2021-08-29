@@ -1,0 +1,244 @@
+<style>
+    #adminteacher{
+        min-height: 90%;
+    }
+    #adminteacher .card{
+        min-height: 100%;
+    }
+    #adminteacher #edit,#del{
+        color: #ffffff;
+    }
+    /*#adminteacher .table td img{*/
+        /*width: 55px;*/
+        /*height: 30px;*/
+         /*border-radius: 5%;*/
+    /*}*/
+    #adminteacher .dept_tree{
+        padding-right: 0px;
+        /*padding-left: 0px;*/
+    }
+
+    body .layui-tree-skin-img .layui-tree-branch{
+        color: #EDCA50;
+        display: none;
+    }
+</style>
+
+{layout name="layouts/layout" /}
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <form class="forms-sample filters">
+                        <div class="">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control form-control-sm" placeholder="输入教师名、职工号搜索" name="search_key">
+                                <span class="input-group-append"><button class="btn btn-info search-btn" type="button">搜索</button></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row"  id="adminteacher">
+    <div class="col-md-2 grid-margin dept_tree">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-0">部门</h4>
+                <!--<div class="d-flex justify-content-between align-items-center">-->
+                    <!--<div class="d-inline-block pt-3">-->
+                        <div class="d-flex">
+                            <form class="layui-form" action="" id="myform"  enctype="multipart/form-data" method="POST" style="overflow-x: auto">
+                                <div id="xtree1"></div>
+                                <input type="hidden" value="{$info['teacher_ids']?$info['teacher_ids']:''}" id="dept_ids" name="dept_ids">
+                            </form>
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 grid-margin data-list">
+        <div class="card">
+            <div class="card-body">
+                <div class="align-items-center mb-1 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">
+                    <h2 class="">教师总览</h2>
+                    <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1 teacher_add" id="addteacher" data-title="添加课程" data-id=""
+                                data-href="{:url('admin/teacherAdd')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1 btn_import"><input type="file" hidden class="file_import"><i style="font: inherit" class="layui-icon layui-icon-up"></i>导入</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1 btn_export"><i style="font: inherit" class="layui-icon layui-icon-down"></i>导出</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>姓名</th>
+                            <th>职工号</th>
+                            <th>部门</th>
+                            <th>性别</th>
+                            <th>头像</th>
+                            <th>联系方式</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='vo'}
+                        <tr>
+                            <td>{$i}</td>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.teacher_no}</td>
+                            <td>{$vo.dept_name}</td>
+                            <td>{$vo['sex']==1?'男':'女'}</td>
+                            <td class="showPhotos"><img src="__STATIC__{$vo.avatar}" width="100px" alt=""></td>
+                            <td title="{$vo.email}">{$vo.email|msubstr=0,15,'utf-8',true}</td>
+                            <td>
+                                <a class="layui-btn layui-btn-xs teacher_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/teacherAdd',['id'=>$vo.id])}">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs teacher_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/teacherDel',['id'=>$vo.id])}">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <p class="mb-0"> 共 {$list->total()} 条</p>
+                        <nav>
+                            {$list->render()}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        showphotos.init('.showPhotos');
+
+        tree_without_checkbox.noCheckboxTreeBuilder("#xtree1",{$dept},function (item,childIds){
+            var params = {};
+            params['dept_ids'] = childIds;
+            var filters = serializeObject($('.filters'));
+            params = $.extend({},params,filters);
+            search(params);
+        });
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                search(params);
+                return false;
+            }
+        });
+        $('.search-btn').on('click',function () {
+            var params = $('.filters').serialize();
+            search(params);
+        });
+
+        function search(params){
+            refreshDom('{:url("admin/teacher")}',params,'#adminteacher .table-responsive');
+        }
+
+        $('.teacher_edit').on('click',function () {
+            alt('编辑教师',$(this));
+        });
+
+        $('.teacher_add').on('click',function () {
+            alt('添加教师',$(this));
+        });
+
+        function alt(title,dom){
+            var this_e = dom;
+            var url = this_e.data('href');
+            var id = this_e.data('id');
+            var save_url = '{:url("admin/teacherSaveAdd")}';
+            layui_iframe.editBuilder(title,url,function (index,layero) {
+                //获取弹出层的表单
+                var form = layer.getChildFrame('#myform', index);
+                verifyinput();
+                if(id){
+                    save_url = '{:url("admin/teacherSaveAdd")}'+'?id='+id;
+                }
+                ajax_request.post(save_url,form.serialize(),function (res) {
+                    if(res.is_ok == 'ok'){
+                        layer.msg(res.msg,{icon:6});
+                        layer.close(index);
+                        location.reload();//刷新页面
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                })
+            })
+        }
+
+        $('.teacher_del').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认删除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:6});
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        });
+                    });
+            });
+        });
+
+        //导出
+        // $('.btn_export').on('click',function () {
+        //     export_import_manager.ajaxExport('{:url("admin/teacherExport")}',
+        //         '教师信息',
+        //         {name: '教师名',teacher_no:'职工号',sex: '性别', dept_name: '部门' ,bir: '生日', email: '邮箱'},
+        //         ['name','teacher_no','sex','dept_name','bir','email']);
+        // });
+        $('.btn_export').on('click',function () {
+            export_import_manager.ajaxDefaultExport('{:url("admin/teacherExport")}',
+                '教师信息',
+            );
+        });
+
+        //导入
+        $('.btn_import').on('click',function () {
+                // 监听上传文件的事件
+            importwindow('选择文件','{:url("admin/teacherImport")}');
+        });
+
+        function importwindow(title,open_url) {
+            rePositionLayuiIframe(title);
+            layui.use(['layer'], function () {
+                var layer = layui.layer;
+
+                layer.open({
+                    type: 2
+                    , title: title
+                    , area: ['800px','300px']
+                    , shade: 0.3//弹出后背景的阴影
+                    , offset: 'auto'
+                    , content: open_url
+                    , btn: []
+                    , zIndex: layer.zIndex //重点1
+                });
+            });
+        }
+    });
+</script>

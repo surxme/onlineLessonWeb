@@ -1,0 +1,174 @@
+<style>
+    #adminlesson{
+        min-height: 90%;
+    }
+    #adminlesson .card{
+        min-height: 100%;
+    }
+    #adminlesson #edit,#del{
+        color: #ffffff;
+    }
+    #adminlesson .table td img{
+        width: 55px;
+        height: 30px;
+         border-radius: 5%;
+    }
+</style>
+
+{layout name="layouts/layout" /}
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <form class="forms-sample filters">
+                        <div class="">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control form-control-sm" placeholder="输入类别名" name="search_key">
+                                <span class="input-group-append"><button class="btn btn-info search-btn" type="button">搜索</button></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row"  id="adminlesson">
+    <div class="col-lg-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="align-items-center mb-1 justify-content-between d-lg-flex d-xl-flex d-md-block d-block">
+                    <h2 class="">课程总览</h2>
+                    <div class="nav-wrapper d-inline-block mt-4 mt-lg-0">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-light mr-1 lesson_add" id="addLesson" href="#" data-title="添加课程" data-id=""
+                                data-href="{:url('admin/lessonAdd')}"><i style="font: inherit" class="layui-icon layui-icon-add-1"></i>添加</a>
+                            </li>
+                            <!--<li class="nav-item">-->
+                                <!--<a class="nav-link btn btn-light mr-1" href="#"><i style="font: inherit" class="layui-icon layui-icon-up"></i>导入</a>-->
+                            <!--</li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>课程名</th>
+                            <th>课程封面</th>
+                            <th>相关教师</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='list' id='vo'}
+                        <tr>
+                            <td>{$i}</td>
+                            <td>{$vo.name}</td>
+                            <td class="showPhotos"><img src="__STATIC__{$vo.poster}" width="100px" alt=""></td>
+                            <td>{$vo.teachers_name}</td>
+                            <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                            <td>
+                                <!--<a class="layui-btn layui-btn-primary layui-btn-xs lesson_detail" lay-event="detail" data-href="{:url('admin/lessonDetail',['id'=>$vo.id])}">查看</a>-->
+                                <a class="layui-btn layui-btn-xs lesson_edit" lay-event="edit" data-id="{$vo.id}" data-href="{:url('admin/lessonAdd',['id'=>$vo.id])}">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs lesson_del" lay-event="del" data-id="{$vo.id}" data-href="{:url('admin/lessonDel',['id'=>$vo.id])}">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <p class="mb-0"> 共 {$list->total()} 条</p>
+                        <nav>
+                            {$list->render()}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        showphotos.init('.showPhotos');
+
+        //搜索
+        $('.search-btn').on('click',function () {
+            var params = $('.filters').serialize();
+            search(params);
+        });
+
+        $('input[name=search_key]').bind('keydown',function(e){
+            if (e.keyCode == 13) {
+                var params = $('.filters').serialize();
+                search(params);
+                return false;
+            }
+        });
+
+        function search(params){
+            refreshDom('{:url("admin/lesson")}',params,'#adminlesson .table-responsive');
+        }
+
+        $('.lesson_edit').on('click',function () {
+            alt('编辑课程',$(this));
+        });
+
+        $('.lesson_add').on('click',function () {
+            alt('添加课程',$(this));
+        });
+
+        function alt(title,dom){
+            var this_e = dom;
+            var url = this_e.data('href');
+            var id = this_e.data('id');
+            var save_url = '{:url("admin/lessonSaveAdd")}';
+            layui_iframe.editBuilder(title,url,function (index,layero) {
+                //获取弹出层的表单
+                var form = layer.getChildFrame('#myform', index);
+                //调用弹出层的富文本同步方法
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.syncTexrarea();
+                if(id){
+                    save_url = '{:url("admin/lessonSaveAdd")}'+'?id='+id;
+                }
+                ajax_request.post(save_url,form.serialize(),function (res) {
+                    if(res.is_ok == 'ok'){
+                        layer.msg(res.msg,{icon:6});
+                        layer.close(index);
+                        location.reload();//刷新页面
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                })
+            })
+        }
+
+        $('.lesson_del').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认删除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:6});
+                            }else{
+                                layer.msg(data.msg,{icon:5});
+                            }
+                        });
+                    });
+            });
+        });
+    });
+    //在iframe中关闭自身
+    //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+    //parent.layer.close(index); //再执行关闭
+</script>

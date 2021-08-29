@@ -1,0 +1,147 @@
+{layout name="layouts/studentlayout" /}
+<style>
+    .page_items .pagination {
+        display: inline-flex;
+    }
+
+    .page_items .pagination .page-item .page-link {
+        font-size: 1.2rem;
+    }
+
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+    .page-inner .table td,th{
+        color: #545a5f;
+        font-weight: normal;
+    }
+
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+
+    #myform .layui-form-label{
+        /*width: 14%;*/
+        width: 100px;
+    }
+    #myform .layui-upload-img{
+        width: 20%;
+    }
+    #myform .layui-form-item .layui-input-inline{
+        margin-left: 10px;
+        margin-right: 0px;
+    }
+</style>
+<div class="m-b-md">
+    <h3 class="m-b-none text-black">个人资料</h3>
+</div>
+
+<form class="layui-form" action="{:url('index/studentProfileSave')}" id="myform"  enctype="multipart/form-data" method="POST">
+    <input type="hidden" value="{$info['id']?$info['id']:''}" name="id">
+    <div class="layui-form-item">
+        <label class="layui-form-label">学生名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" value="{$info['name']?$info['name']:''}" autocomplete="off" placeholder="请输入学生名" class="layui-input require">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">学号</label>
+        <div class="layui-input-block">
+            <input type="text" name="student_no" value="{$info['student_no']?$info['student_no']:''}" autocomplete="off" placeholder="请输入学生号" class="layui-input require">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" placeholder="不输入则不修改" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="sex" value="1" title="男" {$info['sex']?($info['sex']=='1'?'checked':''):'checked'}>
+                <input type="radio" name="sex" value="2" title="女" {$info['sex']?($info['sex']=='2'?'checked':''):''}>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">生日</label>
+            <div class="layui-input-inline">
+                <input type="text" name="bir" value="{$info['bir']?date('Y-m-d',$info['bir']):''}" id="date" lay-verify="date" placeholder="请点击选择日期" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱" value="{$info['email']?$info['email']:''}" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">头像</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="test1">上传头像</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" src="{$info['avatar']?'__STATIC__'.$info['avatar']:''}">
+                    <input type="hidden" name="avatar" id="poster" value="{$info['avatar']?$info['avatar']:''}">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block text-right">
+            <button type="button" class="layui-btn profile-submit" >提交</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    //上传文件
+    file_upload_manager.croppersUpload('{:url("admin/upload")}',{},'#test1',function (res,index) {
+        if(res.is_ok != 'ok'){
+            layer.msg('上传失败');
+        }else{
+            var file_url = '__STATIC__/'+res.file_url;
+            $('#demo1').attr('src', file_url);
+            $('#poster').val(res.file_url);
+            layui.layer.close(index);
+            layer.msg('上传成功');
+        }
+    });
+    layui.use(['laydate'], function() {
+        var laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+            ,format:'yyyy-MM-dd'
+        });
+    });
+
+    $('.profile-submit').on('click',function () {
+        layui.use(['form','layer'], function() {
+            var layer = layui.layer;
+            var params = $('#myform').serialize();
+            var url = $(this).data('href');
+
+            ajax_request.post("{:url('index/studentProfileSave')}",params,function (data) {
+                if(data.is_ok=='ok'){
+                    location.reload();//刷新页面
+                    layer.msg(data.msg,{icon:1});
+                }else{
+                    layer.msg(data.msg,{icon:2});
+                }
+            });
+            return false;
+        });
+        return false;
+    })
+</script>

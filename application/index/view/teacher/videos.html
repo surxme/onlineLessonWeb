@@ -1,0 +1,146 @@
+{layout name="layouts/teacherlayout" /}
+<style>
+    .page_items .pagination {
+        display: inline-flex;
+    }
+
+    .page_items .pagination .page-item .page-link {
+        font-size: 1.2rem;
+    }
+
+    .page-inner .nav > li > a:hover {
+        text-decoration: none;
+        color: #000000;
+    }
+    .page-inner .table td,th{
+        color: #545a5f;
+        font-weight: normal;
+    }
+
+    .page-inner .nav > li > a {
+        color: #545a5f;
+    }
+</style>
+<div class="m-b-md">
+    <div class="row">
+        <div class="col-xs-10">
+            <h3 class="m-b-none text-black">我的视频</h3>
+            <small class="text-muted m-b">您发布的资源都在这里了</small>
+        </div>
+        <div class="col-xs-2">
+            <div style="float: right">
+                <button data-href="{:url('index/videoAlt')}" class="btn btn-sm btn-info video-add"><i class="fa  fa-plus"></i> 添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+{eq name="$list|count" value='0'}
+<div class="">
+    <div class="caption wrapper-lg text-center">
+        <h3 class="post-title"><img class="empty-info-png" src="__STATIC__/img/empty.png"></h3>
+        <h3 class="post-title">暂无视频</h3>
+    </div>
+</div>
+{/eq}
+{if condition="count($list) > 0"}
+<section class="panel panel-default">
+    <div class="table-responsive">
+        <table class="table table-striped b-t b-light">
+            <thead>
+            <tr>
+                <th>视频名</th>
+                <th>课程名</th>
+                <!--<th>课程封面</th>-->
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name='list' id='video'}
+            <tr>
+                <td title="{$video.video_name}">
+                    <a href="{:url('index/details',['id'=>$video.lesson_id,'video_id'=>$video.video_id])}"
+                       style="color: #4cb6cb">{$video.video_name|msubstr=0,15,'utf-8',true}
+                    </a>
+                </td>
+                <td title="{$video.lesson_name}">
+                    {$video.lesson_name|msubstr=0,15,'utf-8',true}
+                </td>
+                <!--<td  class="showPhotos"><img class="img-circle" src="__STATIC__{$video.poster}" style="width: 55px;height: 30px;border-radius: 5%;"></td>-->
+                <td>{$video.create_time|date="Y-m-d H:i",###}</td>
+                <td>
+                    <a href="{:url('index/details',['id'=>$video.lesson_id,'video_id'=>$video.video_id])}" class="btn btn-sm btn-info">查看</a>
+                    <button class="btn btn-sm btn-dark video-edit" data-href="{:url('index/videoAlt',['id'=>$video.video_id])}">编辑</button>
+                    <button class="btn btn-sm btn-danger btn-delete" data-href="{:url('index/videoDel',['id'=>$video.video_id])}">移除</button>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    <footer class="panel-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                <small class="text-muted inline m-t-sm m-b-sm">共 {$list->total()} 条</small>
+            </div>
+            {$list->render()}
+        </div>
+    </footer>
+</section>
+{/if}
+
+<script>
+    $(function () {
+        showphotos.init_only_one('.showPhotos');
+
+        $('.video-edit').on('click',function () {
+            alt('编辑视频',$(this));
+        });
+
+        $('.video-add').on('click',function () {
+            alt('添加视频',$(this));
+        });
+
+        function alt(title,dom){
+            var this_e = dom;
+            var url = this_e.data('href');
+            var id = this_e.data('id');
+            var save_url = '{:url("index/videoSaveAlt")}';
+            layui_iframe.editBuilder(title,url,function (index,layero) {
+                //获取弹出层的表单
+                var form = layer.getChildFrame('#myform', index);
+                if(id){
+                    save_url = save_url+'?id='+id;
+                }
+                ajax_request.post(save_url,form.serialize(),function (res) {
+                    if(res.is_ok == 'ok'){
+                        layer.msg(res.msg,{icon:6});
+                        layer.close(index);
+                        location.reload();//刷新页面
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                })
+            },['800px','600px'])
+        }
+
+        $('.btn-delete').on('click',function () {
+            var url = $(this).data('href');
+
+            layui.use("layer", function () {
+                var layer = layui.layer;  //layer初始化
+                layer.confirm('确认移除',{btn:['确认','取消']},
+                    function () {
+                        $.post(url,{},function (data) {
+                            if(data.is_ok=='ok'){
+                                location.reload();//刷新页面
+                                layer.msg(data.msg,{icon:1});
+                            }else{
+                                layer.msg(data.msg,{icon:2});
+                            }
+                        });
+                    });
+            });
+        });
+    });
+</script>
